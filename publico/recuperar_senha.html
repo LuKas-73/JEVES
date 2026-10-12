@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Recuperação de senha de acesso aos Jogos Escolares de Vespasiano 2026 — JEVES. Solicite um link seguro ou código de redefinição por e-mail." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>Recuperar Senha | JEVES 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+
+    <style>
+        .recuperar-container-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        #canvas-particulas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-fundo-1 {
+            position: absolute;
+            width: 580px;
+            height: 580px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 58, 143, 0.45) 0%, transparent 70%);
+            top: -150px;
+            left: -150px;
+            pointer-events: none;
+        }
+
+        .glow-fundo-2 {
+            position: absolute;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232, 102, 10, 0.2) 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        .cartao-envio-sucesso {
+            display: none;
+            animation: surgirSucesso 0.4s ease-out forwards;
+        }
+
+        @keyframes surgirSucesso {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .codigo-pin-inputs {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1.25rem 0;
+        }
+
+        .codigo-pin-campo {
+            width: 48px;
+            height: 56px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: var(--fonte-titulos);
+            background: rgba(11, 22, 64, 0.85);
+            border: 2px solid rgba(42, 74, 175, 0.45);
+            border-radius: var(--borda-raio-md);
+            color: #FFFFFF;
+            outline: none;
+            transition: var(--transicao-padrao);
+        }
+
+        .codigo-pin-campo:focus {
+            border-color: var(--cor-secundaria);
+            background: rgba(15, 29, 82, 0.95);
+            box-shadow: 0 0 0 3px rgba(245, 184, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .badge-timer-reenvio {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.82rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .link-reenviar.desabilitado {
+            color: rgba(168, 184, 216, 0.4);
+            pointer-events: none;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+        <div class="container">
+            <div class="navbar-conteudo-wrapper">
+                <div class="navbar-secao-esquerda">
+                    <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                </div>
+
+                <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+                    <a href="/index.html" class="nav-link-jeves">Início</a>
+                    <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
+                    <a href="/publico/calendario.html" class="nav-link-jeves">Calendário</a>
+                </nav>
+
+                <div class="navbar-secao-direita">
+                    <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+                        <span>Entrar</span>
+                    </a>
+
+                    <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button"
+                        aria-expanded="false" aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+                        <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+                    <div class="menu-dropdown-mobile-cabecalho">
+                        <span class="menu-dropdown-mobile-titulo">Navegação</span>
+                        <span class="badge-item-temporada">2026</span>
+                    </div>
+                    <div class="menu-dropdown-mobile-lista">
+                        <a href="/index.html" class="menu-dropdown-item">
+                            <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="/publico/torneios.html" class="menu-dropdown-item">
+                            <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                            <span>Torneios</span>
+                        </a>
+                        <a href="/publico/calendario.html" class="menu-dropdown-item">
+                            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                            <span>Calendário</span>
+                        </a>
+                    </div>
+                    <div class="menu-dropdown-mobile-divisor"></div>
+                    <div class="menu-dropdown-mobile-rodape">
+                        <a href="/publico/login.html" class="btn-entrar-mobile">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal" class="auth-pagina">
+        <canvas id="canvas-particulas" aria-hidden="true"></canvas>
+        <div class="glow-fundo-1" aria-hidden="true"></div>
+        <div class="glow-fundo-2" aria-hidden="true"></div>
+
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="recuperar-container-wrapper">
+                <article class="auth-card" id="card-solicitacao" aria-labelledby="titulo-recuperar">
+                    <div class="auth-card-topo">
+                        <div class="auth-icone-destaque" aria-hidden="true">
+                            <i class="bi bi-key-fill"></i>
+                        </div>
+                        <span class="badge-secao-label mb-2">Segurança da Conta</span>
+                        <h1 class="auth-titulo" id="titulo-recuperar">Recuperar Senha</h1>
+                        <p class="auth-subtitulo">
+                            Informe seu e-mail cadastrado na plataforma para receber as instruções de redefinição de
+                            senha.
+                        </p>
+                    </div>
+
+                    <form id="form-recuperar-senha" novalidate>
+                        <div class="campo-grupo">
+                            <label for="campo-email-recuperar" class="campo-rotulo">
+                                <span>E-mail cadastrado <span class="campo-rotulo-obrigatorio">*</span></span>
+                            </label>
+                            <div class="campo-wrapper">
+                                <i class="bi bi-envelope campo-icone-esquerda" aria-hidden="true"></i>
+                                <input type="email" id="campo-email-recuperar" class="campo-controle tem-icone-esq"
+                                    placeholder="exemplo@escola.com.br" required autocomplete="email" />
+                            </div>
+                            <div class="invalid-feedback" id="erro-email-recuperar">
+                                <i class="bi bi-exclamation-circle-fill"></i> Digite um endereço de e-mail válido.
+                            </div>
+                        </div>
+
+                        <div class="alerta-box alerta-info mb-4">
+                            <i class="bi bi-shield-check fs-5"></i>
+                            <div>
+                                Enviaremos um link de segurança com validade de 30 minutos contendo o token de
+                                redefinição e um código de verificação de 6 dígitos.
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-jeves-primario w-100 justify-content-center py-3"
+                            id="btn-enviar-link">
+                            <span id="texto-btn-enviar">Enviar Link de Recuperação</span>
+                            <i class="bi bi-send ms-2" id="icone-btn-enviar" aria-hidden="true"></i>
+                            <span class="spinner-border spinner-border-sm d-none" id="spinner-enviar" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+                    </form>
+
+                    <div class="auth-divisor">Ou</div>
+
+                    <div class="text-center">
+                        <a href="/publico/login.html" class="btn-jeves-contorno w-100 justify-content-center py-2">
+                            <i class="bi bi-arrow-left" aria-hidden="true"></i>
+                            <span>Voltar para o Login</span>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="auth-card cartao-envio-sucesso" id="card-sucesso-envio"
+                    aria-labelledby="titulo-sucesso">
+                    <div class="auth-card-topo">
+                        <div class="auth-icone-destaque"
+                            style="color: var(--cor-sucesso); border-color: rgba(46, 204, 113, 0.4); background: rgba(46, 204, 113, 0.12);"
+                            aria-hidden="true">
+                            <i class="bi bi-envelope-check-fill"></i>
+                        </div>
+                        <span class="badge-status status-aprovada mb-2">Instruções Enviadas</span>
+                        <h2 class="auth-titulo" id="titulo-sucesso">Verifique seu E-mail</h2>
+                        <p class="auth-subtitulo">
+                            Enviamos as orientações de redefinição para:
+                            <br /><strong class="text-white" id="email-confirmado-texto">—</strong>
+                        </p>
+                    </div>
+
+                    <div class="alerta-box alerta-sucesso mb-4">
+                        <i class="bi bi-lightning-charge-fill fs-5"></i>
+                        <div>
+                            <strong>Modo Demonstração:</strong> Você pode abrir diretamente o link seguro gerado com o
+                            token para criar a nova senha.
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn-jeves-primario w-100 justify-content-center py-3 mb-4"
+                        id="btn-abrir-redefinicao">
+                        <span>Abrir Link de Redefinição Direto</span>
+                        <i class="bi bi-box-arrow-up-right ms-2" aria-hidden="true"></i>
+                    </a>
+
+                    <div class="auth-divisor">Ou digite o código de 6 dígitos</div>
+
+                    <form id="form-codigo-pin" novalidate>
+                        <div class="text-center">
+                            <p class="text-secondary text-sm mb-2">
+                                Digite o código de verificação recebido na mensagem:
+                            </p>
+                            <div class="codigo-pin-inputs" role="group" aria-label="Código de verificação de 6 dígitos">
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-1"
+                                    inputmode="numeric" />
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-2"
+                                    inputmode="numeric" />
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-3"
+                                    inputmode="numeric" />
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-4"
+                                    inputmode="numeric" />
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-5"
+                                    inputmode="numeric" />
+                                <input type="text" maxlength="1" class="codigo-pin-campo" id="pin-6"
+                                    inputmode="numeric" />
+                            </div>
+
+                            <button type="button" class="btn-jeves-contorno w-100 justify-content-center py-2 mb-3"
+                                id="btn-validar-pin">
+                                <i class="bi bi-shield-check" aria-hidden="true"></i>
+                                <span>Validar Código e Redefinir</span>
+                            </button>
+
+                            <div class="badge-timer-reenvio">
+                                <span>Não recebeu o e-mail?</span>
+                                <a href="#" class="link-reenviar desabilitado" id="link-reenviar-codigo">
+                                    Reenviar em <span id="contador-tempo">45</span>s
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="text-center mt-4 pt-3 border-top border-secondary border-opacity-25">
+                        <a href="/publico/login.html" class="text-secondary text-sm">
+                            <i class="bi bi-arrow-left"></i> Voltar à tela de login
+                        </a>
+                    </div>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="rodape-jeves" role="contentinfo">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-lg-4">
+                    <a href="/index.html" class="navbar-brand-jeves mb-3 d-inline-flex" aria-label="JEVES 2026">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                    <p class="rodape-descricao">
+                        Jogos Escolares de Vespasiano 2026. Incentivando a prática esportiva, a integração e a saúde
+                        dos estudantes do município.
+                    </p>
+                </div>
+
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Navegação</h2>
+                    <nav aria-label="Links rápidos">
+                        <a href="/index.html" class="rodape-link">Início</a>
+                        <a href="/publico/torneio.html" class="rodape-link">Torneios</a>
+                        <a href="/publico/calendario.html" class="rodape-link">Calendário</a>
+                    </nav>
+                </div>
+
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Área Escolar</h2>
+                    <nav aria-label="Acesso e Suporte">
+                        <a href="/publico/login.html" class="rodape-link">Entrar</a>
+                        <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
+                        <a href="/publico/recuperar-senha.html" class="rodape-link ativo">Recuperar Senha</a>
+                    </nav>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <h2 class="rodape-titulo-coluna">Realização</h2>
+                    <address class="rodape-endereco">
+                        <p>Secretaria de Juventude e Esportes</p>
+                        <p>Prefeitura Municipal de Vespasiano — MG</p>
+                        <p>Praça de Esportes Cristóvão Jacques Bias Fortes</p>
+                        <p>Rua Sen. Modestino Gonçalves, 245 — Jardim Itaú</p>
+                    </address>
+                </div>
+            </div>
+
+            <hr class="rodape-divisor" />
+            <div class="rodape-base">
+                <p class="rodape-copyright">
+                    &copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            'use strict';
+            const navbar = document.getElementById('navbar-principal');
+            const btnHamburguer = document.getElementById('btn-hamburguer');
+            const menuDropdown = document.getElementById('menu-dropdown-mobile');
+            const iconeHamburguer = document.getElementById('icone-hamburguer');
+
+            window.addEventListener('scroll', function () {
+                if (navbar) navbar.classList.toggle('rolado', window.scrollY > 40);
+            }, { passive: true });
+
+            if (btnHamburguer && menuDropdown) {
+                btnHamburguer.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const aberto = menuDropdown.classList.toggle('aberto');
+                    btnHamburguer.setAttribute('aria-expanded', String(aberto));
+                    if (iconeHamburguer) iconeHamburguer.className = aberto ? 'bi bi-x-lg' : 'bi bi-list';
+                });
+                document.addEventListener('click', function (e) {
+                    if (!menuDropdown.contains(e.target) && !btnHamburguer.contains(e.target)) {
+                        menuDropdown.classList.remove('aberto');
+                        btnHamburguer.setAttribute('aria-expanded', 'false');
+                        if (iconeHamburguer) iconeHamburguer.className = 'bi bi-list';
+                    }
+                });
+            }
+
+            const canvas = document.getElementById('canvas-particulas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let w = canvas.width = window.innerWidth;
+                let h = canvas.height = window.innerHeight;
+
+                window.addEventListener('resize', function () {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }, { passive: true });
+
+                const particulas = Array.from({ length: 60 }, function () {
+                    return {
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.8 + 0.4,
+                        vx: (Math.random() - 0.5) * 0.35,
+                        vy: (Math.random() - 0.5) * 0.35,
+                        alpha: Math.random() * 0.5 + 0.15,
+                        dourada: Math.random() > 0.8
+                    };
+                });
+
+                function animar() {
+                    ctx.clearRect(0, 0, w, h);
+                    particulas.forEach(function (p) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if (p.x < 0) p.x = w;
+                        if (p.x > w) p.x = 0;
+                        if (p.y < 0) p.y = h;
+                        if (p.y > h) p.y = 0;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.dourada ? '#F5B800' : '#4A6FD4';
+                        ctx.globalAlpha = p.alpha;
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(animar);
+                }
+                animar();
+            }
+
+            function exibirToast(tipo, titulo, mensagem) {
+                const conteiner = document.getElementById('jeves-conteiner-toasts');
+                if (!conteiner) return;
+                const cores = { sucesso: '#2ECC71', erro: '#E74C3C', aviso: '#F39C12', info: '#3498DB' };
+                const icones = { sucesso: 'bi-check-circle-fill', erro: 'bi-x-circle-fill', aviso: 'bi-exclamation-triangle-fill', info: 'bi-info-circle-fill' };
+
+                const el = document.createElement('div');
+                Object.assign(el.style, {
+                    background: 'rgba(11, 22, 64, 0.98)',
+                    border: '1px solid rgba(42, 74, 175, 0.35)',
+                    borderLeft: '4px solid ' + (cores[tipo] || '#F5B800'),
+                    borderRadius: '14px',
+                    padding: '1rem 1.25rem',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.75rem',
+                    backdropFilter: 'blur(20px)',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.45)',
+                    opacity: '0',
+                    transform: 'translateX(20px)',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    fontFamily: "'Inter', sans-serif",
+                    marginTop: '0.5rem'
+                });
+
+                el.innerHTML = `
+                    <i class="bi ${icones[tipo] || 'bi-info-circle-fill'}" style="color:${cores[tipo]};font-size:1.25rem;flex-shrink:0;margin-top:2px;"></i>
+                    <div style="flex:1;min-width:0;">
+                        ${titulo ? `<div style="color:#fff;font-weight:600;font-size:.9rem;font-family:'Outfit',sans-serif;margin-bottom:2px;">${titulo}</div>` : ''}
+                        <div style="color:#A8B8D8;font-size:.875rem;line-height:1.45;">${mensagem}</div>
+                    </div>
+                    <button type="button" aria-label="Fechar" style="background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;padding:0;font-size:1.1rem;line-height:1;">
+                        <i class="bi bi-x"></i>
+                    </button>
+                `;
+
+                const btnFechar = el.querySelector('button');
+                btnFechar.addEventListener('click', function () {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateX(20px)';
+                    setTimeout(function () { el.remove(); }, 300);
+                });
+
+                conteiner.appendChild(el);
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateX(0)';
+                    });
+                });
+
+                setTimeout(function () {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateX(20px)';
+                    setTimeout(function () { el.remove(); }, 300);
+                }, 4500);
+            }
+
+            const formRecuperar = document.getElementById('form-recuperar-senha');
+            const campoEmail = document.getElementById('campo-email-recuperar');
+            const btnEnviar = document.getElementById('btn-enviar-link');
+            const textoBtn = document.getElementById('texto-btn-enviar');
+            const iconeBtn = document.getElementById('icone-btn-enviar');
+            const spinnerBtn = document.getElementById('spinner-enviar');
+
+            const cardSolicitacao = document.getElementById('card-solicitacao');
+            const cardSucesso = document.getElementById('card-sucesso-envio');
+            const emailConfirmadoTexto = document.getElementById('email-confirmado-texto');
+            const btnAbrirRedefinicao = document.getElementById('btn-abrir-redefinicao');
+
+            const pinInputs = [
+                document.getElementById('pin-1'),
+                document.getElementById('pin-2'),
+                document.getElementById('pin-3'),
+                document.getElementById('pin-4'),
+                document.getElementById('pin-5'),
+                document.getElementById('pin-6')
+            ];
+            const btnValidarPin = document.getElementById('btn-validar-pin');
+            const linkReenviar = document.getElementById('link-reenviar-codigo');
+            const contadorTempo = document.getElementById('contador-tempo');
+
+            let timerInterval = null;
+
+            if (formRecuperar) {
+                formRecuperar.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const email = campoEmail.value.trim();
+                    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (!email || !regexEmail.test(email)) {
+                        campoEmail.classList.add('is-invalid');
+                        exibirToast('erro', 'E-mail Inválido', 'Por favor, digite um endereço de e-mail institucional válido.');
+                        return;
+                    }
+
+                    campoEmail.classList.remove('is-invalid');
+                    campoEmail.classList.add('is-valid');
+
+                    btnEnviar.disabled = true;
+                    textoBtn.textContent = 'Enviando instruções...';
+                    iconeBtn.classList.add('d-none');
+                    spinnerBtn.classList.remove('d-none');
+
+                    /* =====================================================================
+                       [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+                       Token/PIN fictícios e envio de e-mail simulado. Substitua pela integração com o backend.
+                       ===================================================================== */
+                    setTimeout(function () {
+                        const tokenDemonstracao = 'JEVES2026-TK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
+
+                        cardSolicitacao.style.display = 'none';
+                        cardSucesso.style.display = 'block';
+                        emailConfirmadoTexto.textContent = email;
+                        btnAbrirRedefinicao.href = '/publico/redefinir-senha.html?token=' + encodeURIComponent(tokenDemonstracao) + '&email=' + encodeURIComponent(email);
+
+                        const pinExemplo = '742915';
+                        pinInputs.forEach(function (inp, idx) {
+                            inp.value = pinExemplo[idx];
+                        });
+
+                        exibirToast('sucesso', 'Link e Código Enviados!', 'Instruções encaminhadas com sucesso para ' + email);
+
+                        iniciarContadorReenvio(45);
+                    }, 1000);
+                    /* =====================================================================
+                       [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+                       ===================================================================== */
+                });
+            }
+
+            pinInputs.forEach(function (input, index) {
+                input.addEventListener('input', function (e) {
+                    if (this.value.length === 1 && index < pinInputs.length - 1) {
+                        pinInputs[index + 1].focus();
+                    }
+                });
+
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        pinInputs[index - 1].focus();
+                    }
+                });
+            });
+
+            if (btnValidarPin) {
+                btnValidarPin.addEventListener('click', function () {
+                    const codigo = pinInputs.map(function (inp) { return inp.value; }).join('');
+                    if (codigo.length < 6) {
+                        exibirToast('erro', 'Código Incompleto', 'Por favor, preencha todos os 6 dígitos do código de verificação.');
+                        return;
+                    }
+
+                    btnValidarPin.disabled = true;
+                    btnValidarPin.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Validando código...';
+
+                    /* =====================================================================
+                       [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+                       Qualquer código com 6 dígitos passa. Substitua pela validação no backend.
+                       ===================================================================== */
+                    setTimeout(function () {
+                        exibirToast('sucesso', 'Código Confirmado!', 'Redirecionando para a criação da nova senha...');
+                        setTimeout(function () {
+                            const email = campoEmail.value.trim() || 'escola@vespasiano.mg.gov.br';
+                            window.location.href = '/publico/redefinir-senha.html?codigo=' + encodeURIComponent(codigo) + '&email=' + encodeURIComponent(email);
+                        }, 900);
+                    }, 800);
+                    /* =====================================================================
+                       [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+                       ===================================================================== */
+                });
+            }
+
+            function iniciarContadorReenvio(segundos) {
+                if (timerInterval) clearInterval(timerInterval);
+                let restante = segundos;
+                linkReenviar.classList.add('desabilitado');
+                contadorTempo.textContent = restante;
+
+                timerInterval = setInterval(function () {
+                    restante--;
+                    contadorTempo.textContent = restante;
+                    if (restante <= 0) {
+                        clearInterval(timerInterval);
+                        linkReenviar.classList.remove('desabilitado');
+                        linkReenviar.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Reenviar código agora';
+                    }
+                }, 1000);
+            }
+
+            if (linkReenviar) {
+                linkReenviar.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (!this.classList.contains('desabilitado')) {
+                        /* =====================================================================
+                           [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+                           Troque pela solicitação ao backend para reenviar o código por e-mail.
+                           ===================================================================== */
+                        exibirToast('info', 'Código Reenviado', 'Um novo código de 6 dígitos foi enviado para o seu e-mail.');
+                        iniciarContadorReenvio(60);
+                        /* =====================================================================
+                           [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+                           ===================================================================== */
+                    }
+                });
+            }
+
+            if (campoEmail) {
+                campoEmail.addEventListener('input', function () {
+                    if (this.classList.contains('is-invalid')) this.classList.remove('is-invalid');
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

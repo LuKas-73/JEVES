@@ -1,0 +1,64 @@
+:root {
+  --cor-primaria: #1A3A8F;
+  --cor-secundaria: #F5B800;
+  --cor-acento: #E8660A;
+  --cor-fundo: #0B1640;
+  --cor-superficie: #162055;
+  --cor-superficie-2: #1E2E6E;
+  --cor-texto-principal: #FFFFFF;
+  --cor-texto-secundario: #A8B8D8;
+  --cor-borda: #2A4AAF;
+  --cor-borda-suave: rgba(42, 74, 175, 0.25);
+  --cor-sucesso: #2ECC71;
+  --cor-aviso: #F39C12;
+  --cor-erro: #E74C3C;
+  --cor-informacao: #3498DB;
+
+  --gradiente-principal: linear-gradient(135deg, #1A3A8F 0%, #0B1640 60%, #E8660A 100%);
+  --gradiente-dourado: linear-gradient(90deg, #F5B800 0%, #E8660A 100%);
+  --gradiente-azul: linear-gradient(135deg, #1A3A8F 0%, #0B1640 100%);
+  --gradiente-card: linear-gradient(145deg, rgba(22, 32, 85, 0.9), rgba(11, 22, 64, 0.95));
+  --gradiente-heroi: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(26, 58, 143, 0.9) 0%, rgba(11, 22, 64, 1) 65%);
+
+  --fonte-titulos: 'Outfit', sans-serif;
+  --fonte-texto: 'Inter', sans-serif;
+
+  --tamanho-h1: clamp(2.8rem, 8vw, 6rem);
+  --tamanho-h2: clamp(1.7rem, 4vw, 2.8rem);
+  --tamanho-h3: clamp(1.2rem, 2.5vw, 1.6rem);
+  --tamanho-texto: 1rem;
+  --tamanho-legenda: 0.85rem;
+
+  --borda-raio-sm: 8px;
+  --borda-raio-md: 14px;
+  --borda-raio-lg: 22px;
+  --borda-raio-xl: 36px;
+  --borda-raio-circulo: 50%;
+
+  --sombra-sm: 0 2px 10px rgba(0, 0, 0, 0.3);
+  --sombra-md: 0 6px 28px rgba(0, 0, 0, 0.4);
+  --sombra-lg: 0 14px 52px rgba(0, 0, 0, 0.55);
+  --sombra-dourada: 0 6px 28px rgba(245, 184, 0, 0.4);
+  --sombra-primaria: 0 6px 28px rgba(26, 58, 143, 0.6);
+  --sombra-acento: 0 6px 28px rgba(232, 102, 10, 0.4);
+
+  --transicao-padrao: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transicao-rapida: all 0.15s ease;
+  --transicao-lenta: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --espaco-xs: 0.25rem;
+  --espaco-sm: 0.5rem;
+  --espaco-md: 1rem;
+  --espaco-lg: 1.5rem;
+  --espaco-xl: 2rem;
+  --espaco-2xl: 3rem;
+  --espaco-3xl: 5rem;
+  --espaco-4xl: 8rem;
+
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-modal: 400;
+  --z-toast: 600;
+  --z-topo: 900;
+}

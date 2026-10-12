@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Calendário de jogos do JEVES 2026 — Jogos Escolares de Vespasiano. Veja as partidas de cada dia, locais, escolas e resultados." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>Calendário de Jogos — JEVES 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+
+    <style>
+        :root {
+            --laranja-rgb: 232, 102, 10;
+        }
+
+        .pagina-topo {
+            position: relative;
+            background: #0B1640;
+            padding: 140px 0 130px;
+            overflow: hidden;
+        }
+
+        .pagina-topo::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 58, 143, 0.45) 0%, transparent 70%);
+            top: -250px;
+            left: -150px;
+            pointer-events: none;
+        }
+
+        .pagina-topo::after {
+            content: '';
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232, 102, 10, 0.18) 0%, transparent 70%);
+            bottom: -200px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        .pagina-topo .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        #canvas-particulas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pagina-descricao {
+            font-size: clamp(1rem, 1.8vw, 1.15rem);
+            color: rgba(168, 184, 216, 0.9);
+            max-width: 560px;
+            line-height: 1.75;
+            margin: var(--espaco-lg) auto 0;
+        }
+
+        .pagina-onda {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            line-height: 0;
+            z-index: 2;
+        }
+
+        .pagina-onda svg {
+            width: 100%;
+            height: 80px;
+        }
+
+        .breadcrumb-jeves {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.82rem;
+            color: rgba(168, 184, 216, 0.7);
+            margin-bottom: var(--espaco-md);
+        }
+
+        .breadcrumb-jeves a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .breadcrumb-jeves a:hover {
+            color: var(--cor-secundaria);
+        }
+
+        .breadcrumb-jeves span::before {
+            content: '/';
+            margin-right: 0.5rem;
+            opacity: 0.5;
+        }
+
+        .badge-secao-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(245, 184, 0, 0.1);
+            border: 1px solid rgba(245, 184, 0, 0.25);
+            color: var(--cor-secundaria);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.3rem 0.9rem;
+            border-radius: 100px;
+            margin-bottom: var(--espaco-md);
+        }
+
+        .pagina-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: clamp(2.6rem, 7vw, 5rem);
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            background: var(--gradiente-dourado);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: table;
+            margin: 0 auto var(--espaco-md);
+            padding: 0.04em 0.06em 0.14em;
+        }
+
+        .secao-calendario {
+            background: linear-gradient(180deg, #162055 0%, rgba(11, 22, 64, 0.95) 100%);
+            padding-bottom: var(--espaco-3xl);
+        }
+
+        .filtros-modalidade {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: var(--espaco-xl);
+        }
+
+        .chip-filtro {
+            background: rgba(22, 32, 85, 0.6);
+            border: 1px solid var(--cor-borda-suave);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: 0.82rem;
+            padding: 0.4rem 0.95rem;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transicao-rapida);
+        }
+
+        .chip-filtro:hover {
+            border-color: rgba(var(--laranja-rgb), 0.7);
+            color: #fff;
+        }
+
+        .chip-filtro[aria-pressed="true"] {
+            background: rgba(var(--laranja-rgb), 0.2);
+            border-color: rgb(var(--laranja-rgb));
+            color: #fff;
+        }
+
+        .cal-conteiner {
+            background: var(--gradiente-card);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-xl);
+            padding: var(--espaco-2xl);
+            box-shadow: var(--sombra-lg);
+            max-width: 1040px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .cal-topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: var(--espaco-xl);
+            padding-bottom: var(--espaco-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .cal-mes-ano {
+            font-family: var(--fonte-titulos);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--cor-texto-principal);
+            margin: 0;
+        }
+
+        .cal-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-cal-nav {
+            background: rgba(22, 32, 85, 0.6);
+            border: 1px solid var(--cor-borda-suave);
+            color: var(--cor-texto-principal);
+            padding: 0.45rem 0.9rem;
+            border-radius: var(--borda-raio-sm);
+            cursor: pointer;
+            transition: var(--transicao-rapida);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-cal-nav:hover {
+            border-color: var(--cor-acento);
+            color: var(--cor-acento);
+            background: rgba(var(--laranja-rgb), 0.1);
+        }
+
+        .cal-semana,
+        .cal-grade {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .cal-semana {
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .cal-semana div {
+            font-family: var(--fonte-titulos);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--cor-texto-secundario);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 0;
+        }
+
+        .cal-dia {
+            min-height: 112px;
+            background: rgba(11, 22, 64, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--borda-raio-md);
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            min-width: 0;
+            transition: var(--transicao-padrao);
+            position: relative;
+        }
+
+        .cal-dia.vazio {
+            background: transparent;
+            border-color: transparent;
+        }
+
+        .cal-dia-numero {
+            font-family: var(--fonte-titulos);
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cal-dia.hoje {
+            border-color: var(--cor-secundaria);
+            box-shadow: 0 0 0 1px rgba(245, 184, 0, 0.35) inset;
+        }
+
+        .cal-dia.hoje .cal-dia-numero {
+            color: var(--cor-secundaria);
+        }
+
+        .cal-dia.hoje .cal-dia-numero::after {
+            content: 'Hoje';
+            font-size: 0.62rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(245, 184, 0, 0.15);
+            border-radius: 100px;
+            padding: 1px 6px;
+        }
+
+        .cal-dia.tem-jogo {
+            cursor: pointer;
+            border-color: rgba(var(--laranja-rgb), 0.45);
+            background: linear-gradient(135deg, rgba(var(--laranja-rgb), 0.12), rgba(11, 22, 64, 0.85));
+        }
+
+        .cal-dia.tem-jogo .cal-dia-numero {
+            color: #fff;
+        }
+
+        .cal-dia.tem-jogo:hover,
+        .cal-dia.tem-jogo:focus-visible {
+            transform: translateY(-3px);
+            border-color: rgb(var(--laranja-rgb));
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+            z-index: 2;
+            outline: none;
+        }
+
+        .cal-pills {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .cal-pill {
+            display: block;
+            font-family: var(--fonte-titulos);
+            font-size: 0.68rem;
+            font-weight: 700;
+            line-height: 1.2;
+            border-radius: 6px;
+            padding: 3px 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background: rgba(var(--laranja-rgb), 0.28);
+            border: 1px solid rgba(var(--laranja-rgb), 0.5);
+            color: #FFD2B0;
+        }
+
+        .cal-pill b {
+            font-weight: 800;
+            margin-right: 3px;
+            color: #fff;
+        }
+
+        .cal-mais {
+            font-family: var(--fonte-titulos);
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--cor-secundaria);
+            background: rgba(245, 184, 0, 0.12);
+            border: 1px dashed rgba(245, 184, 0, 0.45);
+            border-radius: 6px;
+            padding: 2px 6px;
+            text-align: center;
+        }
+
+        .cal-legenda-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: var(--espaco-lg);
+            padding-top: var(--espaco-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.82rem;
+            color: var(--cor-texto-secundario);
+            text-align: center;
+        }
+
+        .cal-estado {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            background: rgba(11, 22, 64, 0.85);
+            backdrop-filter: blur(3px);
+            border-radius: var(--borda-raio-xl);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            text-align: center;
+            padding: var(--espaco-xl);
+            color: var(--cor-texto-secundario);
+        }
+
+        .cal-estado.ativo {
+            display: flex;
+        }
+
+        .cal-estado i {
+            font-size: 2rem;
+            color: var(--cor-acento);
+        }
+
+        .cal-spinner {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: var(--cor-acento);
+            animation: girar 0.8s linear infinite;
+        }
+
+        @keyframes girar {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .chip-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-family: var(--fonte-titulos);
+            font-size: 0.72rem;
+            font-weight: 700;
+            border-radius: 100px;
+            padding: 0.2rem 0.7rem;
+            white-space: nowrap;
+        }
+
+        .chip-status.st-agendado {
+            color: var(--cor-secundaria);
+            background: rgba(245, 184, 0, 0.1);
+            border: 1px solid rgba(245, 184, 0, 0.3);
+        }
+
+        .chip-status.st-ao_vivo {
+            color: #fff;
+            background: rgba(var(--laranja-rgb), 0.85);
+            border: 1px solid rgb(var(--laranja-rgb));
+        }
+
+        .chip-status.st-ao_vivo::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #fff;
+            animation: piscar 1.2s ease-in-out infinite;
+        }
+
+        .chip-status.st-encerrado {
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .chip-status.st-adiado {
+            color: #FFA07A;
+            background: rgba(var(--laranja-rgb), 0.12);
+            border: 1px dashed rgba(var(--laranja-rgb), 0.55);
+        }
+
+        @keyframes piscar {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        body.modal-aberto {
+            overflow: hidden;
+        }
+
+        .modal-cal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+
+            background: rgba(6, 13, 48, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 1.25rem;
+            overflow: hidden;
+            overscroll-behavior: contain;
+            box-sizing: border-box;
+        }
+
+        .modal-cal.ativo {
+            display: flex;
+        }
+
+        .modal-cal-caixa {
+            background: #0B1640;
+            border: 1px solid rgba(245, 184, 0, 0.35);
+            border-radius: var(--borda-raio-xl);
+
+            width: 100%;
+            max-width: 580px;
+
+            max-height: calc(100vh - 2.5rem);
+            max-height: calc(100dvh - 2.5rem);
+
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+
+            box-sizing: border-box;
+            box-shadow:
+                0 24px 60px rgba(0, 0, 0, 0.8),
+                0 0 35px rgba(245, 184, 0, 0.15);
+
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .modal-cal-rolagem {
+            flex: 1;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+            padding: var(--espaco-2xl);
+        }
+
+        .modal-cal-rolagem::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        .modal-cal-rolagem::-webkit-scrollbar-track {
+            background: transparent;
+            margin-block: 32px;
+        }
+
+        .modal-cal-rolagem::-webkit-scrollbar-thumb {
+            background: #F5B800;
+            border-radius: 100px;
+            border: 4px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .modal-cal-rolagem::-webkit-scrollbar-thumb:hover {
+            background: #FFC928;
+            background-clip: padding-box;
+        }
+
+        @supports not selector(::-webkit-scrollbar) {
+            .modal-cal-rolagem {
+                scrollbar-width: thin;
+                scrollbar-color: #F5B800 transparent;
+            }
+        }
+
+        @keyframes modalSurgir {
+            from {
+                transform: translateY(20px) scale(0.96);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-cal-fechar {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transicao-rapida);
+            z-index: 2;
+        }
+
+        .modal-cal-fechar:hover {
+            background: rgba(232, 102, 10, 0.3);
+            color: var(--cor-acento);
+            border-color: var(--cor-acento);
+        }
+
+        .modal-cabecalho {
+            padding-right: 2.75rem;
+            margin-bottom: var(--espaco-lg);
+            padding-bottom: var(--espaco-md);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .modal-titulo {
+            font-family: var(--fonte-titulos);
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--cor-texto-principal);
+            margin: 0 0 0.3rem;
+        }
+
+        .modal-subtitulo {
+            font-size: 0.86rem;
+            color: var(--cor-texto-secundario);
+            margin: 0;
+        }
+
+        .lista-jogos {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .item-jogo {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            background: rgba(22, 32, 85, 0.45);
+            border: 1px solid var(--cor-borda-suave);
+            border-left: 4px solid rgb(var(--laranja-rgb));
+            border-radius: var(--borda-raio-md);
+            padding: 0.85rem 1rem;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+        }
+
+        .item-jogo:hover,
+        .item-jogo:focus-visible {
+            transform: translateX(3px);
+            border-color: rgba(var(--laranja-rgb), 0.8);
+            background: rgba(var(--laranja-rgb), 0.08);
+            outline: none;
+        }
+
+        .item-jogo-hora {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--cor-secundaria);
+            min-width: 52px;
+        }
+
+        .item-jogo-corpo {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-jogo-mod {
+            font-family: var(--fonte-titulos);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--cor-acento);
+            display: block;
+        }
+
+        .item-jogo-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--cor-texto-principal);
+            margin: 0.15rem 0;
+            overflow-wrap: anywhere;
+        }
+
+        .item-jogo-titulo .placar-mini {
+            color: var(--cor-secundaria);
+            font-weight: 800;
+            margin: 0 0.3rem;
+        }
+
+        .item-jogo-local {
+            font-size: 0.78rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .item-jogo-lado {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.4rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .btn-voltar {
+            background: none;
+            border: none;
+            color: var(--cor-texto-secundario);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: 0.85rem;
+            padding: 0;
+            margin-bottom: var(--espaco-md);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: var(--transicao-rapida);
+        }
+
+        .btn-voltar:hover {
+            color: var(--cor-secundaria);
+        }
+
+        .detalhe-topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: var(--espaco-md);
+            padding-right: 2.75rem;
+        }
+
+        .badge-mod {
+            display: inline-flex;
+            align-items: center;
+            font-family: var(--fonte-titulos);
+            font-size: 0.78rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            background: rgba(var(--laranja-rgb), 0.24);
+            border: 1px solid rgba(var(--laranja-rgb), 0.5);
+            color: #fff;
+        }
+
+        .detalhe-confronto {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--espaco-md);
+            background: rgba(22, 32, 85, 0.45);
+            border: 1px solid rgba(245, 184, 0, 0.25);
+            border-radius: var(--borda-raio-lg);
+            padding: var(--espaco-lg);
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-equipe {
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .detalhe-equipe-nome {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--cor-texto-principal);
+            overflow-wrap: anywhere;
+        }
+
+        .detalhe-centro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .detalhe-placar {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: 2rem;
+            line-height: 1;
+            background: var(--gradiente-dourado);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+
+        .badge-vs {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--cor-acento);
+            background: rgba(232, 102, 10, 0.12);
+            border: 1px solid rgba(232, 102, 10, 0.25);
+            border-radius: 100px;
+            padding: 0.2rem 0.8rem;
+        }
+
+        .detalhe-placar-info {
+            font-size: 0.72rem;
+            color: var(--cor-texto-secundario);
+            text-align: center;
+        }
+
+        .detalhe-prova {
+            text-align: center;
+            background: rgba(22, 32, 85, 0.45);
+            border: 1px solid rgba(245, 184, 0, 0.25);
+            border-radius: var(--borda-raio-lg);
+            padding: var(--espaco-lg);
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-prova h4 {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: 1.15rem;
+            margin: 0 0 0.4rem;
+            color: var(--cor-texto-principal);
+        }
+
+        .detalhe-prova p {
+            margin: 0;
+            font-size: 0.88rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .detalhe-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.7rem;
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-info-item {
+            background: rgba(11, 22, 64, 0.7);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: 0.7rem 0.9rem;
+            min-width: 0;
+        }
+
+        .detalhe-info-item.largo {
+            grid-column: 1 / -1;
+        }
+
+        .detalhe-info-rotulo {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--cor-acento);
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .detalhe-info-valor {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--cor-texto-principal);
+            overflow-wrap: anywhere;
+        }
+
+        .detalhe-descricao {
+            font-size: 0.86rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-acoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .pagina-topo {
+                padding: 105px 0 100px;
+            }
+
+            .cal-conteiner {
+                padding: var(--espaco-md);
+            }
+
+            .cal-semana,
+            .cal-grade {
+                gap: 4px;
+            }
+
+            .cal-semana div {
+                font-size: 0.68rem;
+            }
+
+            .cal-dia {
+                min-height: 62px;
+                padding: 4px;
+                gap: 3px;
+            }
+
+            .cal-dia-numero {
+                font-size: 0.75rem;
+            }
+
+            .cal-dia.hoje .cal-dia-numero::after {
+                display: none;
+            }
+
+            .cal-pills {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 3px;
+            }
+
+            .cal-pill {
+                width: 100%;
+                height: 5px;
+                padding: 0;
+                border-radius: 3px;
+                font-size: 0;
+                background: rgb(var(--laranja-rgb));
+                border: none;
+            }
+
+            .cal-pill b {
+                display: none;
+            }
+
+            .cal-mais {
+                font-size: 0.6rem;
+                padding: 0 3px;
+                line-height: 1.3;
+            }
+
+            .modal-cal-caixa {
+                padding: var(--espaco-lg);
+            }
+
+            .detalhe-confronto {
+                padding: var(--espaco-md);
+            }
+
+            .detalhe-placar {
+                font-size: 1.6rem;
+            }
+
+            .detalhe-info {
+                grid-template-columns: 1fr;
+            }
+
+            .item-jogo {
+                flex-wrap: wrap;
+            }
+
+            .btn-cal-nav span {
+                display: none;
+            }
+
+            .btn-cal-nav#btn-mes-hoje span {
+                display: inline;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+        <div class="container">
+            <div class="navbar-conteudo-wrapper">
+                <div class="navbar-secao-esquerda">
+                    <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                </div>
+
+                <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+                    <a href="/index.html" class="nav-link-jeves">Início</a>
+                    <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
+                    <a href="/publico/calendario.html" class="nav-link-jeves ativo" aria-current="page">Calendário</a>
+                </nav>
+
+                <div class="navbar-secao-direita">
+                    <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+                        <span>Entrar</span>
+                    </a>
+
+                    <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button"
+                        aria-expanded="false" aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+                        <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+                    <div class="menu-dropdown-mobile-cabecalho">
+                        <span class="menu-dropdown-mobile-titulo">Navegação</span>
+                        <span class="badge-item-temporada">2026</span>
+                    </div>
+                    <div class="menu-dropdown-mobile-lista">
+                        <a href="/index.html" class="menu-dropdown-item">
+                            <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="/publico/torneios.html" class="menu-dropdown-item">
+                            <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                            <span>Torneios</span>
+                        </a>
+                        <a href="/publico/calendario.html" class="menu-dropdown-item ativo" aria-current="page">
+                            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                            <span>Calendário</span>
+                        </a>
+                    </div>
+                    <div class="menu-dropdown-mobile-divisor"></div>
+                    <div class="menu-dropdown-mobile-rodape">
+                        <a href="/publico/login.html" class="btn-entrar-mobile">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal">
+
+        <header class="pagina-topo">
+            <canvas id="canvas-particulas" aria-hidden="true"></canvas>
+            <div class="container text-center">
+                <div class="breadcrumb-jeves animado">
+                    <a href="/index.html">Início</a>
+                    <span>Calendário</span>
+                </div>
+                <span class="badge-secao-label animado">
+                    Programação Oficial
+                </span>
+                <h1 class="pagina-titulo animado atraso-1">Calendário de Jogos</h1>
+                <p class="pagina-descricao animado atraso-2">
+                    Navegue pelos meses e clique em um dia com jogos para ver as partidas, os locais, as escolas e os
+                    resultados.
+                </p>
+            </div>
+
+            <div class="pagina-onda" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+                    <path fill="rgba(22, 32, 85, 0.4)" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"></path>
+                    <path fill="#162055" d="M0,55 C480,10 960,80 1440,50 L1440,80 L0,80 Z"></path>
+                </svg>
+            </div>
+        </header>
+
+        <section class="secao secao-calendario" aria-label="Calendário de jogos">
+            <div class="container">
+
+                <div class="filtros-modalidade animado atraso-2" id="filtros-modalidade" role="group"
+                    aria-label="Filtrar por modalidade"></div>
+
+                <div class="cal-conteiner animado atraso-3">
+                    <div class="cal-topo">
+                        <h2 class="cal-mes-ano">
+                            <span id="texto-mes-ano" aria-live="polite">—</span>
+                        </h2>
+                        <div class="cal-nav">
+                            <button class="btn-cal-nav" id="btn-mes-anterior" type="button" aria-label="Mês anterior">
+                                <i class="bi bi-chevron-left" aria-hidden="true"></i><span>Anterior</span>
+                            </button>
+                            <button class="btn-cal-nav" id="btn-mes-hoje" type="button"
+                                aria-label="Ir para o mês atual">
+                                <span>Hoje</span>
+                            </button>
+                            <button class="btn-cal-nav" id="btn-mes-proximo" type="button" aria-label="Próximo mês">
+                                <span>Próximo</span><i class="bi bi-chevron-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="cal-semana" aria-hidden="true">
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
+                    </div>
+
+                    <div class="cal-grade" id="grade-calendario" aria-busy="false"></div>
+
+                    <div class="cal-legenda-info">
+                        <span>Clique em um dia com jogos para ver todas as partidas.</span>
+                    </div>
+
+                    <div class="cal-estado" id="cal-carregando" role="status">
+                        <div class="cal-spinner" aria-hidden="true"></div>
+                        <span>Carregando jogos…</span>
+                    </div>
+                    <div class="cal-estado" id="cal-erro" role="alert">
+                        <i class="bi bi-wifi-off" aria-hidden="true"></i>
+                        <span>Não foi possível carregar os jogos deste mês.</span>
+                        <button type="button" class="btn-jeves-contorno" id="btn-tentar-novamente"
+                            style="padding:0.45rem 1.2rem; font-size:0.85rem;">
+                            Tentar novamente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="rodape-jeves" role="contentinfo">
+            <div class="container">
+                <div class="row g-5 rodape-corpo">
+                    <div class="col-lg-4">
+                        <a href="/index.html" class="rodape-logo" aria-label="JEVES — Página inicial">JEVES</a>
+                        <p class="rodape-tagline">Jogos Escolares de Vespasiano — Tradição e esporte conectando gerações
+                            desde 1994.
+                        </p>
+                        <div class="rodape-redes" aria-label="Redes sociais da Prefeitura de Vespasiano">
+                            <a href="#" class="icone-social" aria-label="Instagram" rel="noopener noreferrer"
+                                target="_blank">
+                                <i class="bi bi-instagram" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="icone-social" aria-label="Facebook" rel="noopener noreferrer"
+                                target="_blank">
+                                <i class="bi bi-facebook" aria-hidden="true"></i>
+                            </a>
+                            <a href="#" class="icone-social" aria-label="YouTube" rel="noopener noreferrer"
+                                target="_blank">
+                                <i class="bi bi-youtube" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-2">
+                        <h2 class="rodape-titulo-coluna">Plataforma</h2>
+                        <nav aria-label="Links da plataforma">
+                            <a href="/index.html" class="rodape-link">Início</a>
+                            <a href="/index.html#secao-sobre" class="rodape-link">Sobre Nós</a>
+                            <a href="/publico/torneios.html" class="rodape-link">Torneios</a>
+                            <a href="/publico/calendario.html" class="rodape-link">Calendário</a>
+                            <a href="/publico/jogos.html" class="rodape-link">Jogos</a>
+                        </nav>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-2">
+                        <h2 class="rodape-titulo-coluna">Acesso</h2>
+                        <nav aria-label="Links de acesso">
+                            <a href="/publico/login.html" class="rodape-link">Entrar</a>
+                            <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
+                            <a href="/publico/recuperar-senha.html" class="rodape-link">Recuperar Senha</a>
+                        </nav>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4">
+                        <h2 class="rodape-titulo-coluna">Realização</h2>
+                        <address class="rodape-endereco">
+                            <p>Secretaria de Juventude e Esportes</p>
+                            <p>Prefeitura Municipal de Vespasiano — MG</p>
+                            <p>Praça de Esportes Cristóvão Jacques Bias Fortes</p>
+                            <p>Rua Sen. Modestino Gonçalves, 245 — Jardim Itaú</p>
+                            <a href="/publico/privacidade.html" class="rodape-link mt-2 d-inline-block">Política de
+                                Privacidade</a>
+                            <a href="/publico/termos.html" class="rodape-link">Termos de Uso</a>
+                        </address>
+                    </div>
+                </div>
+
+                <hr class="rodape-divisor" />
+                <div class="rodape-base">
+                    <p class="rodape-copyright">
+                        &copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos reservados.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <div class="modal-cal" id="modal-cal" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="modal-cal-titulo">
+        <div class="modal-cal-caixa">
+            <button class="modal-cal-fechar" id="btn-fechar-modal" type="button" aria-label="Fechar">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+            <div class="modal-cal-rolagem">
+                <div id="modal-cal-conteudo"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            var navbar = document.getElementById('navbar-principal');
+            window.addEventListener('scroll', function () {
+                navbar.classList.toggle('rolado', window.scrollY > 60);
+            }, { passive: true });
+        })();
+
+        (function () {
+            var btn = document.getElementById('btn-hamburguer');
+            var menu = document.getElementById('menu-dropdown-mobile');
+            var icone = document.getElementById('icone-hamburguer');
+            if (!btn || !menu) return;
+
+            function alternar(abrir) {
+                var aberto = typeof abrir === 'boolean' ? abrir : !menu.classList.contains('aberto');
+                menu.classList.toggle('aberto', aberto);
+                btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+                menu.setAttribute('aria-hidden', aberto ? 'false' : 'true');
+                if (icone) icone.className = aberto ? 'bi bi-x-lg' : 'bi bi-list';
+            }
+
+            btn.addEventListener('click', function (e) { e.stopPropagation(); alternar(); });
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) alternar(false);
+            });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') alternar(false); });
+            menu.querySelectorAll('a').forEach(function (a) {
+                a.addEventListener('click', function () { alternar(false); });
+            });
+        })();
+
+        (function () {
+            var obs = new IntersectionObserver(function (entradas) {
+                entradas.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('visivel'); });
+            }, { threshold: 0.08 });
+            document.querySelectorAll('.animado').forEach(function (el) { obs.observe(el); });
+        })();
+
+        (function () {
+            var canvas = document.getElementById('canvas-particulas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var topo = canvas.parentElement;
+            var largura = 0, altura = 0;
+            var particulas = [];
+
+            function criarParticula() {
+                return {
+                    x: Math.random() * largura,
+                    y: Math.random() * altura,
+                    raio: Math.random() * 1.8 + 0.4,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    opacidade: Math.random() * 0.55 + 0.1,
+                    dourada: Math.random() > 0.82
+                };
+            }
+
+            function ajustar() {
+                largura = canvas.width = topo.offsetWidth;
+                altura = canvas.height = topo.offsetHeight;
+                var qtd = Math.max(40, Math.round(largura * altura / 12000));
+                particulas = Array.from({ length: qtd }, criarParticula);
+            }
+
+            window.addEventListener('resize', ajustar, { passive: true });
+            ajustar();
+
+            function animar() {
+                ctx.clearRect(0, 0, largura, altura);
+                particulas.forEach(function (p) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0) p.x = largura;
+                    if (p.x > largura) p.x = 0;
+                    if (p.y < 0) p.y = altura;
+                    if (p.y > altura) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.raio, 0, Math.PI * 2);
+                    ctx.fillStyle = p.dourada ? '#F5B800' : '#4A6FD4';
+                    ctx.globalAlpha = p.opacidade;
+                    ctx.fill();
+                });
+
+                for (var i = 0; i < particulas.length; i++) {
+                    for (var j = i + 1; j < particulas.length; j++) {
+                        var dx = particulas[i].x - particulas[j].x;
+                        var dy = particulas[i].y - particulas[j].y;
+                        var dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 90) {
+                            ctx.beginPath();
+                            ctx.moveTo(particulas[i].x, particulas[i].y);
+                            ctx.lineTo(particulas[j].x, particulas[j].y);
+                            ctx.strokeStyle = '#3A5FBF';
+                            ctx.globalAlpha = (1 - dist / 90) * 0.18;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animar);
+            }
+
+            animar();
+        })();
+
+        (function () {
+            'use strict';
+
+            /* =====================================================================
+               [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+               ATENÇÃO: Flag e dados simulados do calendário de partidas/jogos.
+               Quando a API estiver pronta:
+               1) Altere USAR_MOCK para false.
+               2) Aponte API_JOGOS para a rota real (ex: GET /api/jogos?ano=...&mes=...).
+               3) Remova o array JOGOS_MOCK abaixo.
+               ===================================================================== */
+            var USAR_MOCK = true;
+            var API_JOGOS = '/api/jogos';
+            var URL_TORNEIO = '/publico/torneio-detalhe.html';
+
+            var MODALIDADES = {
+                futsal: { label: 'Futsal', curto: 'Futsal' },
+                volei: { label: 'Voleibol', curto: 'Vôlei' },
+                handebol: { label: 'Handebol', curto: 'Handebol' },
+                basquete: { label: 'Basquete', curto: 'Basquete' },
+                atletismo: { label: 'Atletismo & Xadrez', curto: 'Atletismo' },
+                finais: { label: 'Finais & Premiação', curto: 'Finais' }
+            };
+
+            var STATUS = {
+                agendado: 'Agendado',
+                ao_vivo: 'Ao vivo',
+                encerrado: 'Encerrado',
+                adiado: 'Adiado'
+            };
+
+            var MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+            var DIAS_SEMANA = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            var MAX_POR_DIA = 2;
+
+            var LOCAL_PRACA = { nome: 'Praça de Esportes Crispim Jacques Bias Fortes', bairro: 'Jardim Itaú' };
+            var LOCAL_POLI = { nome: 'Poliesportivo Raimundo Cardoso da Fonseca', bairro: 'Caieiras' };
+            var LOCAL_MACHADO = { nome: 'Quadra da E.E. Machado de Assis', bairro: 'Názia' };
+
+            var JOGOS_MOCK = [
+                { id: 1, torneioId: 1, data: '2026-10-05', horario: '09:00', modalidade: 'futsal', categoria: 'Sub-17 Masculino', fase: 'Fase Classificatória', status: 'encerrado', equipeA: 'Colégio Tiradentes', equipeB: 'E.E. Machado de Assis', placarA: 3, placarB: 1, local: LOCAL_PRACA, descricao: 'Vitória tranquila do Tiradentes na estreia da fase classificatória.' },
+                { id: 2, torneioId: 2, data: '2026-10-08', horario: '10:30', modalidade: 'volei', categoria: 'Sub-15 Feminino', fase: 'Fase Classificatória', status: 'encerrado', equipeA: 'E.M. Alice de Souza', equipeB: 'Colégio Sagrado Coração', placarA: 2, placarB: 0, detalhePlacar: 'Sets: 25-18 / 25-20', local: LOCAL_PRACA, descricao: 'Alice de Souza venceu em dois sets diretos.' },
+                { id: 3, torneioId: 1, data: '2026-10-10', horario: '16:00', modalidade: 'handebol', categoria: 'Sub-17 Masculino', fase: 'Fase de Grupos', status: 'ao_vivo', equipeA: 'E.E. José Maria Bicalho', equipeB: 'Colégio Batista', placarA: 14, placarB: 12, local: LOCAL_POLI, descricao: 'Partida em andamento.' },
+
+                { id: 4, torneioId: 1, data: '2026-10-26', horario: '09:00', modalidade: 'futsal', categoria: 'Sub-17 Masculino', fase: 'Rodada de Abertura Oficial', status: 'agendado', equipeA: 'Colégio Tiradentes', equipeB: 'E.E. Machado de Assis', local: LOCAL_PRACA, descricao: 'Cerimônia oficial de abertura do JEVES 2026 com acendimento da pira olímpica, seguida pelo clássico de futsal sub-17.' },
+                { id: 5, torneioId: 1, data: '2026-10-26', horario: '11:00', modalidade: 'futsal', categoria: 'Sub-17 Masculino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'E.E. José Maria Bicalho', equipeB: 'Colégio Batista', local: LOCAL_PRACA, descricao: 'Segundo jogo do dia de abertura.' },
+                { id: 6, torneioId: 2, data: '2026-10-26', horario: '14:00', modalidade: 'volei', categoria: 'Sub-15 Feminino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'E.M. Alice de Souza', equipeB: 'E.E. Machado de Assis', local: LOCAL_POLI, descricao: 'Abertura do torneio feminino de voleibol.' },
+
+                { id: 7, torneioId: 2, data: '2026-10-27', horario: '10:30', modalidade: 'volei', categoria: 'Sub-15 Feminino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'E.M. Alice de Souza', equipeB: 'Colégio Sagrado Coração', local: LOCAL_PRACA, descricao: 'Disputa acirrada pela liderança do grupo A.' },
+                { id: 8, torneioId: 2, data: '2026-10-27', horario: '14:00', modalidade: 'volei', categoria: 'Sub-15 Feminino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'Colégio Batista', equipeB: 'E.E. José Maria Bicalho', local: LOCAL_PRACA, descricao: 'Jogo do grupo B.' },
+
+                { id: 9, torneioId: 3, data: '2026-10-28', horario: '14:00', modalidade: 'handebol', categoria: 'Sub-17 Masculino', fase: 'Fase de Grupos', status: 'agendado', equipeA: 'E.E. José Maria Bicalho', equipeB: 'Colégio Tiradentes', local: LOCAL_POLI, descricao: 'Partida decisiva que vale vaga para as semifinais.' },
+
+                { id: 10, torneioId: 4, data: '2026-10-29', horario: '15:30', modalidade: 'basquete', categoria: 'Sub-17 Masculino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'E.E. Machado de Assis', equipeB: 'Colégio Batista', local: LOCAL_MACHADO, descricao: 'Duelo valendo pontuação na tabela geral do JEVES.' },
+                { id: 11, torneioId: 4, data: '2026-10-29', horario: '17:00', modalidade: 'basquete', categoria: 'Sub-17 Masculino', fase: 'Fase Classificatória', status: 'agendado', equipeA: 'Colégio Tiradentes', equipeB: 'E.E. José Maria Bicalho', local: LOCAL_MACHADO, descricao: 'Segundo jogo da rodada.' },
+
+                { id: 12, torneioId: 5, data: '2026-10-30', horario: '08:30', modalidade: 'atletismo', categoria: 'Sub-13 Misto', fase: 'Eliminatórias e Finais', status: 'agendado', titulo: 'Provas de Pista: 100m e Revezamento', participantes: 'Todas as escolas inscritas', local: LOCAL_PRACA, descricao: 'Dia dedicado às modalidades individuais com premiação imediata para os 3 primeiros colocados.' },
+                { id: 13, torneioId: 5, data: '2026-10-30', horario: '14:00', modalidade: 'atletismo', categoria: 'Sub-13 Misto', fase: 'Torneio Aberto', status: 'agendado', titulo: 'Torneio Aberto de Xadrez Rápido', participantes: 'Todas as escolas inscritas', local: LOCAL_PRACA, descricao: 'Partidas de xadrez rápido no salão da praça de esportes.' },
+
+                { id: 14, torneioId: 1, data: '2026-10-31', horario: '10:00', modalidade: 'finais', categoria: 'Futsal Sub-17 Masculino', fase: 'Grande Final', status: 'agendado', equipeA: 'Finalista Chave A', equipeB: 'Finalista Chave B', local: LOCAL_PRACA, descricao: 'Grande final do futsal, seguida de entrega de troféus.' },
+                { id: 15, torneioId: 2, data: '2026-10-31', horario: '14:00', modalidade: 'finais', categoria: 'Vôlei Sub-15 Feminino', fase: 'Grande Final', status: 'agendado', equipeA: 'Finalista Chave A', equipeB: 'Finalista Chave B', local: LOCAL_PRACA, descricao: 'Grande final do voleibol feminino.' },
+                { id: 16, torneioId: 0, data: '2026-10-31', horario: '17:00', modalidade: 'finais', categoria: 'Cerimônia', fase: 'Encerramento', status: 'agendado', titulo: 'Premiação e Encerramento do JEVES 2026', participantes: 'Todas as escolas', local: LOCAL_PRACA, descricao: 'Entrega de troféus e cerimônia de encerramento.' }
+            ];
+            /* =====================================================================
+               [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+               ===================================================================== */
+
+            var cacheMeses = {};
+
+            function chaveMes(ano, mes) { return ano + '-' + String(mes + 1).padStart(2, '0'); }
+
+            function normalizarJogo(j) {
+                return j;
+            }
+
+            function buscarJogos(ano, mes) {
+                var chave = chaveMes(ano, mes);
+                if (cacheMeses[chave]) return Promise.resolve(cacheMeses[chave]);
+
+                var promessa;
+                if (USAR_MOCK) {
+                    promessa = new Promise(function (resolve) {
+                        setTimeout(function () {
+                            resolve(JOGOS_MOCK.filter(function (j) { return j.data.indexOf(chave) === 0; }));
+                        }, 250);
+                    });
+                } else {
+                    promessa = fetch(API_JOGOS + '?ano=' + ano + '&mes=' + (mes + 1), { headers: { 'Accept': 'application/json' } })
+                        .then(function (r) {
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
+                            return r.json();
+                        });
+                }
+
+                return promessa.then(function (lista) {
+                    var jogos = lista.map(normalizarJogo);
+                    cacheMeses[chave] = jogos;
+                    return jogos;
+                });
+            }
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+
+            function modInfo(j) { return MODALIDADES[j.modalidade] || { label: j.modalidade, curto: j.modalidade }; }
+            function ehConfronto(j) { return !!(j.equipeA && j.equipeB); }
+            function temPlacar(j) { return j.placarA != null && j.placarB != null; }
+            function diaDoJogo(j) { return parseInt(j.data.split('-')[2], 10); }
+            function porHorario(a, b) { return a.horario < b.horario ? -1 : a.horario > b.horario ? 1 : 0; }
+
+            function tituloJogo(j) {
+                return ehConfronto(j) ? esc(j.equipeA) + ' x ' + esc(j.equipeB) : esc(j.titulo || j.categoria);
+            }
+
+            function localTexto(j) {
+                if (!j.local) return 'A confirmar';
+                return j.local.nome + (j.local.bairro ? ' (' + j.local.bairro + ')' : '');
+            }
+
+            function chipStatusHTML(j) {
+                var chave = STATUS[j.status] ? j.status : 'agendado';
+                return '<span class="chip-status st-' + chave + '">' + STATUS[chave] + '</span>';
+            }
+
+            var hoje = new Date();
+            var anoAtual = hoje.getFullYear();
+            var mesAtual = hoje.getMonth();
+            var jogosDoMes = [];
+            var filtro = 'todas';
+            var tokenCarga = 0;
+            var diaAberto = null;
+            var ultimoFoco = null;
+
+            var el = {
+                grade: document.getElementById('grade-calendario'),
+                textoMes: document.getElementById('texto-mes-ano'),
+                btnAnterior: document.getElementById('btn-mes-anterior'),
+                btnProximo: document.getElementById('btn-mes-proximo'),
+                btnHoje: document.getElementById('btn-mes-hoje'),
+                filtros: document.getElementById('filtros-modalidade'),
+                carregando: document.getElementById('cal-carregando'),
+                erro: document.getElementById('cal-erro'),
+                btnRetentar: document.getElementById('btn-tentar-novamente'),
+                modal: document.getElementById('modal-cal'),
+                modalConteudo: document.getElementById('modal-cal-conteudo'),
+                btnFechar: document.getElementById('btn-fechar-modal')
+            };
+
+            function renderizarFiltros() {
+                var html = '<button type="button" class="chip-filtro" data-filtro="todas" aria-pressed="true">Todas</button>';
+                Object.keys(MODALIDADES).forEach(function (k) {
+                    html += '<button type="button" class="chip-filtro" data-filtro="' + k + '" aria-pressed="false">' +
+                        esc(MODALIDADES[k].label) + '</button>';
+                });
+                el.filtros.innerHTML = html;
+            }
+
+            el.filtros.addEventListener('click', function (e) {
+                var b = e.target.closest('.chip-filtro');
+                if (!b) return;
+                filtro = b.getAttribute('data-filtro');
+                el.filtros.querySelectorAll('.chip-filtro').forEach(function (c) {
+                    c.setAttribute('aria-pressed', c === b ? 'true' : 'false');
+                });
+                renderizarGrade();
+            });
+
+            function jogosVisiveis() {
+                return filtro === 'todas' ? jogosDoMes : jogosDoMes.filter(function (j) { return j.modalidade === filtro; });
+            }
+
+            function jogosDoDia(dia) {
+                return jogosVisiveis().filter(function (j) { return diaDoJogo(j) === dia; }).sort(porHorario);
+            }
+
+            function renderizarGrade() {
+                el.textoMes.textContent = MESES[mesAtual] + ' ' + anoAtual;
+                var primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
+                var totalDias = new Date(anoAtual, mesAtual + 1, 0).getDate();
+
+                var porDia = {};
+                jogosVisiveis().forEach(function (j) {
+                    var d = diaDoJogo(j);
+                    (porDia[d] = porDia[d] || []).push(j);
+                });
+
+                var html = '';
+                for (var i = 0; i < primeiroDia; i++) html += '<div class="cal-dia vazio" aria-hidden="true"></div>';
+
+                for (var d = 1; d <= totalDias; d++) {
+                    var lista = (porDia[d] || []).sort(porHorario);
+                    var ehHoje = d === hoje.getDate() && mesAtual === hoje.getMonth() && anoAtual === hoje.getFullYear();
+                    var num = (d < 10 ? '0' : '') + d;
+                    var classes = 'cal-dia' + (ehHoje ? ' hoje' : '');
+
+                    if (!lista.length) {
+                        html += '<div class="' + classes + '"><span class="cal-dia-numero">' + num + '</span></div>';
+                        continue;
+                    }
+
+                    var pills = '';
+                    lista.slice(0, MAX_POR_DIA).forEach(function (j) {
+                        pills += '<span class="cal-pill"><b>' + esc(j.horario) + '</b>' + esc(modInfo(j).curto) + '</span>';
+                    });
+                    if (lista.length > MAX_POR_DIA) {
+                        pills += '<span class="cal-mais">+' + (lista.length - MAX_POR_DIA) + '</span>';
+                    }
+
+                    html += '<button type="button" class="' + classes + ' tem-jogo" data-dia="' + d + '" aria-label="' +
+                        d + ' de ' + MESES[mesAtual].toLowerCase() + ': ' + lista.length + (lista.length === 1 ? ' jogo' : ' jogos') + '">' +
+                        '<span class="cal-dia-numero">' + num + '</span>' +
+                        '<span class="cal-pills">' + pills + '</span></button>';
+                }
+                el.grade.innerHTML = html;
+            }
+
+            el.grade.addEventListener('click', function (e) {
+                var c = e.target.closest('.tem-jogo');
+                if (c) abrirModalDia(parseInt(c.getAttribute('data-dia'), 10), c);
+            });
+
+            function carregarMes() {
+                var meuToken = ++tokenCarga;
+                el.erro.classList.remove('ativo');
+                el.carregando.classList.add('ativo');
+                el.grade.setAttribute('aria-busy', 'true');
+                el.textoMes.textContent = MESES[mesAtual] + ' ' + anoAtual;
+
+                buscarJogos(anoAtual, mesAtual).then(function (jogos) {
+                    if (meuToken !== tokenCarga) return;
+                    jogosDoMes = jogos;
+                    el.carregando.classList.remove('ativo');
+                    el.grade.setAttribute('aria-busy', 'false');
+                    renderizarGrade();
+                }).catch(function () {
+                    if (meuToken !== tokenCarga) return;
+                    el.carregando.classList.remove('ativo');
+                    el.grade.setAttribute('aria-busy', 'false');
+                    el.erro.classList.add('ativo');
+                });
+            }
+
+            function mudarMes(delta) {
+                mesAtual += delta;
+                if (mesAtual < 0) { mesAtual = 11; anoAtual--; }
+                if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+                carregarMes();
+            }
+
+            el.btnAnterior.addEventListener('click', function () { mudarMes(-1); });
+            el.btnProximo.addEventListener('click', function () { mudarMes(1); });
+            el.btnHoje.addEventListener('click', function () {
+                var agora = new Date();
+                anoAtual = agora.getFullYear();
+                mesAtual = agora.getMonth();
+                carregarMes();
+            });
+            el.btnRetentar.addEventListener('click', carregarMes);
+
+            function abrirModal(foco) {
+                if (!el.modal.classList.contains('ativo')) ultimoFoco = foco || document.activeElement;
+                el.modal.classList.add('ativo');
+                el.modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-aberto');
+                el.btnFechar.focus();
+            }
+
+            function fecharModal() {
+                el.modal.classList.remove('ativo');
+                el.modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-aberto');
+                diaAberto = null;
+                if (ultimoFoco && document.contains(ultimoFoco)) ultimoFoco.focus();
+            }
+
+            function dataExtensa(dia) {
+                var dt = new Date(anoAtual, mesAtual, dia);
+                return { semana: DIAS_SEMANA[dt.getDay()], texto: dia + ' de ' + MESES[mesAtual] + ' de ' + anoAtual };
+            }
+
+            function abrirModalDia(dia, origem) {
+                diaAberto = dia;
+                var lista = jogosDoDia(dia);
+                var dt = dataExtensa(dia);
+
+                var itens = lista.map(function (j) {
+                    var m = modInfo(j);
+                    var placar = ehConfronto(j) && temPlacar(j)
+                        ? esc(j.equipeA) + '<span class="placar-mini">' + j.placarA + ' x ' + j.placarB + '</span>' + esc(j.equipeB)
+                        : tituloJogo(j);
+                    return '<button type="button" class="item-jogo" data-id="' + esc(j.id) + '">' +
+                        '<span class="item-jogo-hora">' + esc(j.horario) + '</span>' +
+                        '<span class="item-jogo-corpo">' +
+                        '<span class="item-jogo-mod">' + esc(m.label) + ' · ' + esc(j.categoria) + '</span>' +
+                        '<span class="item-jogo-titulo d-block">' + placar + '</span>' +
+                        '<span class="item-jogo-local d-block">' + esc(localTexto(j)) + '</span>' +
+                        '</span>' +
+                        '<span class="item-jogo-lado">' + chipStatusHTML(j) + '<i class="bi bi-chevron-right" aria-hidden="true"></i></span>' +
+                        '</button>';
+                }).join('');
+
+                el.modalConteudo.innerHTML =
+                    '<div class="modal-cabecalho">' +
+                    '<h3 class="modal-titulo" id="modal-cal-titulo">' + esc(dt.texto) + '</h3>' +
+                    '<p class="modal-subtitulo">' + esc(dt.semana) + ' · ' + lista.length + (lista.length === 1 ? ' jogo programado' : ' jogos programados') + '</p>' +
+                    '</div>' +
+                    '<div class="lista-jogos">' + itens + '</div>';
+
+                abrirModal(origem);
+            }
+
+            el.modalConteudo.addEventListener('click', function (e) {
+                var item = e.target.closest('.item-jogo');
+                if (item) { abrirDetalhe(item.getAttribute('data-id')); return; }
+                if (e.target.closest('#btn-voltar-lista')) { abrirModalDia(diaAberto); }
+                if (e.target.closest('#btn-fechar-interno')) { fecharModal(); }
+            });
+
+            function infoItem(rotulo, valor, largo) {
+                return '<div class="detalhe-info-item' + (largo ? ' largo' : '') + '">' +
+                    '<div class="detalhe-info-rotulo">' + rotulo + '</div>' +
+                    '<div class="detalhe-info-valor">' + esc(valor) + '</div></div>';
+            }
+
+            function abrirDetalhe(id) {
+                var j = null;
+                for (var i = 0; i < jogosDoMes.length; i++) {
+                    if (String(jogosDoMes[i].id) === String(id)) { j = jogosDoMes[i]; break; }
+                }
+                if (!j) return;
+
+                var m = modInfo(j);
+                var dia = diaDoJogo(j);
+                var dt = dataExtensa(dia);
+                var bloco;
+
+                if (ehConfronto(j)) {
+                    var centro = temPlacar(j)
+                        ? '<span class="detalhe-placar">' + j.placarA + ' x ' + j.placarB + '</span>' +
+                        (j.detalhePlacar ? '<span class="detalhe-placar-info">' + esc(j.detalhePlacar) + '</span>' : '')
+                        : '<span class="badge-vs">VS</span>';
+                    bloco = '<div class="detalhe-confronto">' +
+                        '<div class="detalhe-equipe"><span class="detalhe-equipe-nome">' + esc(j.equipeA) + '</span></div>' +
+                        '<div class="detalhe-centro">' + centro + '</div>' +
+                        '<div class="detalhe-equipe"><span class="detalhe-equipe-nome">' + esc(j.equipeB) + '</span></div>' +
+                        '</div>';
+                } else {
+                    bloco = '<div class="detalhe-prova"><h4>' + esc(j.titulo || j.categoria) + '</h4>' +
+                        '<p>' + esc(j.resultadoTexto || j.participantes || '') + '</p></div>';
+                }
+
+                var escolas = ehConfronto(j) ? j.equipeA + ' e ' + j.equipeB : (j.participantes || 'A confirmar');
+                var resultado = temPlacar(j) ? j.placarA + ' x ' + j.placarB : (j.resultadoTexto || (j.status === 'encerrado' ? 'Não informado' : 'Ainda não disponível'));
+
+                var info =
+                    infoItem('Horário', j.horario) +
+                    infoItem('Fase', j.fase || '—') +
+                    infoItem('Categoria', j.categoria || '—') +
+                    infoItem('Resultado', resultado) +
+                    infoItem('Local', localTexto(j), true) +
+                    infoItem('Escolas', escolas, true);
+
+                var linkTorneio = j.torneioId
+                    ? '<a href="' + URL_TORNEIO + '?id=' + encodeURIComponent(j.torneioId) + '" class="btn-jeves-contorno" style="padding:0.45rem 1.2rem; font-size:0.85rem;">Ver torneio</a>'
+                    : '';
+
+                el.modalConteudo.innerHTML =
+                    '<button type="button" class="btn-voltar" id="btn-voltar-lista"><i class="bi bi-arrow-left" aria-hidden="true"></i> Jogos do dia ' + dia + '</button>' +
+                    '<div class="detalhe-topo">' +
+                    '<span class="badge-mod">' + esc(m.label) + '</span>' +
+                    chipStatusHTML(j) +
+                    '</div>' +
+                    '<h3 class="modal-titulo" id="modal-cal-titulo" style="font-size:1.1rem;">' + esc(dt.texto) + ' · ' + esc(dt.semana) + '</h3>' +
+                    '<p class="modal-subtitulo mb-3">' + esc(j.categoria || '') + '</p>' +
+                    bloco +
+                    '<div class="detalhe-info">' + info + '</div>' +
+                    (j.descricao ? '<p class="detalhe-descricao">' + esc(j.descricao) + '</p>' : '') +
+                    '<div class="detalhe-acoes">' + linkTorneio +
+                    '<button type="button" class="btn-jeves-primario" id="btn-fechar-interno" style="padding:0.45rem 1.2rem; font-size:0.85rem;">Fechar</button>' +
+                    '</div>';
+
+                var caixa = el.modal.querySelector('.modal-cal-rolagem');
+                if (caixa) caixa.scrollTop = 0;
+            }
+
+            el.btnFechar.addEventListener('click', fecharModal);
+            el.modal.addEventListener('click', function (e) { if (e.target === el.modal) fecharModal(); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && el.modal.classList.contains('ativo')) fecharModal();
+            });
+
+            renderizarFiltros();
+            carregarMes();
+        })();
+    </script>
+</body>
+
+</html>

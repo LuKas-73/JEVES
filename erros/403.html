@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Acesso não autorizado — JEVES 2026. Você não possui permissão para acessar esta área restrita." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>403 — Acesso Não Autorizado | JEVES 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+
+    <style>
+        .erro-pagina {
+            min-height: 82vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: #0B1640;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .erro-pagina::before {
+            content: '';
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232, 102, 10, .2) 0%, transparent 70%);
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        .erro-pagina::after {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 58, 143, .45) 0%, transparent 70%);
+            bottom: -50px;
+            right: 10%;
+            pointer-events: none;
+        }
+
+        #canvas-particulas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .erro-card {
+            position: relative;
+            z-index: 2;
+            max-width: 680px;
+            margin: 0 auto;
+            background: var(--gradiente-card);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-xl);
+            padding: clamp(2rem, 5vw, 3.5rem);
+            text-align: center;
+            box-shadow: var(--sombra-lg);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+        }
+
+        .erro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #E8660A, #F5B800);
+        }
+
+        .erro-codigo {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: clamp(5rem, 14vw, 8.5rem);
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            background: linear-gradient(90deg, #E8660A 0%, #F5B800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 10px 30px rgba(232, 102, 10, 0.35));
+        }
+
+        .badge-erro {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            background: rgba(245, 184, 0, .1);
+            border: 1px solid rgba(245, 184, 0, .28);
+            color: var(--cor-secundaria);
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .8rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: .35rem 1rem;
+            border-radius: 100px;
+            margin-bottom: var(--espaco-md);
+        }
+
+        .erro-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+            color: var(--cor-texto-principal);
+            margin-bottom: var(--espaco-md);
+            line-height: 1.2;
+        }
+
+        .erro-descricao {
+            font-size: 1rem;
+            color: var(--cor-texto-secundario);
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto var(--espaco-xl);
+        }
+
+        .erro-acoes {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-acao-primario {
+            background: linear-gradient(135deg, #E8660A 0%, #F5B800 100%);
+            color: #0B1640;
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .95rem;
+            padding: .75rem 1.8rem;
+            border-radius: var(--borda-raio-md);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            border: none;
+            box-shadow: 0 4px 18px rgba(232, 102, 10, .35);
+            transition: var(--transicao-padrao);
+        }
+
+        .btn-acao-primario:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(232, 102, 10, .5);
+            color: #0B1640;
+        }
+
+        .btn-acao-secundario {
+            background: rgba(22, 32, 85, .7);
+            border: 1px solid var(--cor-borda-suave);
+            color: var(--cor-texto-principal);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: .95rem;
+            padding: .75rem 1.6rem;
+            border-radius: var(--borda-raio-md);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            transition: var(--transicao-padrao);
+        }
+
+        .btn-acao-secundario:hover {
+            border-color: var(--cor-secundaria);
+            color: var(--cor-secundaria);
+            transform: translateY(-2px);
+        }
+
+        .erro-atalhos {
+            margin-top: var(--espaco-xl);
+            padding-top: var(--espaco-md);
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            font-size: .85rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .erro-atalhos a {
+            color: var(--cor-secundaria);
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 .4rem;
+        }
+
+        .erro-atalhos a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+        <div class="container">
+            <div class="navbar-conteudo-wrapper">
+                <div class="navbar-secao-esquerda">
+                    <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                </div>
+
+                <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+                    <a href="/index.html" class="nav-link-jeves">Início</a>
+                    <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
+                    <a href="/publico/calendario.html" class="nav-link-jeves">Calendário</a>
+                </nav>
+
+                <div class="navbar-secao-direita">
+                    <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+                        <span>Entrar</span>
+                    </a>
+
+                    <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button"
+                        aria-expanded="false" aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+                        <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+                    <div class="menu-dropdown-mobile-cabecalho">
+                        <span class="menu-dropdown-mobile-titulo">Navegação</span>
+                        <span class="badge-item-temporada">2026</span>
+                    </div>
+                    <div class="menu-dropdown-mobile-lista">
+                        <a href="/index.html" class="menu-dropdown-item">
+                            <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="/publico/torneios.html" class="menu-dropdown-item">
+                            <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                            <span>Torneios</span>
+                        </a>
+                        <a href="/publico/calendario.html" class="menu-dropdown-item">
+                            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                            <span>Calendário</span>
+                        </a>
+                    </div>
+                    <div class="menu-dropdown-mobile-divisor"></div>
+                    <div class="menu-dropdown-mobile-rodape">
+                        <a href="/publico/login.html" class="btn-entrar-mobile">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal" class="erro-pagina">
+        <canvas id="canvas-particulas" aria-hidden="true"></canvas>
+        <div class="container">
+            <div class="erro-card">
+                <span class="badge-erro">Acesso Restrito</span>
+                <div class="erro-codigo">403</div>
+                <h1 class="erro-titulo">Área restrita aos jogos</h1>
+                <p class="erro-descricao">
+                    Você não possui permissão para acessar esta página ou recurso. Se você pertence a uma escola
+                    credenciada ou à organização, entre com as credenciais corretas.
+                </p>
+                <div class="erro-acoes">
+                    <a href="/publico/login.html" class="btn-acao-primario">
+                        Fazer Login
+                    </a>
+                    <a href="/index.html" class="btn-acao-secundario">
+                        Início
+                    </a>
+                    <a href="/publico/torneio.html" class="btn-acao-secundario">
+                        Ver Torneios
+                    </a>
+                </div>
+                <div class="erro-atalhos">
+                    Sua escola ainda não possui conta? <a href="/publico/cadastro-escola.html">Cadastrar Escola</a> ou
+                    <a href="/publico/recuperar-senha.html">Recuperar Acesso</a>.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="rodape-jeves" role="contentinfo">
+        <div class="container">
+            <div class="row g-5 rodape-corpo">
+                <div class="col-lg-4">
+                    <a href="/index.html" class="rodape-logo" aria-label="JEVES — Página inicial">JEVES</a>
+                    <p class="rodape-tagline">Jogos Escolares de Vespasiano — Tradição e esporte conectando gerações
+                        desde 1994.</p>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Plataforma</h2>
+                    <nav aria-label="Links da plataforma">
+                        <a href="/index.html" class="rodape-link">Início</a>
+                        <a href="/publico/torneio.html" class="rodape-link">Torneios</a>
+                        <a href="/publico/calendario.html" class="rodape-link">Calendário</a>
+                    </nav>
+                </div>
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Acesso</h2>
+                    <nav aria-label="Links de acesso">
+                        <a href="/publico/login.html" class="rodape-link">Entrar</a>
+                        <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
+                    </nav>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <h2 class="rodape-titulo-coluna">Realização</h2>
+                    <address class="rodape-endereco">
+                        <p>Secretaria de Juventude e Esportes</p>
+                        <p>Prefeitura Municipal de Vespasiano — MG</p>
+                    </address>
+                </div>
+            </div>
+            <hr class="rodape-divisor" />
+            <div class="rodape-base">
+                <p class="rodape-copyright">&copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos
+                    reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            var navbar = document.getElementById('navbar-principal');
+            window.addEventListener('scroll', function () {
+                navbar.classList.toggle('rolado', window.scrollY > 60);
+            }, { passive: true });
+        })();
+        (function () {
+            var btn = document.getElementById('btn-hamburguer');
+            var menu = document.getElementById('menu-dropdown-mobile');
+            var icone = document.getElementById('icone-hamburguer');
+            if (!btn || !menu) return;
+            function alternar(abrir) {
+                var aberto = typeof abrir === 'boolean' ? abrir : !menu.classList.contains('aberto');
+                menu.classList.toggle('aberto', aberto);
+                btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+                menu.setAttribute('aria-hidden', aberto ? 'false' : 'true');
+                if (icone) icone.className = aberto ? 'bi bi-x-lg' : 'bi bi-list';
+            }
+            btn.addEventListener('click', function (e) { e.stopPropagation(); alternar(); });
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) alternar(false);
+            });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') alternar(false); });
+        })();
+
+        (function () {
+            var canvas = document.getElementById('canvas-particulas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var topo = canvas.parentElement;
+            var largura = 0, altura = 0, particulas = [];
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            function criar() {
+                return {
+                    x: Math.random() * largura, y: Math.random() * altura,
+                    raio: Math.random() * 1.8 + 0.4,
+                    vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
+                    opacidade: Math.random() * 0.55 + 0.1, dourada: Math.random() > 0.82
+                };
+            }
+            function ajustar() {
+                largura = canvas.width = topo.offsetWidth;
+                altura = canvas.height = topo.offsetHeight;
+                particulas = Array.from({ length: Math.max(45, Math.round(largura * altura / 12000)) }, criar);
+            }
+            window.addEventListener('resize', ajustar, { passive: true });
+            ajustar();
+
+            function animar() {
+                ctx.clearRect(0, 0, largura, altura);
+                particulas.forEach(function (p) {
+                    p.x += p.vx; p.y += p.vy;
+                    if (p.x < 0) p.x = largura; if (p.x > largura) p.x = 0;
+                    if (p.y < 0) p.y = altura; if (p.y > altura) p.y = 0;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.raio, 0, Math.PI * 2);
+                    ctx.fillStyle = p.dourada ? '#F5B800' : '#4A6FD4';
+                    ctx.globalAlpha = p.opacidade;
+                    ctx.fill();
+                });
+                for (var i = 0; i < particulas.length; i++) {
+                    for (var j = i + 1; j < particulas.length; j++) {
+                        var dx = particulas[i].x - particulas[j].x, dy = particulas[i].y - particulas[j].y;
+                        var dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 90) {
+                            ctx.beginPath();
+                            ctx.moveTo(particulas[i].x, particulas[i].y);
+                            ctx.lineTo(particulas[j].x, particulas[j].y);
+                            ctx.strokeStyle = '#3A5FBF';
+                            ctx.globalAlpha = (1 - dist / 90) * 0.18;
+                            ctx.lineWidth = 0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                ctx.globalAlpha = 1;
+                requestAnimationFrame(animar);
+            }
+            animar();
+        })();
+    </script>
+</body>
+
+</html>

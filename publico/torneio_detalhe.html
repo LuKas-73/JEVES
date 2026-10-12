@@ -1,0 +1,2605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Detalhes do torneio — JEVES 2026, Jogos Escolares de Vespasiano. Classificação, partidas, chaves e resultados." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>Torneio — JEVES 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+
+    <style>
+        :root {
+            --laranja-rgb: 232, 102, 10;
+            --linha-chave: rgba(245, 184, 0, .4);
+        }
+
+        button:focus-visible,
+        a:focus-visible,
+        .chave-rolagem:focus-visible,
+        select:focus-visible {
+            outline: 2px solid var(--cor-secundaria);
+            outline-offset: 2px;
+        }
+
+        body.modal-aberto {
+            overflow: hidden;
+        }
+
+        .topo-detalhe {
+            position: relative;
+            background: #0B1640;
+            padding: 110px 0 var(--espaco-xl);
+            overflow: hidden;
+        }
+
+        .topo-detalhe::before {
+            content: '';
+            position: absolute;
+            width: 560px;
+            height: 560px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 58, 143, .45) 0%, transparent 70%);
+            top: -260px;
+            left: -160px;
+            pointer-events: none;
+        }
+
+        .topo-detalhe::after {
+            content: '';
+            position: absolute;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232, 102, 10, .16) 0%, transparent 70%);
+            bottom: -220px;
+            right: -90px;
+            pointer-events: none;
+        }
+
+        .topo-detalhe .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        .breadcrumb-jeves {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .5rem;
+            font-size: .82rem;
+            color: rgba(168, 184, 216, .7);
+            margin-bottom: var(--espaco-md);
+        }
+
+        .breadcrumb-jeves a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .breadcrumb-jeves a:hover {
+            color: var(--cor-secundaria);
+        }
+
+        .breadcrumb-jeves span::before {
+            content: '/';
+            margin-right: .5rem;
+            opacity: .5;
+        }
+
+        .breadcrumb-jeves span:last-child {
+            color: rgba(255, 255, 255, .85);
+        }
+
+        .badge-secao-label {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            background: rgba(245, 184, 0, .1);
+            border: 1px solid rgba(245, 184, 0, .25);
+            color: var(--cor-secundaria);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: .78rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: .3rem .9rem;
+            border-radius: 100px;
+            margin-bottom: var(--espaco-sm);
+        }
+
+        .cab-grid {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: var(--espaco-lg);
+        }
+
+        .detalhe-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            line-height: 1.15;
+            letter-spacing: -.03em;
+            margin: 0 0 var(--espaco-sm);
+            padding-bottom: .08em;
+            background: var(--gradiente-dourado);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cab-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .cab-acoes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .btn-cab {
+            background: rgba(22, 32, 85, .6);
+            border: 1px solid var(--cor-borda-suave);
+            color: var(--cor-texto-principal);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: .85rem;
+            padding: .5rem 1rem;
+            border-radius: var(--borda-raio-md);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            transition: var(--transicao-rapida);
+        }
+
+        .btn-cab:hover {
+            border-color: var(--cor-secundaria);
+            color: var(--cor-secundaria);
+        }
+
+        .btn-cab.destaque {
+            background: rgba(var(--laranja-rgb), .2);
+            border-color: rgb(var(--laranja-rgb));
+        }
+
+        .tag {
+            font-size: .76rem;
+            font-weight: 600;
+            font-family: var(--fonte-titulos);
+            padding: .22rem .7rem;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: rgba(255, 255, 255, .85);
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .tag-formato {
+            background: rgba(var(--laranja-rgb), .15);
+            border-color: rgba(var(--laranja-rgb), .45);
+            color: #FFD2B0;
+        }
+
+        .chip-status {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-family: var(--fonte-titulos);
+            font-size: .72rem;
+            font-weight: 700;
+            border-radius: 100px;
+            padding: .2rem .7rem;
+            white-space: nowrap;
+        }
+
+        .chip-status.st-andamento,
+        .chip-status.st-ao_vivo {
+            color: #fff;
+            background: rgba(var(--laranja-rgb), .85);
+            border: 1px solid rgb(var(--laranja-rgb));
+        }
+
+        .chip-status.st-andamento::before,
+        .chip-status.st-ao_vivo::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #fff;
+            animation: piscar 1.2s ease-in-out infinite;
+        }
+
+        .chip-status.st-programado,
+        .chip-status.st-agendado {
+            color: var(--cor-secundaria);
+            background: rgba(245, 184, 0, .1);
+            border: 1px solid rgba(245, 184, 0, .3);
+        }
+
+        .chip-status.st-encerrado {
+            color: rgba(255, 255, 255, .75);
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .18);
+        }
+
+        .chip-status.st-adiado {
+            color: #FFA07A;
+            background: rgba(var(--laranja-rgb), .12);
+            border: 1px dashed rgba(var(--laranja-rgb), .55);
+        }
+
+        @keyframes piscar {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .3;
+            }
+        }
+
+        .campeao-banner {
+            margin-top: var(--espaco-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--espaco-lg);
+            flex-wrap: wrap;
+            background: linear-gradient(135deg, rgba(245, 184, 0, .18), rgba(11, 22, 64, .85));
+            border: 1px solid rgba(245, 184, 0, .45);
+            border-radius: var(--borda-raio-lg);
+            padding: var(--espaco-lg);
+            box-shadow: 0 0 30px rgba(245, 184, 0, .12);
+        }
+
+        .campeao-icone {
+            width: 64px;
+            height: 64px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--cor-secundaria);
+            background: rgba(245, 184, 0, .14);
+            border: 1px solid rgba(245, 184, 0, .4);
+            flex-shrink: 0;
+        }
+
+        .campeao-rotulo {
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--cor-secundaria);
+            font-family: var(--fonte-titulos);
+        }
+
+        .campeao-nome {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            margin: 0;
+            color: var(--cor-texto-principal);
+        }
+
+        .campeao-resto {
+            font-size: .85rem;
+            color: var(--cor-texto-secundario);
+            margin: .25rem 0 0;
+        }
+
+        .proxima {
+            width: 100%;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            margin-top: var(--espaco-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--espaco-md);
+            flex-wrap: wrap;
+            background: rgba(22, 32, 85, .55);
+            border: 1px solid rgba(var(--laranja-rgb), .5);
+            border-left: 4px solid rgb(var(--laranja-rgb));
+            border-radius: var(--borda-raio-md);
+            padding: .85rem 1.1rem;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+        }
+
+        .proxima:hover {
+            background: rgba(var(--laranja-rgb), .1);
+        }
+
+        .proxima-rotulo {
+            font-family: var(--fonte-titulos);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--cor-acento);
+            display: block;
+        }
+
+        .proxima-times {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: 1.02rem;
+            color: var(--cor-texto-principal);
+        }
+
+        .proxima-info {
+            font-size: .82rem;
+            color: var(--cor-texto-secundario);
+            margin-left: auto;
+            text-align: right;
+        }
+
+        /* ===== Abas ===== */
+        .secao-conteudo {
+            background: linear-gradient(180deg, #162055 0%, rgba(11, 22, 64, .95) 100%);
+            padding: var(--espaco-lg) 0 var(--espaco-3xl);
+            min-height: 60vh;
+        }
+
+        .abas {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: .3rem;
+            background: rgba(11, 22, 64, .6);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: .3rem;
+            margin-bottom: var(--espaco-xl);
+            max-width: 100%;
+        }
+
+        .aba-btn {
+            padding: .6rem 1.4rem;
+            border-radius: calc(var(--borda-raio-md) - 4px);
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, .6);
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+        }
+
+        .aba-btn[aria-selected="true"] {
+            background: var(--gradiente-dourado);
+            color: #0B1640;
+            box-shadow: 0 2px 10px rgba(245, 184, 0, .35);
+        }
+
+        .aba-btn[aria-selected="false"]:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .05);
+        }
+
+        .bloco {
+            background: var(--gradiente-card);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-xl);
+            padding: var(--espaco-xl);
+            box-shadow: var(--sombra-lg);
+            margin-bottom: var(--espaco-xl);
+        }
+
+        .bloco-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: 1.35rem;
+            margin: 0 0 .2rem;
+            color: var(--cor-texto-principal);
+        }
+
+        .bloco-sub {
+            font-size: .86rem;
+            color: var(--cor-texto-secundario);
+            margin: 0 0 var(--espaco-lg);
+        }
+
+        .nota {
+            font-size: .78rem;
+            color: var(--cor-texto-secundario);
+            margin: var(--espaco-md) 0 0;
+        }
+
+        /* ===== Classificação ===== */
+        .tabela-rolagem {
+            overflow-x: auto;
+            border-radius: var(--borda-raio-md);
+            border: 1px solid var(--cor-borda-suave);
+        }
+
+        .tabela {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 560px;
+            font-size: .9rem;
+        }
+
+        .tabela th {
+            font-family: var(--fonte-titulos);
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--cor-texto-secundario);
+            background: rgba(11, 22, 64, .85);
+            padding: .7rem .6rem;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .tabela td {
+            padding: .7rem .6rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, .06);
+            color: var(--cor-texto-principal);
+            background: rgba(22, 32, 85, .35);
+        }
+
+        .tabela th.esq,
+        .tabela td.esq {
+            text-align: left;
+        }
+
+        .tabela td.esc {
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            min-width: 190px;
+        }
+
+        .tabela td.pts {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            color: var(--cor-secundaria);
+        }
+
+        .tabela td.pos {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            width: 48px;
+            border-left: 4px solid transparent;
+        }
+
+        .tabela th:first-child,
+        .tabela td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .tabela th:first-child {
+            background: #0B1640;
+        }
+
+        .tabela td:first-child {
+            background: #1a2561;
+        }
+
+        .tabela tr.zona td.pos {
+            border-left-color: #2ECC71;
+        }
+
+        .tabela tr.zona td {
+            background: rgba(46, 204, 113, .08);
+        }
+
+        .tabela tr.zona td:first-child {
+            background: #1c3a4a;
+        }
+
+        .tabela tr.elim td {
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .tabela tr.elim td.pos {
+            border-left-color: rgba(255, 120, 100, .6);
+        }
+
+        .legenda {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.1rem;
+            margin-top: var(--espaco-md);
+            font-size: .78rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .legenda i {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-right: .4rem;
+            vertical-align: -1px;
+        }
+
+        .filtros-jogos {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--espaco-md);
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .filtros-jogos label {
+            display: block;
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--cor-texto-secundario);
+            margin-bottom: .3rem;
+        }
+
+        .filtro-select {
+            width: 100%;
+            background: rgba(11, 22, 64, .75);
+            border: 1px solid var(--cor-borda-suave);
+            color: var(--cor-texto-principal);
+            border-radius: var(--borda-raio-md);
+            font: inherit;
+            font-size: .9rem;
+            padding: .55rem .8rem;
+        }
+
+        .filtro-select option {
+            background: #0B1640;
+            color: #fff;
+        }
+
+        .rodada-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .95rem;
+            color: var(--cor-secundaria);
+            margin: var(--espaco-lg) 0 .6rem;
+        }
+
+        .rodada-titulo:first-child {
+            margin-top: 0;
+        }
+
+        .lista-jogos {
+            display: flex;
+            flex-direction: column;
+            gap: .6rem;
+        }
+
+        .item-jogo {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: .9rem;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            background: rgba(22, 32, 85, .45);
+            border: 1px solid var(--cor-borda-suave);
+            border-left: 4px solid rgb(var(--laranja-rgb));
+            border-radius: var(--borda-raio-md);
+            padding: .75rem 1rem;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+        }
+
+        .item-jogo:hover {
+            transform: translateX(3px);
+            border-color: rgba(var(--laranja-rgb), .8);
+            background: rgba(var(--laranja-rgb), .08);
+        }
+
+        .ij-quando {
+            min-width: 56px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ij-quando b {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            color: var(--cor-secundaria);
+        }
+
+        .ij-quando small {
+            font-size: .72rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        .ij-times {
+            flex: 1;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: .75rem;
+            font-family: var(--fonte-titulos);
+            font-weight: 600;
+            font-size: .92rem;
+        }
+
+        .ij-eq.a {
+            text-align: right;
+        }
+
+        .ij-eq.tbd {
+            color: var(--cor-texto-secundario);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .ij-eq {
+            overflow-wrap: anywhere;
+        }
+
+        .ij-pl {
+            font-weight: 900;
+            color: var(--cor-secundaria);
+            background: rgba(11, 22, 64, .8);
+            border: 1px solid rgba(245, 184, 0, .25);
+            border-radius: 100px;
+            padding: .15rem .75rem;
+            white-space: nowrap;
+        }
+
+        .ij-pl.vs {
+            color: var(--cor-acento);
+            border-color: rgba(232, 102, 10, .3);
+        }
+
+        .chave-rolagem {
+            overflow-x: auto;
+            padding: var(--espaco-sm) 0 var(--espaco-md);
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .chave {
+            display: flex;
+            gap: 28px;
+            min-width: max-content;
+        }
+
+        .chave-col {
+            flex: 0 0 236px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chave-fase {
+            font-family: var(--fonte-titulos);
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--cor-secundaria);
+            text-align: center;
+            margin: 0 0 .75rem;
+        }
+
+        .chave-jogos {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chave-slot {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 14px;
+            padding: 7px 0;
+            position: relative;
+        }
+
+        .chave-slot.par {
+            justify-content: space-around;
+        }
+
+        .chave-slot.par::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            top: 25%;
+            bottom: 25%;
+            width: 14px;
+            border: 2px solid var(--linha-chave);
+            border-left: 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .chave-slot.par::before {
+            content: '';
+            position: absolute;
+            right: -28px;
+            top: 50%;
+            width: 14px;
+            border-top: 2px solid var(--linha-chave);
+        }
+
+        .chave-jogo {
+            width: 100%;
+            text-align: left;
+            color: inherit;
+            font: inherit;
+            background: rgba(22, 32, 85, .7);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transicao-padrao);
+        }
+
+        .chave-jogo:hover {
+            border-color: rgb(var(--laranja-rgb));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .4);
+        }
+
+        .chave-eq {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: .5rem;
+            padding: .5rem .7rem;
+            font-family: var(--fonte-titulos);
+            font-size: .86rem;
+            font-weight: 600;
+        }
+
+        .chave-eq+.chave-eq {
+            border-top: 1px solid rgba(255, 255, 255, .07);
+        }
+
+        .chave-eq.tbd .chave-nome {
+            color: var(--cor-texto-secundario);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .chave-eq.venc {
+            background: rgba(245, 184, 0, .1);
+        }
+
+        .chave-eq.venc .chave-nome,
+        .chave-eq.venc .chave-pl {
+            color: var(--cor-secundaria);
+            font-weight: 800;
+        }
+
+        .chave-nome {
+            overflow-wrap: anywhere;
+        }
+
+        .chave-pl {
+            font-weight: 800;
+            min-width: 1.4rem;
+            text-align: right;
+        }
+
+        .chave-rod {
+            font-size: .7rem;
+            color: var(--cor-texto-secundario);
+            background: rgba(11, 22, 64, .8);
+            padding: .3rem .7rem;
+        }
+
+        .dica-rolagem {
+            display: none;
+            font-size: .78rem;
+            color: var(--cor-texto-secundario);
+            margin: 0 0 .5rem;
+        }
+
+        /* ===== Provas, info, vazios ===== */
+        .prova {
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: var(--espaco-md);
+            background: rgba(22, 32, 85, .4);
+            margin-bottom: var(--espaco-md);
+        }
+
+        .prova-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: .5rem;
+            flex-wrap: wrap;
+        }
+
+        .prova h3 {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: 1.05rem;
+            margin: 0;
+        }
+
+        .prova-meta {
+            font-size: .8rem;
+            color: var(--cor-texto-secundario);
+            margin: .3rem 0 0;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: .7rem;
+        }
+
+        .info-item {
+            background: rgba(11, 22, 64, .7);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: .7rem .9rem;
+            min-width: 0;
+        }
+
+        .info-item.largo {
+            grid-column: 1 / -1;
+        }
+
+        .info-rotulo {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--cor-acento);
+            font-weight: 600;
+            margin-bottom: .2rem;
+        }
+
+        .info-valor {
+            font-size: .92rem;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .lista-reg {
+            margin: 0;
+            padding-left: 1.2rem;
+            color: rgba(255, 255, 255, .78);
+            font-size: .9rem;
+            line-height: 1.7;
+        }
+
+        .chips-escolas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .vazio {
+            text-align: center;
+            padding: var(--espaco-2xl) var(--espaco-md);
+            color: var(--cor-texto-secundario);
+        }
+
+        .vazio i {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 72px;
+            height: 72px;
+            margin: 0 auto var(--espaco-md);
+            border-radius: 50%;
+            font-size: 1.8rem;
+            background: rgba(26, 58, 143, .15);
+            border: 1px solid var(--cor-borda-suave);
+            color: var(--cor-acento);
+        }
+
+        .vazio h3 {
+            font-size: 1.1rem;
+            margin-bottom: .3rem;
+            color: var(--cor-texto-principal);
+        }
+
+        .vazio p {
+            max-width: 400px;
+            margin: 0 auto var(--espaco-md);
+            font-size: .9rem;
+        }
+
+        .esqueleto {
+            height: 220px;
+            border-radius: var(--borda-raio-lg);
+            background: linear-gradient(90deg, rgba(22, 32, 85, .5) 25%, rgba(34, 48, 112, .6) 50%, rgba(22, 32, 85, .5) 75%);
+            background-size: 200% 100%;
+            animation: brilho 1.4s linear infinite;
+        }
+
+        @keyframes brilho {
+            to {
+                background-position: -200% 0;
+            }
+        }
+
+        .modal-cal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(6, 13, 48, .82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            overscroll-behavior: contain;
+        }
+
+        .modal-cal.ativo {
+            display: flex;
+        }
+
+        .modal-cal-caixa {
+            background: #0B1640;
+            border: 1px solid rgba(245, 184, 0, .35);
+            border-radius: var(--borda-raio-xl);
+            width: 100%;
+            max-width: 780px;
+            max-height: calc(100dvh - 2.5rem);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .8), 0 0 35px rgba(245, 184, 0, .15);
+            position: relative;
+            animation: surgir .25s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @keyframes surgir {
+            from {
+                transform: translateY(20px) scale(.96);
+                opacity: 0;
+            }
+
+            to {
+                transform: none;
+                opacity: 1;
+            }
+        }
+
+        .modal-cal-rolagem {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: var(--espaco-2xl);
+        }
+
+        .modal-cal-fechar {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: var(--transicao-rapida);
+        }
+
+        .modal-cal-fechar:hover {
+            background: rgba(232, 102, 10, .3);
+            color: var(--cor-acento);
+            border-color: var(--cor-acento);
+        }
+
+        .detalhe-topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-bottom: var(--espaco-md);
+            padding-right: 2.75rem;
+        }
+
+        .badge-mod {
+            font-family: var(--fonte-titulos);
+            font-size: .78rem;
+            font-weight: 700;
+            border-radius: 6px;
+            padding: 4px 10px;
+            background: rgba(var(--laranja-rgb), .24);
+            border: 1px solid rgba(var(--laranja-rgb), .5);
+            color: #fff;
+        }
+
+        .modal-titulo {
+            font-family: var(--fonte-titulos);
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin: 0 0 .3rem;
+        }
+
+        .modal-subtitulo {
+            font-size: .86rem;
+            color: var(--cor-texto-secundario);
+            margin: 0 0 var(--espaco-md);
+        }
+
+        .detalhe-confronto {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: var(--espaco-md);
+            background: rgba(22, 32, 85, .45);
+            border: 1px solid rgba(245, 184, 0, .25);
+            border-radius: var(--borda-raio-lg);
+            padding: var(--espaco-lg);
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-equipe {
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .detalhe-equipe.tbd {
+            color: var(--cor-texto-secundario);
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .detalhe-placar {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: 2rem;
+            line-height: 1;
+            white-space: nowrap;
+            background: var(--gradiente-dourado);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .badge-vs {
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--cor-acento);
+            background: rgba(232, 102, 10, .12);
+            border: 1px solid rgba(232, 102, 10, .25);
+            border-radius: 100px;
+            padding: .2rem .8rem;
+        }
+
+        .detalhe-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .7rem;
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .detalhe-acoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+
+        /* ===== Modal — Separador de seção ===== */
+        .modal-secao {
+            margin-top: 1.5rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .modal-secao-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .82rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--cor-secundaria);
+            margin: 0 0 .9rem;
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+        }
+
+        .modal-secao-titulo i {
+            font-size: .9rem;
+        }
+
+        /* ===== Campinho visual ===== */
+        .campinho-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border-radius: var(--borda-raio-lg);
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, .12);
+            margin-bottom: .6rem;
+        }
+
+        .campinho-lado {
+            position: relative;
+            background: #1a6b3c;
+            min-height: 260px;
+            overflow: hidden;
+        }
+
+        .campinho-lado::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(180deg,
+                    rgba(255, 255, 255, .04) 0px,
+                    rgba(255, 255, 255, .04) 1px,
+                    transparent 1px,
+                    transparent 44px);
+            pointer-events: none;
+        }
+
+        .campinho-lado.lado-b {
+            background: #155831;
+            border-left: 2px dashed rgba(255, 255, 255, .25);
+        }
+
+        /* linhas da quadra */
+        .campinho-lado::after {
+            content: '';
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .campinho-area {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 3px;
+        }
+
+        .campinho-area.area-a {
+            left: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 30%;
+            border-left: none;
+        }
+
+        .campinho-area.area-b {
+            right: 0;
+            top: 25%;
+            bottom: 25%;
+            width: 30%;
+            border-right: none;
+        }
+
+        .campinho-gol {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, .35);
+            width: 6px;
+            top: 38%;
+            bottom: 38%;
+        }
+
+        .campinho-gol.gol-a {
+            left: 0;
+            border-left: none;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .campinho-gol.gol-b {
+            right: 0;
+            border-right: none;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* centro */
+        .campinho-centro {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, .2);
+            top: 50%;
+            left: 100%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        .campinho-lado.lado-b .campinho-centro {
+            display: none;
+        }
+
+        /* jogador dot */
+        .campo-jogador {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+        }
+
+        .campo-jogador-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: .7rem;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, .6);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+            transition: transform .2s;
+        }
+
+        .campo-jogador:hover .campo-jogador-dot {
+            transform: scale(1.18);
+        }
+
+        .campo-jogador-dot.time-a {
+            background: linear-gradient(135deg, #e8660a, #d45500);
+        }
+
+        .campo-jogador-dot.time-b {
+            background: linear-gradient(135deg, #1a3a8f, #0d2266);
+        }
+
+        .campo-jogador-nome {
+            font-size: .58rem;
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, .7);
+            white-space: nowrap;
+            max-width: 70px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
+
+        .campinho-legenda {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            font-size: .72rem;
+            color: var(--cor-texto-secundario);
+            margin-top: .4rem;
+        }
+
+        .campinho-legenda span {
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+        }
+
+        .campinho-legenda-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .campinho-legenda-dot.la {
+            background: #e8660a;
+        }
+
+        .campinho-legenda-dot.lb {
+            background: #1a3a8f;
+        }
+
+        /* ===== Escalação lista ===== */
+        .escalacao-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .escalacao-time {
+            background: rgba(11, 22, 64, .6);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            overflow: hidden;
+        }
+
+        .escalacao-cab {
+            padding: .6rem .8rem;
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .82rem;
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+        }
+
+        .escalacao-cab.cab-a {
+            background: rgba(232, 102, 10, .12);
+            color: #FFD2B0;
+            border-bottom: 1px solid rgba(232, 102, 10, .25);
+        }
+
+        .escalacao-cab.cab-b {
+            background: rgba(26, 58, 143, .18);
+            color: #a8c4ff;
+            border-bottom: 1px solid rgba(26, 58, 143, .35);
+        }
+
+        .escalacao-cab .esc-badge {
+            font-size: .62rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .cab-a .esc-badge {
+            background: rgba(232, 102, 10, .2);
+            color: #e8660a;
+        }
+
+        .cab-b .esc-badge {
+            background: rgba(26, 58, 143, .25);
+            color: #6b9aff;
+        }
+
+        .escalacao-lista {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .escalacao-lista li {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            padding: .45rem .8rem;
+            font-size: .82rem;
+            border-top: 1px solid rgba(255, 255, 255, .04);
+            transition: background .15s;
+        }
+
+        .escalacao-lista li:first-child {
+            border-top: none;
+        }
+
+        .escalacao-lista li:hover {
+            background: rgba(255, 255, 255, .04);
+        }
+
+        .esc-num {
+            font-family: var(--fonte-titulos);
+            font-weight: 800;
+            font-size: .78rem;
+            width: 24px;
+            text-align: center;
+            color: var(--cor-secundaria);
+        }
+
+        .esc-nome {
+            flex: 1;
+            font-weight: 500;
+            color: var(--cor-texto-principal);
+            overflow-wrap: anywhere;
+        }
+
+        .esc-pos {
+            font-size: .68rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: var(--cor-texto-secundario);
+            background: rgba(255, 255, 255, .06);
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        /* ===== Técnico ===== */
+        .tecnico-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: .7rem;
+        }
+
+        .tecnico-card {
+            background: rgba(11, 22, 64, .5);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: .7rem .9rem;
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+        }
+
+        .tecnico-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(245, 184, 0, .12);
+            border: 1px solid rgba(245, 184, 0, .3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .9rem;
+            color: var(--cor-secundaria);
+            flex-shrink: 0;
+        }
+
+        .tecnico-info-nome {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .85rem;
+        }
+
+        .tecnico-info-equipe {
+            font-size: .72rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        /* ===== Local detalhado ===== */
+        .local-detalhe {
+            display: flex;
+            align-items: flex-start;
+            gap: .8rem;
+            background: rgba(11, 22, 64, .5);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: .8rem 1rem;
+        }
+
+        .local-icone {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(232, 102, 10, .12);
+            border: 1px solid rgba(232, 102, 10, .25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--cor-acento);
+            flex-shrink: 0;
+        }
+
+        .local-nome {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: .88rem;
+        }
+
+        .local-end {
+            font-size: .78rem;
+            color: var(--cor-texto-secundario);
+            margin-top: .15rem;
+        }
+
+        /* ===== Banco de reservas ===== */
+        .banco-titulo {
+            font-size: .72rem;
+            font-weight: 600;
+            color: var(--cor-texto-secundario);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            padding: .5rem .8rem .25rem;
+            background: rgba(255, 255, 255, .02);
+        }
+
+        @media (max-width: 992px) {
+            .dica-rolagem {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .topo-detalhe {
+                padding-top: 96px;
+            }
+
+            .bloco {
+                padding: var(--espaco-md);
+            }
+
+            .filtros-jogos {
+                grid-template-columns: 1fr;
+            }
+
+            .item-jogo {
+                flex-wrap: wrap;
+            }
+
+            .ij-times {
+                flex-basis: 100%;
+                order: 3;
+            }
+
+            .proxima-info {
+                margin-left: 0;
+                text-align: left;
+            }
+
+            .modal-cal-rolagem {
+                padding: var(--espaco-lg);
+            }
+
+            .detalhe-info {
+                grid-template-columns: 1fr;
+            }
+
+            .detalhe-placar {
+                font-size: 1.6rem;
+            }
+
+            .aba-btn {
+                padding: .55rem 1rem;
+            }
+
+            .escalacao-grid,
+            .tecnico-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campinho-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .campinho-lado {
+                min-height: 200px;
+            }
+
+            .campinho-lado.lado-b {
+                border-left: none;
+                border-top: 2px dashed rgba(255, 255, 255, .25);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+        <div class="container">
+            <div class="navbar-conteudo-wrapper">
+                <div class="navbar-secao-esquerda">
+                    <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                </div>
+
+                <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+                    <a href="/index.html" class="nav-link-jeves">Início</a>
+                    <a href="/publico/torneios.html" class="nav-link-jeves ativo" aria-current="page">Torneios</a>
+                    <a href="/publico/calendario.html" class="nav-link-jeves">Calendário</a>
+                </nav>
+
+                <div class="navbar-secao-direita">
+                    <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+                        <span>Entrar</span>
+                    </a>
+
+                    <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button"
+                        aria-expanded="false" aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+                        <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+                    <div class="menu-dropdown-mobile-cabecalho">
+                        <span class="menu-dropdown-mobile-titulo">Navegação</span>
+                        <span class="badge-item-temporada">2026</span>
+                    </div>
+                    <div class="menu-dropdown-mobile-lista">
+                        <a href="/index.html" class="menu-dropdown-item">
+                            <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="/publico/torneios.html" class="menu-dropdown-item ativo" aria-current="page">
+                            <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                            <span>Torneios</span>
+                        </a>
+                        <a href="/publico/calendario.html" class="menu-dropdown-item">
+                            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                            <span>Calendário</span>
+                        </a>
+                    </div>
+                    <div class="menu-dropdown-mobile-divisor"></div>
+                    <div class="menu-dropdown-mobile-rodape">
+                        <a href="/publico/login.html" class="btn-entrar-mobile">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal">
+
+        <header class="topo-detalhe">
+            <div class="container">
+                <nav class="breadcrumb-jeves" aria-label="Você está em">
+                    <a href="/index.html">Início</a>
+                    <span><a href="/publico/torneios.html">Torneios</a></span>
+                    <span id="bc-atual" aria-current="page">Carregando…</span>
+                </nav>
+                <div id="cabecalho"></div>
+                <div id="proxima"></div>
+            </div>
+        </header>
+
+        <section class="secao-conteudo" aria-label="Conteúdo do torneio">
+            <div class="container">
+                <div class="abas" id="abas" role="tablist" aria-label="Seções do torneio"></div>
+                <div id="painel" role="tabpanel" aria-live="polite" aria-busy="true">
+                    <div class="esqueleto"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="rodape-jeves" role="contentinfo">
+            <div class="container">
+                <div class="row g-5 rodape-corpo">
+                    <div class="col-lg-4">
+                        <a href="/index.html" class="rodape-logo" aria-label="JEVES — Página inicial">JEVES</a>
+                        <p class="rodape-tagline">Jogos Escolares de Vespasiano — Tradição e esporte conectando gerações
+                            desde 1994.</p>
+                        <div class="rodape-redes" aria-label="Redes sociais da Prefeitura de Vespasiano">
+                            <a href="#" class="icone-social" aria-label="Instagram" rel="noopener noreferrer"
+                                target="_blank"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+                            <a href="#" class="icone-social" aria-label="Facebook" rel="noopener noreferrer"
+                                target="_blank"><i class="bi bi-facebook" aria-hidden="true"></i></a>
+                            <a href="#" class="icone-social" aria-label="YouTube" rel="noopener noreferrer"
+                                target="_blank"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-lg-2">
+                        <h2 class="rodape-titulo-coluna">Plataforma</h2>
+                        <nav aria-label="Links da plataforma">
+                            <a href="/index.html" class="rodape-link">Início</a>
+                            <a href="/index.html#secao-sobre" class="rodape-link">Sobre Nós</a>
+                            <a href="/publico/torneios.html" class="rodape-link">Torneios</a>
+                            <a href="/publico/calendario.html" class="rodape-link">Calendário</a>
+                            <a href="/publico/jogos.html" class="rodape-link">Jogos</a>
+                        </nav>
+                    </div>
+                    <div class="col-sm-6 col-lg-2">
+                        <h2 class="rodape-titulo-coluna">Acesso</h2>
+                        <nav aria-label="Links de acesso">
+                            <a href="/publico/login.html" class="rodape-link">Entrar</a>
+                            <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
+                            <a href="/publico/recuperar-senha.html" class="rodape-link">Recuperar Senha</a>
+                        </nav>
+                    </div>
+                    <div class="col-sm-6 col-lg-4">
+                        <h2 class="rodape-titulo-coluna">Realização</h2>
+                        <address class="rodape-endereco">
+                            <p>Secretaria de Juventude e Esportes</p>
+                            <p>Prefeitura Municipal de Vespasiano — MG</p>
+                            <p>Praça de Esportes Cristóvão Jacques Bias Fortes</p>
+                            <p>Rua Sen. Modestino Gonçalves, 245 — Jardim Itaú</p>
+                            <a href="/publico/privacidade.html" class="rodape-link mt-2 d-inline-block">Política de
+                                Privacidade</a>
+                            <a href="/publico/termos.html" class="rodape-link">Termos de Uso</a>
+                        </address>
+                    </div>
+                </div>
+                <hr class="rodape-divisor" />
+                <div class="rodape-base">
+                    <p class="rodape-copyright">&copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos
+                        reservados.</p>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <div class="modal-cal" id="modal-cal" aria-hidden="true" role="dialog" aria-modal="true"
+        aria-labelledby="modal-titulo">
+        <div class="modal-cal-caixa">
+            <button class="modal-cal-fechar" id="btn-fechar-modal" type="button" aria-label="Fechar">
+                <i class="bi bi-x-lg" aria-hidden="true"></i>
+            </button>
+            <div class="modal-cal-rolagem">
+                <div id="modal-conteudo"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            var navbar = document.getElementById('navbar-principal');
+            window.addEventListener('scroll', function () {
+                navbar.classList.toggle('rolado', window.scrollY > 60);
+            }, { passive: true });
+        })();
+
+        (function () {
+            var btn = document.getElementById('btn-hamburguer');
+            var menu = document.getElementById('menu-dropdown-mobile');
+            var icone = document.getElementById('icone-hamburguer');
+            if (!btn || !menu) return;
+            function alternar(abrir) {
+                var aberto = typeof abrir === 'boolean' ? abrir : !menu.classList.contains('aberto');
+                menu.classList.toggle('aberto', aberto);
+                btn.setAttribute('aria-expanded', aberto ? 'true' : 'false');
+                menu.setAttribute('aria-hidden', aberto ? 'false' : 'true');
+                if (icone) icone.className = aberto ? 'bi bi-x-lg' : 'bi bi-list';
+            }
+            btn.addEventListener('click', function (e) { e.stopPropagation(); alternar(); });
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target) && !btn.contains(e.target)) alternar(false);
+            });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape') alternar(false); });
+            menu.querySelectorAll('a').forEach(function (a) { a.addEventListener('click', function () { alternar(false); }); });
+        })();
+
+        (function () {
+            'use strict';
+
+            /* =====================================================================
+               [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+               Troque USAR_MOCK para false quando /api/torneios/:id estiver conectado
+               ao backend. A conexão e o banco de verdade ficam no servidor.
+               Mantenha a lógica de renderização abaixo; substitua apenas os dados/mock.
+               ===================================================================== */
+            var USAR_MOCK = true;
+            // Endpoint do backend real; não é uma conexão direta com o banco.
+            var API_TORNEIO = '/api/torneios/';
+
+            var MODALIDADES = { futsal: 'Futsal', volei: 'Vôlei', handebol: 'Handebol', basquete: 'Basquete', atletismo: 'Atletismo', xadrez: 'Xadrez' };
+            var UNIDADE = { futsal: 'gols', handebol: 'gols', basquete: 'pontos', volei: 'sets' };
+            var STATUS_T = { andamento: 'Em andamento', programado: 'Programado', encerrado: 'Encerrado' };
+            var STATUS_J = { agendado: 'Agendado', ao_vivo: 'Ao vivo', encerrado: 'Encerrado', adiado: 'Adiado' };
+            var FORMATOS = {
+                liga_mata: { rotulo: 'Liga + mata-mata' },
+                mata_mata: { rotulo: 'Mata-mata' },
+                liga: { rotulo: 'Pontos corridos' },
+                provas: { rotulo: 'Provas + classificação geral' }
+            };
+            var FASES = { liga: 'Fase de liga', oitavas: 'Oitavas de final', quartas: 'Quartas de final', semifinal: 'Semifinais', final: 'Final' };
+            var ORDEM_CHAVE = ['oitavas', 'quartas', 'semifinal', 'final'];
+            var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+            var DIAS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+
+            // [DADOS FICTÍCIOS - SOMENTE ESCOLAS MUNICIPAIS E ESTADUAIS]
+            var POOL = ['E.E. Machado de Assis', 'E.E. José Maria Bicalho', 'E.M. Alice de Souza', 'E.M. Santos Dumont', 'E.E. Padre Vieira', 'E.M. Cecília Meireles', 'E.E. Monteiro Lobato', 'E.M. Carlos Drummond'];
+            var PRACA = 'Praça de Esportes Crispim Jacques Bias Fortes (Jardim Itaú)';
+            var LOCAIS = { futsal: PRACA, volei: PRACA, atletismo: PRACA, xadrez: PRACA, handebol: 'Poliesportivo Raimundo Cardoso da Fonseca (Caieiras)', basquete: 'Quadra da E.E. Machado de Assis (Názia)' };
+            var LOCAIS_DETALHE = {
+                futsal: { nome: 'Praça de Esportes Crispim Jacques Bias Fortes', endereco: 'Rua Sen. Modestino Gonçalves, 245', cidade: 'Vespasiano — MG', bairro: 'Jardim Itaú' },
+                volei: { nome: 'Praça de Esportes Crispim Jacques Bias Fortes', endereco: 'Rua Sen. Modestino Gonçalves, 245', cidade: 'Vespasiano — MG', bairro: 'Jardim Itaú' },
+                atletismo: { nome: 'Praça de Esportes Crispim Jacques Bias Fortes', endereco: 'Rua Sen. Modestino Gonçalves, 245', cidade: 'Vespasiano — MG', bairro: 'Jardim Itaú' },
+                xadrez: { nome: 'Praça de Esportes Crispim Jacques Bias Fortes', endereco: 'Rua Sen. Modestino Gonçalves, 245', cidade: 'Vespasiano — MG', bairro: 'Jardim Itaú' },
+                handebol: { nome: 'Poliesportivo Raimundo Cardoso da Fonseca', endereco: 'Av. das Indústrias, 430', cidade: 'Vespasiano — MG', bairro: 'Caieiras' },
+                basquete: { nome: 'Quadra da E.E. Machado de Assis', endereco: 'Rua José Pinto de Souza, 88', cidade: 'Vespasiano — MG', bairro: 'Názia' }
+            };
+
+            var NOMES_M = ['Lucas Silva', 'Pedro Henrique', 'Gabriel Santos', 'Matheus Oliveira', 'João Victor', 'Rafael Costa', 'Gustavo Almeida', 'Felipe Souza', 'Bruno Ferreira', 'Daniel Lima', 'André Rocha', 'Kaique Martins', 'Thiago Ribeiro', 'Enzo Pereira', 'Vitor Hugo', 'Leonardo Gomes', 'Davi Nascimento', 'Arthur Moreira', 'Caio Barbosa', 'Samuel Teixeira', 'Igor Cardoso', 'Nicolas Pinto', 'Ryan Duarte', 'Luan Araújo', 'Cauã Monteiro'];
+            var NOMES_F = ['Maria Eduarda', 'Ana Clara', 'Isabela Santos', 'Larissa Oliveira', 'Juliana Costa', 'Fernanda Silva', 'Camila Almeida', 'Beatriz Souza', 'Carolina Ferreira', 'Amanda Lima', 'Letícia Rocha', 'Giovanna Martins', 'Mariana Ribeiro', 'Sophia Pereira', 'Valentina Gomes', 'Laura Nascimento', 'Alice Moreira', 'Helena Barbosa', 'Gabriela Teixeira', 'Rafaela Cardoso', 'Bianca Pinto', 'Yasmin Duarte', 'Natália Araújo', 'Julia Monteiro', 'Débora Vieira'];
+            var NOMES_TEC = ['Prof. Marcos', 'Prof. Rodrigo', 'Prof. Adriana', 'Prof. Carlos', 'Prof. Roberto', 'Prof. Sérgio', 'Prof. Andréia', 'Prof. Fábio', 'Prof. Renata', 'Prof. Luciana', 'Prof. Paulo', 'Prof. Cláudio'];
+
+            var POSICOES_MOD = {
+                futsal: { titulares: ['Goleiro', 'Fixo', 'Ala Esquerdo', 'Ala Direito', 'Pivô'], reservas: ['Goleiro', 'Ala', 'Pivô', 'Fixo', 'Ala'] },
+                handebol: { titulares: ['Goleiro', 'Ponta Esquerda', 'Meia Esquerda', 'Central', 'Meia Direita', 'Ponta Direita', 'Pivô'], reservas: ['Goleiro', 'Meia', 'Ponta', 'Pivô', 'Central'] },
+                volei: { titulares: ['Levantador', 'Oposto', 'Ponteiro', 'Ponteiro', 'Central', 'Central', 'Líbero'], reservas: ['Levantador', 'Ponteiro', 'Central', 'Ponteiro'] },
+                basquete: { titulares: ['Armador', 'Ala-Armador', 'Ala', 'Ala-Pivô', 'Pivô'], reservas: ['Armador', 'Ala', 'Pivô', 'Ala-Armador', 'Ala'] }
+            };
+
+            var CAMPO_POS = {
+                futsal: {
+                    'Goleiro': { top: 50, left: 8 },
+                    'Fixo': { top: 50, left: 30 },
+                    'Ala Esquerdo': { top: 22, left: 55 },
+                    'Ala Direito': { top: 78, left: 55 },
+                    'Pivô': { top: 50, left: 78 }
+                },
+                handebol: {
+                    'Goleiro': { top: 50, left: 6 },
+                    'Ponta Esquerda': { top: 12, left: 50 },
+                    'Meia Esquerda': { top: 28, left: 62 },
+                    'Central': { top: 50, left: 70 },
+                    'Meia Direita': { top: 72, left: 62 },
+                    'Ponta Direita': { top: 88, left: 50 },
+                    'Pivô': { top: 50, left: 45 }
+                },
+                volei: {
+                    'Levantador': { top: 30, left: 65 },
+                    'Oposto': { top: 70, left: 30 },
+                    'Ponteiro': { top: 20, left: 30 },
+                    'Ponteiro2': { top: 80, left: 65 },
+                    'Central': { top: 50, left: 45 },
+                    'Central2': { top: 50, left: 75 },
+                    'Líbero': { top: 85, left: 15 }
+                },
+                basquete: {
+                    'Armador': { top: 50, left: 75 },
+                    'Ala-Armador': { top: 25, left: 60 },
+                    'Ala': { top: 75, left: 60 },
+                    'Ala-Pivô': { top: 30, left: 38 },
+                    'Pivô': { top: 70, left: 38 }
+                }
+            };
+
+            function escalacaoMock(equipeSeed, mod, genero) {
+                var cfg = POSICOES_MOD[mod];
+                if (!cfg) return { titulares: [], reservas: [], tecnico: NOMES_TEC[equipeSeed % NOMES_TEC.length] };
+                var pool = (genero === 'Feminino') ? NOMES_F : NOMES_M;
+                var usados = {}, titulares = [], reservas = [];
+                var numUsados = {};
+                function nomeAleatorio(idx) {
+                    var k = (equipeSeed * 7 + idx * 13) % pool.length;
+                    while (usados[k]) k = (k + 1) % pool.length;
+                    usados[k] = true;
+                    return pool[k];
+                }
+                function numCamisa(idx) {
+                    var n = ((equipeSeed * 3 + idx * 5 + 1) % 30) + 1;
+                    while (numUsados[n]) n = (n % 30) + 1;
+                    numUsados[n] = true;
+                    return n;
+                }
+                cfg.titulares.forEach(function (pos, i) {
+                    titulares.push({ nome: nomeAleatorio(i), numero: numCamisa(i), posicao: pos });
+                });
+                cfg.reservas.forEach(function (pos, i) {
+                    reservas.push({ nome: nomeAleatorio(i + cfg.titulares.length), numero: numCamisa(i + cfg.titulares.length), posicao: pos });
+                });
+                return { titulares: titulares, reservas: reservas, tecnico: NOMES_TEC[equipeSeed % NOMES_TEC.length] };
+            }
+
+            var CFG = [
+                { id: 1, mod: 'futsal', nome: 'Futsal Masculino', st: 'andamento', cat: 'Sub-17', gen: 'Masculino', fmt: 'liga_mata', n: 8, jog: 12, vagas: 4 },
+                { id: 2, mod: 'volei', nome: 'Voleibol Feminino', st: 'programado', cat: 'Sub-15', gen: 'Feminino', fmt: 'liga_mata', n: 6, jog: 0, vagas: 4 },
+                { id: 3, mod: 'handebol', nome: 'Handebol Masculino', st: 'andamento', cat: 'Sub-17', gen: 'Masculino', fmt: 'liga', n: 5, jog: 4, vagas: 0 },
+                { id: 4, mod: 'basquete', nome: 'Basquete Masculino', st: 'programado', cat: 'Sub-17', gen: 'Masculino', fmt: 'mata_mata', n: 8, jog: 0, vagas: 0 },
+                { id: 5, mod: 'atletismo', nome: 'Atletismo Misto', st: 'programado', cat: 'Sub-13', gen: 'Misto', fmt: 'provas', n: 12, jog: 0, vagas: 0 },
+                { id: 6, mod: 'xadrez', nome: 'Xadrez Rápido', st: 'programado', cat: 'Sub-13', gen: 'Misto', fmt: 'provas', n: 10, jog: 0, vagas: 0 },
+                { id: 7, mod: 'futsal', nome: 'Futsal Feminino', st: 'encerrado', cat: 'Sub-15', gen: 'Feminino', fmt: 'mata_mata', n: 8, jog: 0, vagas: 0 },
+                { id: 8, mod: 'volei', nome: 'Voleibol Masculino', st: 'encerrado', cat: 'Sub-17', gen: 'Masculino', fmt: 'liga_mata', n: 6, jog: 0, vagas: 4 }
+            ];
+
+            function rnd(s) { var x = Math.sin(s * 12.9898) * 43758.5453; return x - Math.floor(x); }
+            function pad(n) { return (n < 10 ? '0' : '') + n; }
+            function dstr(off) { var d = new Date(2026, 9, 10 + off); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+
+            function placarMock(mod, seed, mata) {
+                var r1 = rnd(seed), r2 = rnd(seed + 7), a, b;
+                if (mod === 'futsal') { a = Math.floor(r1 * 6); b = Math.floor(r2 * 5); }
+                else if (mod === 'handebol') { a = 18 + Math.floor(r1 * 18); b = 18 + Math.floor(r2 * 16); }
+                else if (mod === 'basquete') { a = 45 + Math.floor(r1 * 45); b = 45 + Math.floor(r2 * 40); }
+                else if (r1 > .5) { a = 2; b = Math.floor(r2 * 2); }
+                else { b = 2; a = Math.floor(r2 * 2); }
+                if (a === b && mata) a++;
+                return [a, b];
+            }
+
+            function rodadasMock(times) {
+                var l = times.slice(), out = [];
+                if (l.length % 2) l.push(null);
+                var n = l.length;
+                for (var r = 0; r < n - 1; r++) {
+                    var jogos = [];
+                    for (var i = 0; i < n / 2; i++) {
+                        var a = l[i], b = l[n - 1 - i];
+                        if (a && b) jogos.push(r % 2 ? [b, a] : [a, b]);
+                    }
+                    out.push(jogos);
+                    l.splice(1, 0, l.pop());
+                }
+                return out;
+            }
+
+            var SEMENTE = { 2: [0, 1], 4: [0, 3, 1, 2], 8: [0, 7, 3, 4, 1, 6, 2, 5] };
+            var NOME_FASE = { 8: 'oitavas', 4: 'quartas', 2: 'semifinal', 1: 'final' };
+            var ABREV = { oitavas: 'Oitavas', quartas: 'Quartas', semifinal: 'Semifinal', final: 'Final' };
+
+            function montarMock(c) {
+                var escolas = [], i;
+                for (i = 0; i < c.n; i++) escolas.push(POOL[(i + c.id * 3) % POOL.length]);
+                var enc = c.st === 'encerrado';
+                var t = { id: c.id, modalidade: c.mod, nome: c.nome, status: c.st, categoria: c.cat, genero: c.gen, formato: c.fmt, vagas: c.vagas, escolas: escolas, partidas: [], provas: [], regulamento: regulamentoMock(c) };
+                var seq = 0;
+
+                function novo(o) { o.id = c.id * 100 + (++seq); t.partidas.push(o); return o; }
+                function resultado(p, mata) {
+                    var pl = placarMock(c.mod, c.id * 131 + seq * 17, mata);
+                    p.placarA = pl[0]; p.placarB = pl[1]; p.status = 'encerrado';
+                }
+
+                if (c.fmt === 'provas') {
+                    var nomes = c.mod === 'xadrez' ? ['Rodada 1', 'Rodada 2', 'Rodada 3', 'Rodada 4', 'Rodada 5'] : ['100m rasos', 'Revezamento 4x100m', 'Salto em distância', 'Arremesso de peso'];
+                    t.provas = nomes.map(function (n, k) {
+                        return { id: k + 1, nome: n, categoria: c.cat + ' ' + c.gen, data: dstr(16 + Math.floor(k / 2)), horario: k % 2 ? '14:00' : '08:30', local: LOCAIS[c.mod], status: 'agendado', resultados: [] };
+                    });
+                    return t;
+                }
+
+                if (c.fmt === 'liga' || c.fmt === 'liga_mata') {
+                    rodadasMock(escolas).forEach(function (jj, ri) {
+                        jj.forEach(function (j) { novo({ fase: 'liga', rodada: ri + 1, equipeA: j[0], equipeB: j[1] }); });
+                    });
+                    var ligaTotal = t.partidas.length, nJog = enc ? ligaTotal : c.jog;
+                    t.partidas.forEach(function (p, k) { seq = k + 1; if (k < nJog) resultado(p, false); });
+                    seq = ligaTotal;
+                }
+
+                if (c.fmt === 'liga_mata' || c.fmt === 'mata_mata') {
+                    var parts = [], base;
+                    if (c.fmt === 'mata_mata') {
+                        base = escolas.slice();
+                        parts = SEMENTE[c.n].map(function (k) { return { n: base[k], r: '' }; });
+                    } else {
+                        var pronta = enc, tab = pronta ? classificacao(t) : null;
+                        parts = SEMENTE[c.vagas].map(function (k) { return pronta ? { n: tab[k].escola, r: '' } : { n: null, r: (k + 1) + 'º da Liga' }; });
+                    }
+                    var cur = parts, ordemBase = t.partidas.length;
+                    while (cur.length > 1) {
+                        var fase = NOME_FASE[cur.length / 2], prox = [];
+                        for (i = 0; i < cur.length; i += 2) {
+                            var a = cur[i], b = cur[i + 1];
+                            var p = novo({ fase: fase, ordem: i / 2 + 1, equipeA: a.n, equipeB: b.n, rotuloA: a.r, rotuloB: b.r, status: 'agendado' });
+                            var venc = null;
+                            if (enc && a.n && b.n) { resultado(p, true); venc = p.placarA > p.placarB ? a.n : b.n; }
+                            prox.push({ n: venc, r: 'Vencedor ' + ABREV[fase] + ' ' + p.ordem });
+                        }
+                        cur = prox;
+                    }
+                }
+
+                var total = t.partidas.length, jogados = t.partidas.filter(function (p) { return p.status === 'encerrado'; }).length, ao = false;
+                var horas = ['09:00', '10:30', '14:00'];
+                t.partidas.forEach(function (p, s) {
+                    var feito = p.status === 'encerrado';
+                    p.data = feito ? dstr(-1 - Math.floor((jogados - 1 - s) / 3))
+                        : dstr((jogados > 0 ? 1 : 16) + Math.floor((s - jogados) / 3));
+                    p.horario = horas[s % 3];
+                    p.local = LOCAIS[c.mod];
+                    p.status = p.status || 'agendado';
+                    if (c.id === 3 && !feito && !ao) { ao = true; p.status = 'ao_vivo'; p.data = dstr(0); p.placarA = 14; p.placarB = 12; }
+                });
+                return t;
+            }
+
+            function regulamentoMock(c) {
+                var r = [];
+                if (c.fmt === 'liga' || c.fmt === 'liga_mata') {
+                    r.push('Fase de liga em turno único, com todas as escolas se enfrentando.');
+                    r.push('Vitória vale 3 pontos, empate 1 ponto e derrota 0.');
+                    r.push('Desempate: pontos, vitórias, saldo e pró, nesta ordem, conforme o regulamento geral.');
+                }
+                if (c.fmt === 'liga_mata') r.push('Os ' + c.vagas + ' melhores colocados da liga avançam ao mata-mata, em jogo único.');
+                if (c.fmt === 'mata_mata') r.push('Disputa eliminatória em jogo único; não há empate no mata-mata.');
+                if (c.fmt === 'provas') r.push('Cada prova classifica as escolas por colocação; a classificação geral soma pontos (1º: 5, 2º: 3, 3º: 1).');
+                r.push('Resumo ilustrativo. Vale o regulamento oficial da competição.');
+                return r;
+            }
+            /* =====================================================================
+               [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+               ===================================================================== */
+
+            function classificacao(t) {
+                var m = {};
+                t.escolas.forEach(function (e) { m[e] = { escola: e, pts: 0, j: 0, v: 0, e: 0, d: 0, gp: 0, gc: 0, sg: 0 }; });
+                t.partidas.forEach(function (p) {
+                    if (p.fase !== 'liga' || p.status !== 'encerrado' || p.placarA == null || p.placarB == null) return;
+                    var a = m[p.equipeA], b = m[p.equipeB];
+                    if (!a || !b) return;
+                    a.j++; b.j++;
+                    a.gp += p.placarA; a.gc += p.placarB; b.gp += p.placarB; b.gc += p.placarA;
+                    if (p.placarA > p.placarB) { a.v++; a.pts += 3; b.d++; }
+                    else if (p.placarA < p.placarB) { b.v++; b.pts += 3; a.d++; }
+                    else { a.e++; b.e++; a.pts++; b.pts++; }
+                });
+                var l = Object.keys(m).map(function (k) { var r = m[k]; r.sg = r.gp - r.gc; return r; });
+                l.sort(function (x, y) { return y.pts - x.pts || y.v - x.v || y.sg - x.sg || y.gp - x.gp || x.escola.localeCompare(y.escola); });
+                l.forEach(function (r, i) { r.pos = i + 1; });
+                return l;
+            }
+
+            function ligaFinalizada(t) {
+                var l = t.partidas.filter(function (p) { return p.fase === 'liga'; });
+                return l.length > 0 && l.every(function (p) { return p.status === 'encerrado'; });
+            }
+
+            function vencedor(p) {
+                if (p.status !== 'encerrado' || p.placarA == null || p.placarB == null || !p.equipeA || !p.equipeB) return null;
+                return p.placarA > p.placarB ? p.equipeA : p.placarB > p.placarA ? p.equipeB : null;
+            }
+
+            function classificacaoGeral(t) {
+                var m = {};
+                (t.escolas || []).forEach(function (e) { m[e] = { escola: e, ouro: 0, prata: 0, bronze: 0, pts: 0 }; });
+                var pontos = { 1: 5, 2: 3, 3: 1 }, chaves = { 1: 'ouro', 2: 'prata', 3: 'bronze' }, tem = false;
+                t.provas.forEach(function (pr) {
+                    (pr.resultados || []).forEach(function (r) {
+                        if (!pontos[r.posicao]) return;
+                        tem = true;
+                        var o = m[r.escola] = m[r.escola] || { escola: r.escola, ouro: 0, prata: 0, bronze: 0, pts: 0 };
+                        o[chaves[r.posicao]]++; o.pts += pontos[r.posicao];
+                    });
+                });
+                var l = Object.keys(m).map(function (k) { return m[k]; });
+                l.sort(function (x, y) { return y.pts - x.pts || y.ouro - x.ouro || y.prata - x.prata || x.escola.localeCompare(y.escola); });
+                l.forEach(function (r, i) { r.pos = i + 1; });
+                return tem ? l : [];
+            }
+
+            function podio(t) {
+                if (t.status !== 'encerrado') return null;
+                var fin = t.partidas.filter(function (p) { return p.fase === 'final'; })[0];
+                if (fin && vencedor(fin)) {
+                    var c = vencedor(fin);
+                    var semis = t.partidas.filter(function (p) { return p.fase === 'semifinal'; }).map(function (p) {
+                        var v = vencedor(p); return v ? (v === p.equipeA ? p.equipeB : p.equipeA) : null;
+                    }).filter(Boolean);
+                    return { campeao: c, vice: c === fin.equipeA ? fin.equipeB : fin.equipeA, semis: semis };
+                }
+                if (t.formato === 'liga' && ligaFinalizada(t)) { var tab = classificacao(t); return { campeao: tab[0].escola, vice: tab[1] && tab[1].escola, semis: [] }; }
+                if (t.formato === 'provas') { var g = classificacaoGeral(t); if (g.length) return { campeao: g[0].escola, vice: g[1] && g[1].escola, semis: [] }; }
+                return null;
+            }
+
+            function proxima(t) {
+                if (t.formato === 'provas') {
+                    var pr = t.provas.filter(function (p) { return p.status !== 'encerrado'; }).sort(porData)[0];
+                    return pr ? { tipo: 'prova', item: pr } : null;
+                }
+                var c = t.partidas.filter(function (p) { return (p.status === 'agendado' || p.status === 'ao_vivo') && p.equipeA && p.equipeB; });
+                c.sort(function (x, y) { return (y.status === 'ao_vivo') - (x.status === 'ao_vivo') || porData(x, y); });
+                return c[0] ? { tipo: 'partida', item: c[0] } : null;
+            }
+
+            function porData(a, b) {
+                var x = a.data + ' ' + a.horario, y = b.data + ' ' + b.horario;
+                return x < y ? -1 : x > y ? 1 : 0;
+            }
+
+            function esc(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+                });
+            }
+            function curta(d) { var p = d.split('-'); return p[2] + '/' + p[1]; }
+            function extensa(d) {
+                var p = d.split('-'), dt = new Date(+p[0], +p[1] - 1, +p[2]);
+                return { texto: (+p[2]) + ' de ' + MESES[+p[1] - 1] + ' de ' + p[0], semana: DIAS[dt.getDay()] };
+            }
+            function chipT(s) { return '<span class="chip-status st-' + s + '">' + (STATUS_T[s] || s) + '</span>'; }
+            function chipJ(s) { s = STATUS_J[s] ? s : 'agendado'; return '<span class="chip-status st-' + s + '">' + STATUS_J[s] + '</span>'; }
+            function vazio(icone, titulo, texto, botao) {
+                return '<div class="vazio"><i class="bi ' + icone + '" aria-hidden="true"></i><h3>' + esc(titulo) + '</h3><p>' + esc(texto) + '</p>' + (botao || '') + '</div>';
+            }
+            function tem(p) { return p.placarA != null && p.placarB != null; }
+            function acharPartida(id) {
+                for (var i = 0; i < T.partidas.length; i++) if (String(T.partidas[i].id) === String(id)) return T.partidas[i];
+                return null;
+            }
+
+            var T = null, aba = '', fl = { rodada: '', escola: '', status: '' }, ultimoFoco = null;
+            var el = {
+                cab: document.getElementById('cabecalho'), prox: document.getElementById('proxima'),
+                abas: document.getElementById('abas'), painel: document.getElementById('painel'),
+                bc: document.getElementById('bc-atual'), modal: document.getElementById('modal-cal'),
+                modalConteudo: document.getElementById('modal-conteudo'), btnFechar: document.getElementById('btn-fechar-modal')
+            };
+
+            function param(k) { return new URLSearchParams(location.search).get(k); }
+            function atualizarURL(partida) {
+                var q = new URLSearchParams();
+                q.set('id', T.id); if (aba) q.set('aba', aba); if (partida) q.set('partida', partida);
+                history.replaceState(null, '', location.pathname + '?' + q.toString());
+            }
+            function linkAtual(partida) {
+                var q = new URLSearchParams(); q.set('id', T.id);
+                if (aba) q.set('aba', aba); if (partida) q.set('partida', partida);
+                return location.origin + location.pathname + '?' + q.toString();
+            }
+            function copiar(texto, btn) {
+                function ok() {
+                    var original = btn.innerHTML;
+                    btn.innerHTML = '<i class="bi bi-check2" aria-hidden="true"></i> Link copiado';
+                    setTimeout(function () { btn.innerHTML = original; }, 2000);
+                }
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(texto).then(ok, function () { window.prompt('Copie o link:', texto); });
+                } else { window.prompt('Copie o link:', texto); }
+            }
+
+            function abasDoTorneio() {
+                var a = [], f = T.formato;
+                if (f === 'liga' || f === 'liga_mata') a.push({ k: 'liga', rot: 'Liga' });
+                if (f === 'liga_mata' || f === 'mata_mata') a.push({ k: 'mata-mata', rot: 'Mata-mata' });
+                if (f === 'provas') a.push({ k: 'provas', rot: 'Provas' }, { k: 'geral', rot: 'Classificação geral' });
+                a.push({ k: 'info', rot: 'Informações' });
+                return a;
+            }
+
+            function atalhos() {
+                var f = T.formato, h = '';
+                function b(rot, k, anc) { return '<button type="button" class="btn-cab" data-ir="' + k + '" data-anc="' + (anc || '') + '">' + rot + '</button>'; }
+                if (f === 'liga' || f === 'liga_mata') h += b('Classificação', 'liga', 'tabela-classificacao') + b('Jogos', 'liga', 'lista-jogos');
+                if (f === 'liga_mata' || f === 'mata_mata') h += b('Chave', 'mata-mata', '');
+                if (f === 'provas') h += b('Provas', 'provas', '') + b('Classificação geral', 'geral', '');
+                return h;
+            }
+
+            function renderCabecalho() {
+                var fm = FORMATOS[T.formato] || { rotulo: '—' };
+                var unidades = T.formato === 'provas' ? T.provas : T.partidas;
+                var feitas = unidades.filter(function (p) { return p.status === 'encerrado'; }).length;
+                var rotUn = T.formato === 'provas' ? (T.modalidade === 'xadrez' ? 'rodadas' : 'provas') : 'partidas';
+                var titulo = T.nome + (T.categoria ? ' ' + T.categoria : '');
+                el.bc.textContent = T.nome;
+                document.title = titulo + ' — JEVES 2026';
+
+                var ph = podio(T), camp = '';
+                if (ph) {
+                    var resto = [];
+                    if (ph.vice) resto.push('Vice-campeão: ' + esc(ph.vice));
+                    if (ph.semis && ph.semis.length) resto.push('Semifinalistas: ' + ph.semis.map(esc).join(', '));
+                    camp = '<div class="campeao-banner"><div class="campeao-icone"><i class="bi bi-trophy-fill" aria-hidden="true"></i></div><div>' +
+                        '<span class="campeao-rotulo">Campeão</span><h2 class="campeao-nome">' + esc(ph.campeao) + '</h2>' +
+                        (resto.length ? '<p class="campeao-resto">' + resto.join(' · ') + '</p>' : '') + '</div></div>';
+                }
+
+                el.cab.innerHTML =
+                    '<div class="cab-grid"><div>' +
+                    '<span class="badge-secao-label">JEVES 2026 · ' + esc([T.categoria, T.genero].filter(Boolean).join(' ')) + '</span>' +
+                    '<h1 class="detalhe-titulo">' + esc(T.nome) + '</h1>' +
+                    '<div class="cab-chips">' + chipT(T.status) +
+                    '<span class="tag tag-formato">' + esc(fm.rotulo) + '</span>' +
+                    '<span class="tag">' + T.escolas.length + ' escolas</span>' +
+                    '<span class="tag">' + feitas + '/' + unidades.length + ' ' + rotUn + ' realizadas</span>' +
+                    '</div></div>' +
+                    '<div class="cab-acoes">' + atalhos() +
+                    '<button type="button" class="btn-cab destaque" id="btn-compartilhar"><i class="bi bi-link-45deg" aria-hidden="true"></i> Copiar link</button></div></div>' + camp;
+            }
+
+            function renderProxima() {
+                var px = proxima(T);
+                if (!px) { el.prox.innerHTML = ''; return; }
+                var it = px.item, quando = extensa(it.data);
+                if (px.tipo === 'prova') {
+                    el.prox.innerHTML = '<button type="button" class="proxima" data-ir="provas" data-anc=""><span><span class="proxima-rotulo">Próxima prova</span><span class="proxima-times">' + esc(it.nome) + '</span></span>' +
+                        '<span class="proxima-info">' + curta(it.data) + ' às ' + esc(it.horario) + '<br>' + esc(it.local) + '</span></button>';
+                    return;
+                }
+                el.prox.innerHTML = '<button type="button" class="proxima" data-partida="' + it.id + '"><span><span class="proxima-rotulo">' +
+                    (it.status === 'ao_vivo' ? 'Acontecendo agora' : 'Próxima partida') + '</span><span class="proxima-times">' + esc(it.equipeA) + ' x ' + esc(it.equipeB) + '</span></span>' +
+                    '<span class="proxima-info">' + esc(quando.semana) + ', ' + curta(it.data) + ' às ' + esc(it.horario) + '<br>' + esc(it.local) + '</span></button>';
+            }
+
+            function renderAbas() {
+                el.abas.innerHTML = abasDoTorneio().map(function (a) {
+                    return '<button type="button" role="tab" class="aba-btn" id="aba-' + a.k + '" data-aba="' + a.k + '" aria-selected="' + (a.k === aba) + '" tabindex="' + (a.k === aba ? 0 : -1) + '">' + a.rot + '</button>';
+                }).join('');
+                el.painel.setAttribute('aria-labelledby', 'aba-' + aba);
+            }
+
+            function selecionarAba(k, ancora) {
+                aba = k; fl = { rodada: '', escola: '', status: '' };
+                renderAbas(); renderPainel(); atualizarURL();
+                if (ancora) { var a = document.getElementById(ancora); if (a) a.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+                else if (window.scrollY > 400) window.scrollTo({ top: el.abas.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+            }
+
+            function abaPadrao() {
+                if (T.formato === 'provas') return 'provas';
+                if (T.formato === 'mata_mata') return 'mata-mata';
+                if (T.formato === 'liga_mata' && ligaFinalizada(T)) return 'mata-mata';
+                return 'liga';
+            }
+
+            function renderPainel() {
+                var h = '';
+                if (aba === 'liga') h = ligaHTML();
+                else if (aba === 'mata-mata') h = '<div class="bloco"><h2 class="bloco-titulo">Chave eliminatória</h2><p class="bloco-sub">Clique em uma partida para ver os detalhes.</p>' + chaveHTML() + '</div>';
+                else if (aba === 'provas') h = provasHTML();
+                else if (aba === 'geral') h = geralHTML();
+                else h = infoHTML();
+                el.painel.innerHTML = h;
+                el.painel.setAttribute('aria-busy', 'false');
+                el.painel.setAttribute('aria-labelledby', 'aba-' + aba);
+                if (aba === 'liga') renderLista();
+            }
+
+            function ligaHTML() {
+                var tab = classificacao(T), vagas = T.formato === 'liga_mata' ? T.vagas : 0, fim = ligaFinalizada(T);
+                var un = UNIDADE[T.modalidade] || 'pontos';
+                var linhas = tab.map(function (r) {
+                    var cls = vagas ? (r.pos <= vagas ? 'zona' : (fim ? 'elim' : '')) : '';
+                    return '<tr class="' + cls + '"><td class="pos">' + r.pos + '</td><td class="esq esc">' + esc(r.escola) + '</td><td class="pts">' + r.pts + '</td><td>' + r.j + '</td><td>' + r.v + '</td><td>' + r.e + '</td><td>' + r.d + '</td><td>' + r.gp + '</td><td>' + r.gc + '</td><td>' + (r.sg > 0 ? '+' : '') + r.sg + '</td></tr>';
+                }).join('');
+                var legenda = '';
+                if (vagas) legenda = '<div class="legenda"><span><i style="background:#2ECC71"></i>' + (fim ? 'Classificado' : 'Zona de classificação') + ' (' + vagas + ' vagas)</span>' + (fim ? '<span><i style="background:rgba(255,120,100,.6)"></i>Eliminado</span>' : '') + '</div>';
+                var jogou = tab.some(function (r) { return r.j > 0; });
+                return '<div class="bloco" id="tabela-classificacao"><h2 class="bloco-titulo">Classificação</h2><p class="bloco-sub">Fase classificatória · Grupo único</p>' +
+                    '<div class="tabela-rolagem" tabindex="0" role="region" aria-label="Tabela de classificação"><table class="tabela"><thead><tr>' +
+                    '<th>#</th><th class="esq">Escola</th><th title="Pontos">PTS</th><th title="Jogos">J</th><th title="Vitórias">V</th><th title="Empates">E</th><th title="Derrotas">D</th>' +
+                    '<th title="' + un + ' a favor">Pró</th><th title="' + un + ' contra">Contra</th><th title="Saldo de ' + un + '">Saldo</th></tr></thead><tbody>' + linhas + '</tbody></table></div>' +
+                    legenda +
+                    '<p class="nota">' + (jogou ? '' : 'A classificação será atualizada assim que as primeiras partidas forem encerradas. ') + 'Pró, Contra e Saldo em ' + un + '. Tabela calculada a partir das partidas registradas; as regras de desempate seguem o regulamento.</p></div>' +
+                    '<div class="bloco" id="lista-jogos"><h2 class="bloco-titulo">Partidas</h2><p class="bloco-sub">Resultados e próximos jogos da fase de liga.</p>' +
+                    '<div class="filtros-jogos">' + filtroSelect('f-rodada', 'Rodada', 'Todas', rodadas().map(function (r) { return [r, 'Rodada ' + r]; }), fl.rodada) +
+                    filtroSelect('f-escola', 'Escola', 'Todas', T.escolas.map(function (e) { return [e, e]; }), fl.escola) +
+                    filtroSelect('f-status', 'Situação', 'Todas', Object.keys(STATUS_J).map(function (k) { return [k, STATUS_J[k]]; }), fl.status) +
+                    '</div><div id="lista-partidas"></div></div>';
+            }
+
+            function rodadas() {
+                var r = [];
+                T.partidas.forEach(function (p) { if (p.fase === 'liga' && r.indexOf(p.rodada) < 0) r.push(p.rodada); });
+                return r.sort(function (a, b) { return a - b; });
+            }
+            function filtroSelect(id, rot, todos, ops, atual) {
+                return '<div><label for="' + id + '">' + rot + '</label><select id="' + id + '" class="filtro-select"><option value="">' + todos + '</option>' +
+                    ops.map(function (o) { return '<option value="' + esc(o[0]) + '"' + (String(o[0]) === String(atual) ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select></div>';
+            }
+
+            function linhaJogo(p) {
+                var placar = tem(p) ? p.placarA + ' x ' + p.placarB : 'VS';
+                return '<button type="button" class="item-jogo" data-partida="' + p.id + '">' +
+                    '<span class="ij-quando"><b>' + esc(p.horario) + '</b><small>' + curta(p.data) + '</small></span>' +
+                    '<span class="ij-times"><span class="ij-eq a">' + esc(p.equipeA || p.rotuloA || 'A definir') + '</span><span class="ij-pl' + (tem(p) ? '' : ' vs') + '">' + placar + '</span><span class="ij-eq">' + esc(p.equipeB || p.rotuloB || 'A definir') + '</span></span>' +
+                    chipJ(p.status) + '</button>';
+            }
+
+            function renderLista() {
+                var box = document.getElementById('lista-partidas');
+                if (!box) return;
+                var ps = T.partidas.filter(function (p) {
+                    return p.fase === 'liga' && (!fl.rodada || String(p.rodada) === String(fl.rodada)) &&
+                        (!fl.escola || p.equipeA === fl.escola || p.equipeB === fl.escola) && (!fl.status || p.status === fl.status);
+                });
+                if (!ps.length) {
+                    var soRodada = fl.rodada && !fl.escola && !fl.status;
+                    box.innerHTML = vazio('bi-calendar-x', soRodada ? 'Nenhuma partida programada nesta rodada' : 'Nenhuma partida encontrada', soRodada ? 'Escolha outra rodada para ver os jogos.' : 'Tente outra combinação de filtros.');
+                    return;
+                }
+                var grupos = {}, ordem = [];
+                ps.sort(porData).forEach(function (p) { if (!grupos[p.rodada]) { grupos[p.rodada] = []; ordem.push(p.rodada); } grupos[p.rodada].push(p); });
+                ordem.sort(function (a, b) { return a - b; });
+                box.innerHTML = ordem.map(function (r) {
+                    return '<h3 class="rodada-titulo">Rodada ' + r + '</h3><div class="lista-jogos">' + grupos[r].map(linhaJogo).join('') + '</div>';
+                }).join('');
+            }
+
+            function jogoChave(p) {
+                var v = vencedor(p);
+                function lin(eq, rot, pl) {
+                    return '<div class="chave-eq' + (eq ? '' : ' tbd') + (v && v === eq ? ' venc' : '') + '"><span class="chave-nome">' + esc(eq || rot || 'A definir') + '</span><span class="chave-pl">' + (pl == null ? '–' : pl) + '</span></div>';
+                }
+                var rodape = p.status === 'encerrado' ? 'Encerrado' : curta(p.data) + ' · ' + esc(p.horario);
+                return '<button type="button" class="chave-jogo" data-partida="' + p.id + '" aria-label="' + esc((p.equipeA || p.rotuloA || 'A definir') + ' contra ' + (p.equipeB || p.rotuloB || 'A definir') + ': ver detalhes') + '">' +
+                    lin(p.equipeA, p.rotuloA, p.placarA) + lin(p.equipeB, p.rotuloB, p.placarB) + '<div class="chave-rod">' + rodape + '</div></button>';
+            }
+
+            function chaveHTML() {
+                var ms = T.partidas.filter(function (p) { return p.fase !== 'liga'; });
+                var cols = ORDEM_CHAVE.filter(function (f) { return ms.some(function (p) { return p.fase === f; }); }).map(function (f) {
+                    return { f: f, js: ms.filter(function (p) { return p.fase === f; }).sort(function (a, b) { return (a.ordem || 0) - (b.ordem || 0); }) };
+                });
+                if (!cols.length) return vazio('bi-diagram-3', 'Chave ainda não definida', 'Os confrontos aparecem aqui assim que a fase eliminatória for configurada.');
+                var h = '<p class="dica-rolagem"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> Arraste para o lado para ver todas as fases.</p>' +
+                    '<div class="chave-rolagem" tabindex="0" role="region" aria-label="Chave eliminatória"><div class="chave">';
+                cols.forEach(function (c, k) {
+                    var prox = cols[k + 1], par = prox && c.js.length > 1 && c.js.length === 2 * prox.js.length;
+                    h += '<div class="chave-col"><h3 class="chave-fase">' + FASES[c.f] + '</h3><div class="chave-jogos">';
+                    if (par) { for (var i = 0; i < c.js.length; i += 2) h += '<div class="chave-slot par">' + jogoChave(c.js[i]) + jogoChave(c.js[i + 1]) + '</div>'; }
+                    else c.js.forEach(function (j) { h += '<div class="chave-slot">' + jogoChave(j) + '</div>'; });
+                    h += '</div></div>';
+                });
+                return h + '</div></div>';
+            }
+
+            function provasHTML() {
+                if (!T.provas.length) return '<div class="bloco">' + vazio('bi-stopwatch', 'Nenhuma prova cadastrada', 'O calendário de provas será divulgado em breve.') + '</div>';
+                return '<div class="bloco"><h2 class="bloco-titulo">' + (T.modalidade === 'xadrez' ? 'Rodadas' : 'Provas') + '</h2><p class="bloco-sub">Resultados por prova e programação.</p>' +
+                    T.provas.slice().sort(porData).map(function (pr) {
+                        var res = (pr.resultados || []).length
+                            ? '<div class="tabela-rolagem mt-3"><table class="tabela" style="min-width:320px"><thead><tr><th>#</th><th class="esq">Escola</th><th>Marca</th></tr></thead><tbody>' +
+                            pr.resultados.map(function (r) { return '<tr><td class="pos">' + r.posicao + '</td><td class="esq esc">' + esc(r.escola) + '</td><td>' + esc(r.marca || '—') + '</td></tr>'; }).join('') + '</tbody></table></div>'
+                            : '<p class="nota">Os resultados serão publicados após a ' + (T.modalidade === 'xadrez' ? 'rodada' : 'prova') + '.</p>';
+                        return '<div class="prova"><div class="prova-topo"><h3>' + esc(pr.nome) + '</h3>' + chipJ(pr.status) + '</div>' +
+                            '<p class="prova-meta"><i class="bi bi-calendar-event" aria-hidden="true"></i> ' + curta(pr.data) + ' às ' + esc(pr.horario) + ' · <i class="bi bi-geo-alt-fill" aria-hidden="true"></i> ' + esc(pr.local) + '</p>' + res + '</div>';
+                    }).join('') + '</div>';
+            }
+
+            function geralHTML() {
+                var g = classificacaoGeral(T);
+                if (!g.length) return '<div class="bloco"><h2 class="bloco-titulo">Classificação geral</h2>' + vazio('bi-trophy', 'Classificação ainda não disponível', 'A pontuação geral aparece depois dos primeiros resultados.') + '</div>';
+                return '<div class="bloco"><h2 class="bloco-titulo">Classificação geral</h2><p class="bloco-sub">Pontos por colocação: 1º lugar 5, 2º lugar 3, 3º lugar 1.</p>' +
+                    '<div class="tabela-rolagem" tabindex="0" role="region" aria-label="Classificação geral"><table class="tabela" style="min-width:420px"><thead><tr><th>#</th><th class="esq">Escola</th><th title="Ouro">1º</th><th title="Prata">2º</th><th title="Bronze">3º</th><th>PTS</th></tr></thead><tbody>' +
+                    g.map(function (r) { return '<tr><td class="pos">' + r.pos + '</td><td class="esq esc">' + esc(r.escola) + '</td><td>' + r.ouro + '</td><td>' + r.prata + '</td><td>' + r.bronze + '</td><td class="pts">' + r.pts + '</td></tr>'; }).join('') + '</tbody></table></div></div>';
+            }
+
+            function infoHTML() {
+                var fm = FORMATOS[T.formato] || { rotulo: '—' };
+                var itens = T.formato === 'provas' ? T.provas : T.partidas, datas = itens.map(function (p) { return p.data; }).sort();
+                var periodo = datas.length ? curta(datas[0]) + (datas.length > 1 && datas[datas.length - 1] !== datas[0] ? ' a ' + curta(datas[datas.length - 1]) : '') + '/2026' : 'A confirmar';
+                var locais = []; itens.forEach(function (p) { if (p.local && locais.indexOf(p.local) < 0) locais.push(p.local); });
+                function it(r, v, largo) { return '<div class="info-item' + (largo ? ' largo' : '') + '"><div class="info-rotulo">' + r + '</div><div class="info-valor">' + esc(v) + '</div></div>'; }
+                return '<div class="bloco"><h2 class="bloco-titulo">Informações gerais</h2><p class="bloco-sub">Dados da competição.</p><div class="info-grid">' +
+                    it('Modalidade', MODALIDADES[T.modalidade] || T.modalidade) + it('Categoria', T.categoria || '—') + it('Gênero', T.genero || '—') +
+                    it('Formato', fm.rotulo) + it('Situação', STATUS_T[T.status] || T.status) + it('Participantes', T.escolas.length + ' escolas') +
+                    it('Período', periodo) + (T.vagas && T.formato === 'liga_mata' ? it('Vagas no mata-mata', T.vagas + ' escolas') : '') +
+                    it('Locais', locais.length ? locais.join(' · ') : 'A confirmar', true) + '</div></div>' +
+                    '<div class="bloco"><h2 class="bloco-titulo">Regulamento</h2><p class="bloco-sub">Resumo das regras desta competição.</p><ul class="lista-reg">' +
+                    (T.regulamento || ['Regulamento será divulgado em breve.']).map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>' +
+                    '<div class="bloco"><h2 class="bloco-titulo">Escolas participantes</h2><p class="bloco-sub">&nbsp;</p><div class="chips-escolas">' +
+                    T.escolas.slice().sort().map(function (e) { return '<span class="tag">' + esc(e) + '</span>'; }).join('') + '</div></div>';
+            }
+
+            /* Renderiza o campinho visual com os titulares posicionados */
+            function renderCampinho(escA, mod, genero, seedA, seedB) {
+                var posMap = CAMPO_POS[mod];
+                if (!posMap) return ''; /* atletismo/xadrez não tem campo */
+                var eA = escalacaoMock(seedA, mod, genero);
+                var eB = escalacaoMock(seedB, mod, genero);
+
+                function dots(jogadores, classe, espelhar) {
+                    var usadas = {};
+                    return jogadores.map(function (j) {
+                        var chave = j.posicao;
+                        /* se a posição aparece mais de uma vez (ex.: 2 ponteiros), usa chave alternativa */
+                        if (usadas[chave]) chave = chave + '2';
+                        usadas[chave] = true;
+                        var coord = posMap[chave] || posMap[j.posicao] || { top: 50, left: 50 };
+                        var t = coord.top, l = espelhar ? (100 - coord.left) : coord.left;
+                        var sobrenome = j.nome.split(' ');
+                        var label = sobrenome.length > 1 ? sobrenome[sobrenome.length - 1] : sobrenome[0];
+                        return '<div class="campo-jogador" style="top:' + t + '%;left:' + l + '%" title="' + esc(j.nome) + ' — #' + j.numero + ' ' + esc(j.posicao) + '">' +
+                            '<span class="campo-jogador-dot ' + classe + '">' + j.numero + '</span>' +
+                            '<span class="campo-jogador-nome">' + esc(label) + '</span></div>';
+                    }).join('');
+                }
+
+                return '<div class="campinho-wrapper">' +
+                    '<div class="campinho-lado">' +
+                    '<div class="campinho-area area-a"></div><div class="campinho-gol gol-a"></div>' +
+                    '<div class="campinho-centro"></div>' +
+                    dots(eA.titulares, 'time-a', false) +
+                    '</div>' +
+                    '<div class="campinho-lado lado-b">' +
+                    '<div class="campinho-area area-b"></div><div class="campinho-gol gol-b"></div>' +
+                    dots(eB.titulares, 'time-b', true) +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="campinho-legenda">' +
+                    '<span><span class="campinho-legenda-dot la"></span>' + esc(escA.a) + '</span>' +
+                    '<span><span class="campinho-legenda-dot lb"></span>' + esc(escA.b) + '</span>' +
+                    '</div>';
+            }
+
+            /* Renderiza bloco de escalação (lista) para um time */
+            function renderEscalacaoBloco(esc_data, nomeEquipe, classe) {
+                var cabClasse = classe === 'a' ? 'cab-a' : 'cab-b';
+                var h = '<div class="escalacao-time">' +
+                    '<div class="escalacao-cab ' + cabClasse + '"><i class="bi bi-people-fill" aria-hidden="true"></i> ' + esc(nomeEquipe) + '<span class="esc-badge">' + esc_data.titulares.length + ' titulares</span></div>' +
+                    '<ul class="escalacao-lista">';
+                esc_data.titulares.forEach(function (j) {
+                    h += '<li><span class="esc-num">' + j.numero + '</span><span class="esc-nome">' + esc(j.nome) + '</span><span class="esc-pos">' + esc(j.posicao) + '</span></li>';
+                });
+                if (esc_data.reservas.length) {
+                    h += '</ul><div class="banco-titulo"><i class="bi bi-arrow-left-right" aria-hidden="true"></i> Banco de reservas</div><ul class="escalacao-lista">';
+                    esc_data.reservas.forEach(function (j) {
+                        h += '<li><span class="esc-num">' + j.numero + '</span><span class="esc-nome">' + esc(j.nome) + '</span><span class="esc-pos">' + esc(j.posicao) + '</span></li>';
+                    });
+                }
+                h += '</ul></div>';
+                return h;
+            }
+
+            function abrirPartida(id, origem) {
+                var p = acharPartida(id);
+                if (!p) return;
+                var dt = extensa(p.data), a = p.equipeA, b = p.equipeB;
+                var centro = tem(p) ? '<span class="detalhe-placar">' + p.placarA + ' x ' + p.placarB + '</span>' : '<span class="badge-vs">VS</span>';
+                function info(r, v, largo) { return '<div class="info-item' + (largo ? ' largo' : '') + '"><div class="info-rotulo">' + r + '</div><div class="info-valor">' + esc(v) + '</div></div>'; }
+                var fase = FASES[p.fase] + (p.fase === 'liga' && p.rodada ? ' · Rodada ' + p.rodada : '');
+
+                /* seeds determinísticas para gerar escalação */
+                var seedA = p.id * 31 + 1;
+                var seedB = p.id * 31 + 97;
+                var escA = escalacaoMock(seedA, T.modalidade, T.genero);
+                var escB = escalacaoMock(seedB, T.modalidade, T.genero);
+                var temCampo = !!CAMPO_POS[T.modalidade];
+                var localDet = LOCAIS_DETALHE[T.modalidade] || {};
+
+                var html = '';
+
+                /* Cabeçalho */
+                html += '<div class="detalhe-topo"><span class="badge-mod">' + esc(MODALIDADES[T.modalidade]) + '</span>' + chipJ(p.status) + '</div>' +
+                    '<h3 class="modal-titulo" id="modal-titulo">' + esc(dt.texto) + '</h3>' +
+                    '<p class="modal-subtitulo">' + esc(dt.semana) + ' · ' + esc(T.nome + ' ' + (T.categoria || '')) + '</p>';
+
+                /* Confronto placar */
+                html += '<div class="detalhe-confronto"><div class="detalhe-equipe' + (a ? '' : ' tbd') + '">' + esc(a || p.rotuloA || 'A definir') + '</div><div>' + centro + '</div><div class="detalhe-equipe' + (b ? '' : ' tbd') + '">' + esc(b || p.rotuloB || 'A definir') + '</div></div>';
+
+                /* Info básica */
+                html += '<div class="detalhe-info">' + info('Horário', p.horario) + info('Fase', fase) + info('Situação', STATUS_J[p.status] || '—') +
+                    info('Resultado', tem(p) ? p.placarA + ' x ' + p.placarB : 'Ainda não disponível') + '</div>';
+
+                /* ===== CAMPINHO ===== */
+                if (temCampo && a && b) {
+                    html += '<div class="modal-secao">' +
+                        '<h4 class="modal-secao-titulo"><i class="bi bi-diagram-3" aria-hidden="true"></i> Formação tática</h4>' +
+                        renderCampinho({ a: a, b: b }, T.modalidade, T.genero, seedA, seedB) +
+                        '</div>';
+                }
+
+                /* ===== ESCALAÇÃO ===== */
+                if (a && b && POSICOES_MOD[T.modalidade]) {
+                    html += '<div class="modal-secao">' +
+                        '<h4 class="modal-secao-titulo"><i class="bi bi-person-lines-fill" aria-hidden="true"></i> Escalação</h4>' +
+                        '<div class="escalacao-grid">' +
+                        renderEscalacaoBloco(escA, a, 'a') +
+                        renderEscalacaoBloco(escB, b, 'b') +
+                        '</div>' +
+                        '</div>';
+                }
+
+                /* ===== TÉCNICOS ===== */
+                if (a && b && POSICOES_MOD[T.modalidade]) {
+                    html += '<div class="modal-secao">' +
+                        '<h4 class="modal-secao-titulo"><i class="bi bi-clipboard-data" aria-hidden="true"></i> Comissão técnica</h4>' +
+                        '<div class="tecnico-grid">' +
+                        '<div class="tecnico-card"><div class="tecnico-avatar"><i class="bi bi-person-badge" aria-hidden="true"></i></div><div><div class="tecnico-info-nome">' + esc(escA.tecnico) + '</div><div class="tecnico-info-equipe">' + esc(a) + '</div></div></div>' +
+                        '<div class="tecnico-card"><div class="tecnico-avatar"><i class="bi bi-person-badge" aria-hidden="true"></i></div><div><div class="tecnico-info-nome">' + esc(escB.tecnico) + '</div><div class="tecnico-info-equipe">' + esc(b) + '</div></div></div>' +
+                        '</div>' +
+                        '</div>';
+                }
+
+                /* ===== LOCAL DETALHADO ===== */
+                html += '<div class="modal-secao">' +
+                    '<h4 class="modal-secao-titulo"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i> Local da partida</h4>' +
+                    '<div class="local-detalhe"><div class="local-icone"><i class="bi bi-pin-map-fill" aria-hidden="true"></i></div><div>' +
+                    '<div class="local-nome">' + esc(localDet.nome || p.local || 'A confirmar') + '</div>' +
+                    '<div class="local-end">' + esc((localDet.endereco || '') + (localDet.bairro ? ' — ' + localDet.bairro : '')) + '</div>' +
+                    '<div class="local-end">' + esc(localDet.cidade || '') + '</div>' +
+                    '</div></div>' +
+                    '</div>';
+
+                /* Ações */
+                html += '<div class="detalhe-acoes" style="margin-top:1.2rem;"><button type="button" class="btn-jeves-contorno" id="btn-copiar-partida" style="padding:.45rem 1.2rem;font-size:.85rem;"><i class="bi bi-link-45deg" aria-hidden="true"></i> Copiar link</button>' +
+                    '<button type="button" class="btn-jeves-primario" id="btn-fechar-interno" style="padding:.45rem 1.2rem;font-size:.85rem;">Fechar</button></div>';
+
+                el.modalConteudo.innerHTML = html;
+                el.modalConteudo.setAttribute('data-partida', p.id);
+                if (!el.modal.classList.contains('ativo')) ultimoFoco = origem || document.activeElement;
+                el.modal.classList.add('ativo'); el.modal.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('modal-aberto');
+                el.btnFechar.focus();
+                atualizarURL(p.id);
+            }
+
+            function fecharModal() {
+                el.modal.classList.remove('ativo'); el.modal.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('modal-aberto');
+                if (T) atualizarURL();
+                if (ultimoFoco && document.contains(ultimoFoco)) ultimoFoco.focus();
+            }
+
+            el.btnFechar.addEventListener('click', fecharModal);
+            el.modal.addEventListener('click', function (e) { if (e.target === el.modal) fecharModal(); });
+            document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.modal.classList.contains('ativo')) fecharModal(); });
+            el.modalConteudo.addEventListener('click', function (e) {
+                if (e.target.closest('#btn-fechar-interno')) fecharModal();
+                var c = e.target.closest('#btn-copiar-partida');
+                if (c) copiar(linkAtual(el.modalConteudo.getAttribute('data-partida')), c);
+            });
+
+            el.abas.addEventListener('click', function (e) { var b = e.target.closest('[data-aba]'); if (b) selecionarAba(b.getAttribute('data-aba')); });
+            el.abas.addEventListener('keydown', function (e) {
+                if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+                var ks = abasDoTorneio().map(function (a) { return a.k; }), i = ks.indexOf(aba);
+                i = (i + (e.key === 'ArrowRight' ? 1 : ks.length - 1)) % ks.length;
+                selecionarAba(ks[i]);
+                var nb = document.getElementById('aba-' + ks[i]); if (nb) nb.focus();
+            });
+
+            function delegarGeral(e) {
+                var ir = e.target.closest('[data-ir]');
+                if (ir) { selecionarAba(ir.getAttribute('data-ir'), ir.getAttribute('data-anc')); return; }
+                var pt = e.target.closest('[data-partida]');
+                if (pt) { abrirPartida(pt.getAttribute('data-partida'), pt); return; }
+                var cp = e.target.closest('#btn-compartilhar');
+                if (cp) copiar(linkAtual(), cp);
+                if (e.target.closest('[data-acao="recarregar"]')) iniciar();
+            }
+            el.cab.addEventListener('click', delegarGeral);
+            el.prox.addEventListener('click', delegarGeral);
+            el.painel.addEventListener('click', delegarGeral);
+            el.painel.addEventListener('change', function (e) {
+                var m = { 'f-rodada': 'rodada', 'f-escola': 'escola', 'f-status': 'status' }[e.target.id];
+                if (m) { fl[m] = e.target.value; renderLista(); }
+            });
+
+            function buscar(id) {
+                if (USAR_MOCK) {
+                    return new Promise(function (ok, erro) {
+                        setTimeout(function () {
+                            var c = CFG.filter(function (x) { return String(x.id) === String(id); })[0];
+                            if (!c) { var e = new Error('404'); e.status = 404; erro(e); } else ok(montarMock(c));
+                        }, 250);
+                    });
+                }
+                return fetch(API_TORNEIO + encodeURIComponent(id), { headers: { 'Accept': 'application/json' } }).then(function (r) {
+                    if (r.status === 404) { var e = new Error('404'); e.status = 404; throw e; }
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                });
+            }
+
+            function mostrarProblema(naoEncontrado) {
+                el.bc.textContent = naoEncontrado ? 'Torneio não encontrado' : 'Erro ao carregar';
+                el.cab.innerHTML = ''; el.prox.innerHTML = ''; el.abas.innerHTML = '';
+                el.painel.setAttribute('aria-busy', 'false');
+                el.painel.innerHTML = '<div class="bloco">' + (naoEncontrado
+                    ? vazio('bi-search', 'Torneio não encontrado', 'O link pode estar incorreto ou o torneio foi removido.', '<a class="btn-jeves-contorno" href="/publico/torneios.html" style="padding:.5rem 1.3rem;font-size:.88rem;">Ver todos os torneios</a>')
+                    : vazio('bi-wifi-off', 'Não foi possível carregar o torneio', 'Verifique sua conexão e tente novamente.', '<button type="button" class="btn-jeves-contorno" data-acao="recarregar" style="padding:.5rem 1.3rem;font-size:.88rem;">Tentar novamente</button>')) + '</div>';
+            }
+
+            function iniciar() {
+                var id = param('id');
+                if (!id) { mostrarProblema(true); return; }
+                el.painel.setAttribute('aria-busy', 'true');
+                el.painel.innerHTML = '<div class="esqueleto"></div>';
+                buscar(id).then(function (t) {
+                    T = t;
+                    var validas = abasDoTorneio().map(function (a) { return a.k; });
+                    aba = validas.indexOf(param('aba')) >= 0 ? param('aba') : abaPadrao();
+                    renderCabecalho(); renderProxima(); renderAbas(); renderPainel();
+                    var pid = param('partida');
+                    if (pid && acharPartida(pid)) abrirPartida(pid);
+                }).catch(function (e) { mostrarProblema(e && e.status === 404); });
+            }
+
+            iniciar();
+        })();
+    </script>
+</body>
+
+</html>

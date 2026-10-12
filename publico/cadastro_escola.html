@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="Cadastro e primeiro acesso da escola nos Jogos Escolares de Vespasiano 2026 — JEVES. Inscreva sua instituição de ensino." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>Cadastro da Escola | JEVES 2026</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+
+    <style>
+        .cadastro-titulo-jeves {
+            margin-top: 3.5rem;
+            font-family: var(--fonte-titulos);
+            font-weight: 900;
+            font-size: clamp(3.5rem, 10vw, 7.5rem);
+            letter-spacing: -0.03em;
+            line-height: 0.95;
+            background: var(--gradiente-dourado);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cadastro-container-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .stepper-header-box {
+            background: rgba(11, 22, 64, 0.65);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-lg);
+            padding: 1.25rem 1rem 0.75rem;
+            margin-bottom: var(--espaco-xl);
+            backdrop-filter: blur(12px);
+        }
+
+        .painel-etapa {
+            display: none;
+            animation: fadeIn 0.35s ease-out;
+        }
+
+        .painel-etapa.ativo {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .resumo-card-revisao {
+            background: rgba(11, 22, 64, 0.85);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            padding: 1.5rem;
+            margin-bottom: var(--espaco-lg);
+        }
+
+        .resumo-secao-titulo {
+            font-family: var(--fonte-titulos);
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--cor-secundaria);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(42, 74, 175, 0.25);
+            padding-bottom: 0.4rem;
+        }
+
+        .resumo-dado-item {
+            font-size: 0.88rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .resumo-dado-rotulo {
+            color: var(--cor-texto-secundario);
+        }
+
+        .resumo-dado-valor {
+            color: #FFFFFF;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        .badge-etapa-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--cor-secundaria);
+            color: #0B1640;
+            font-size: 0.75rem;
+            font-weight: 800;
+            font-family: var(--fonte-titulos);
+            margin-right: 0.4rem;
+        }
+
+        .btn-acao-grupo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--espaco-xl);
+            padding-top: var(--espaco-lg);
+            border-top: 1px solid rgba(42, 74, 175, 0.25);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        #canvas-particulas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-fundo-1 {
+            position: absolute;
+            width: 650px;
+            height: 650px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(26, 58, 143, 0.45) 0%, transparent 70%);
+            top: -150px;
+            left: -150px;
+            pointer-events: none;
+        }
+
+        .glow-fundo-2 {
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(232, 102, 10, 0.2) 0%, transparent 70%);
+            bottom: -100px;
+            right: -100px;
+            pointer-events: none;
+        }
+
+        /* Modal de Sucesso */
+        .modal-sucesso-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 22, 64, 0.88);
+            backdrop-filter: blur(14px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+        }
+
+        .modal-sucesso-overlay.ativo {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-sucesso-caixa {
+            background: var(--gradiente-card);
+            border: 1px solid var(--cor-borda);
+            border-radius: var(--borda-raio-xl);
+            padding: clamp(2rem, 5vw, 3.2rem);
+            max-width: 540px;
+            width: 100%;
+            text-align: center;
+            box-shadow: var(--sombra-lg);
+            position: relative;
+            transform: scale(0.92);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-sucesso-overlay.ativo .modal-sucesso-caixa {
+            transform: scale(1);
+        }
+
+        .modal-sucesso-icone {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(46, 204, 113, 0.15);
+            border: 2px solid rgba(46, 204, 113, 0.4);
+            color: var(--cor-sucesso);
+            font-size: 2.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(46, 204, 113, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+        <div class="container">
+            <div class="navbar-conteudo-wrapper">
+                <div class="navbar-secao-esquerda">
+                    <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                </div>
+
+                <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+                    <a href="/index.html" class="nav-link-jeves">Início</a>
+                    <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
+                    <a href="/publico/calendario.html" class="nav-link-jeves">Calendário</a>
+                </nav>
+
+                <div class="navbar-secao-direita">
+                    <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+                        <span>Entrar</span>
+                    </a>
+
+                    <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button"
+                        aria-expanded="false" aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+                        <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+                    <div class="menu-dropdown-mobile-cabecalho">
+                        <span class="menu-dropdown-mobile-titulo">Navegação</span>
+                        <span class="badge-item-temporada">2026</span>
+                    </div>
+                    <div class="menu-dropdown-mobile-lista">
+                        <a href="/index.html" class="menu-dropdown-item">
+                            <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+                            <span>Início</span>
+                        </a>
+                        <a href="/publico/torneios.html" class="menu-dropdown-item">
+                            <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                            <span>Torneios</span>
+                        </a>
+                        <a href="/publico/calendario.html" class="menu-dropdown-item">
+                            <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                            <span>Calendário</span>
+                        </a>
+                    </div>
+                    <div class="menu-dropdown-mobile-divisor"></div>
+                    <div class="menu-dropdown-mobile-rodape">
+                        <a href="/publico/login.html" class="btn-entrar-mobile">
+                            <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                            <span>Entrar</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="conteudo-principal" class="auth-pagina py-5">
+        <canvas id="canvas-particulas" aria-hidden="true"></canvas>
+        <div class="glow-fundo-1" aria-hidden="true"></div>
+        <div class="glow-fundo-2" aria-hidden="true"></div>
+
+        <div class="container position-relative" style="z-index: 2;">
+            <div class="cadastro-container-wrapper">
+
+                <div class="text-center mb-4">
+                    <h1 class="cadastro-titulo-jeves">Cadastro da Escola</h1>
+                    <p class="auth-subtitulo max-w-xl mx-auto">
+                        Crie a conta oficial da sua instituição de ensino para inscrever equipes, atletas e acompanhar
+                        os Jogos Escolares de Vespasiano.
+                    </p>
+                </div>
+
+                <div class="stepper-header-box" aria-label="Progresso do cadastro">
+                    <ol class="stepper-lista" id="stepper-indicadores" role="list">
+                        <li class="stepper-passo ativo" id="step-ind-0" role="listitem" aria-current="step">
+                            <div class="stepper-indicador">1</div>
+                            <div class="stepper-info">
+                                <span class="stepper-rotulo">Instituição</span>
+                                <span class="stepper-descricao">Dados gerais</span>
+                            </div>
+                            <div class="stepper-linha" aria-hidden="true"></div>
+                        </li>
+                        <li class="stepper-passo" id="step-ind-1" role="listitem">
+                            <div class="stepper-indicador">2</div>
+                            <div class="stepper-info">
+                                <span class="stepper-rotulo">Endereço</span>
+                                <span class="stepper-descricao">Localização</span>
+                            </div>
+                            <div class="stepper-linha" aria-hidden="true"></div>
+                        </li>
+                        <li class="stepper-passo" id="step-ind-2" role="listitem">
+                            <div class="stepper-indicador">3</div>
+                            <div class="stepper-info">
+                                <span class="stepper-rotulo">Responsável</span>
+                                <span class="stepper-descricao">Acesso e senha</span>
+                            </div>
+                            <div class="stepper-linha" aria-hidden="true"></div>
+                        </li>
+                        <li class="stepper-passo" id="step-ind-3" role="listitem">
+                            <div class="stepper-indicador">4</div>
+                            <div class="stepper-info">
+                                <span class="stepper-rotulo">Revisão</span>
+                                <span class="stepper-descricao">Confirmação</span>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+                <article class="auth-card" aria-labelledby="titulo-etapa-atual">
+                    <form id="form-cadastro-escola" novalidate>
+                        <div class="painel-etapa ativo" id="painel-etapa-0" data-passo="0">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge-etapa-num">1</span>
+                                <h2 class="h4 mb-0 fw-bold text-white" id="titulo-etapa-atual">Dados da Instituição de
+                                    Ensino</h2>
+                            </div>
+
+                            <div class="alerta-box alerta-info mb-4">
+                                <i class="bi bi-info-circle-fill fs-5"></i>
+                                <div>
+                                    Informe os dados cadastrais da instituição conforme documentação oficial da
+                                    Secretaria de Educação ou MEC.
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="campo-grupo">
+                                        <label for="campo-nome-oficial" class="campo-rotulo">
+                                            <span>Nome Oficial da Escola <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-building campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-nome-oficial"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="Ex: Escola Estadual Machado de Assis" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-nome-oficial">
+                                            <i class="bi bi-exclamation-circle-fill"></i> O nome oficial da escola é
+                                            obrigatório (mínimo 4 caracteres).
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-nome-fantasia" class="campo-rotulo">
+                                            <span>Nome Fantasia / Sigla <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-tag campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-nome-fantasia"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="Ex: E.E. Machado de Assis" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-nome-fantasia">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Digite o nome de exibição nos
+                                            torneios.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-rede" class="campo-rotulo">
+                                            <span>Rede de Ensino <span class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-diagram-3 campo-icone-esquerda" aria-hidden="true"></i>
+                                            <select id="campo-rede" class="campo-controle tem-icone-esq" required>
+                                                <option value="" disabled selected>Selecione a rede escolar</option>
+                                                <option value="Municipal">Municipal (Vespasiano)</option>
+                                                <option value="Estadual">Estadual (Minas Gerais)</option>
+                                            </select>
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-rede">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Selecione a rede da
+                                            instituição.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-documento" class="campo-rotulo">
+                                            <span>CNPJ ou Código INEP <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-file-earmark-text campo-icone-esquerda"
+                                                aria-hidden="true"></i>
+                                            <input type="text" id="campo-documento" class="campo-controle tem-icone-esq"
+                                                placeholder="00.000.000/0000-00 ou 8 dígitos INEP" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-documento">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Digite um CNPJ válido (14
+                                            dígitos) ou código INEP (8 dígitos).
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-telefone-escola" class="campo-rotulo">
+                                            <span>Telefone Institucional / WhatsApp <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-telephone campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="tel" id="campo-telefone-escola"
+                                                class="campo-controle tem-icone-esq" placeholder="(31) 3621-0000"
+                                                required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-telefone-escola">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Informe um telefone para
+                                            contato institucional.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="painel-etapa" id="painel-etapa-1" data-passo="1">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge-etapa-num">2</span>
+                                <h2 class="h4 mb-0 fw-bold text-white">Localização e Endereço da Escola</h2>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-5">
+                                    <div class="campo-grupo">
+                                        <label for="campo-cep" class="campo-rotulo">
+                                            <span>CEP da Escola <span class="campo-rotulo-obrigatorio">*</span></span>
+                                            <span class="campo-rotulo-dica" id="status-cep">Auto-busca</span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-geo-alt campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-cep" class="campo-controle tem-icone-esq"
+                                                placeholder="33200-000" maxlength="9" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-cep">
+                                            <i class="bi bi-exclamation-circle-fill"></i> CEP inválido (8 dígitos).
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <div class="campo-grupo">
+                                        <label for="campo-logradouro" class="campo-rotulo">
+                                            <span>Logradouro / Rua / Avenida <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-signpost-2 campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-logradouro"
+                                                class="campo-controle tem-icone-esq" placeholder="Rua, avenida ou praça"
+                                                required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-logradouro">
+                                            <i class="bi bi-exclamation-circle-fill"></i> O logradouro é obrigatório.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="campo-grupo">
+                                        <label for="campo-numero" class="campo-rotulo">
+                                            <span>Número <span class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <input type="text" id="campo-numero" class="campo-controle"
+                                            placeholder="123 ou S/N" required />
+                                        <div class="invalid-feedback" id="erro-numero">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Número é obrigatório.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <div class="campo-grupo">
+                                        <label for="campo-complemento" class="campo-rotulo">
+                                            <span>Complemento / Ponto de Referência</span>
+                                        </label>
+                                        <input type="text" id="campo-complemento" class="campo-controle"
+                                            placeholder="Ex: Próximo à Praça de Esportes" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-bairro" class="campo-rotulo">
+                                            <span>Bairro em Vespasiano <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <input type="text" id="campo-bairro" class="campo-controle"
+                                            placeholder="Ex: Jardim Itaú, Centro, Santa Clara" required />
+                                        <div class="invalid-feedback" id="erro-bairro">
+                                            <i class="bi bi-exclamation-circle-fill"></i> O bairro é obrigatório.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="campo-grupo">
+                                        <label for="campo-cidade" class="campo-rotulo">
+                                            <span>Município</span>
+                                        </label>
+                                        <input type="text" id="campo-cidade" class="campo-controle" value="Vespasiano"
+                                            readonly />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="campo-grupo">
+                                        <label for="campo-uf" class="campo-rotulo">
+                                            <span>UF</span>
+                                        </label>
+                                        <input type="text" id="campo-uf" class="campo-controle text-center" value="MG"
+                                            readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="painel-etapa" id="painel-etapa-2" data-passo="2">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge-etapa-num">3</span>
+                                <h2 class="h4 mb-0 fw-bold text-white">Responsável e Credenciais de Acesso</h2>
+                            </div>
+
+                            <div class="alerta-box alerta-aviso mb-4">
+                                <i class="bi bi-shield-lock-fill fs-5"></i>
+                                <div>
+                                    O e-mail e a senha informados abaixo serão utilizados pelo diretor(a) ou
+                                    coordenador(a) para login no painel escolar do JEVES 2026.
+                                </div>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-md-7">
+                                    <div class="campo-grupo">
+                                        <label for="campo-nome-responsavel" class="campo-rotulo">
+                                            <span>Nome Completo do Responsável <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-person campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-nome-responsavel"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="Diretor(a) ou Coordenador(a) Esportivo" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-nome-responsavel">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Digite o nome completo do
+                                            responsável.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <div class="campo-grupo">
+                                        <label for="campo-cargo-responsavel" class="campo-rotulo">
+                                            <span>Cargo / Função <span class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-briefcase campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="text" id="campo-cargo-responsavel"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="Ex: Diretor Geral / Prof. Educação Física" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-cargo-responsavel">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Informe o cargo ou função.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-email-acesso" class="campo-rotulo">
+                                            <span>E-mail Institucional de Acesso <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-envelope campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="email" id="campo-email-acesso"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="diretoria@escola.com.br" required
+                                                autocomplete="username" />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-email-acesso">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Digite um endereço de e-mail
+                                            válido.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-email-confirmacao" class="campo-rotulo">
+                                            <span>Confirmação do E-mail <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-envelope-check campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="email" id="campo-email-confirmacao"
+                                                class="campo-controle tem-icone-esq"
+                                                placeholder="Confirme o e-mail digitado" required />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-email-confirmacao">
+                                            <i class="bi bi-exclamation-circle-fill"></i> Os e-mails informados não
+                                            coincidem.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-senha-cadastro" class="campo-rotulo">
+                                            <span>Senha de Acesso <span class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-key campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="password" id="campo-senha-cadastro"
+                                                class="campo-controle tem-icone-esq tem-icone-dir"
+                                                placeholder="Crie uma senha forte" required
+                                                autocomplete="new-password" />
+                                            <button type="button" class="btn-toggle-senha" id="btn-toggle-senha-cad"
+                                                aria-label="Mostrar ou ocultar senha">
+                                                <i class="bi bi-eye" id="icone-olho-cad" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="forca-senha-caixa" id="caixa-forca-senha">
+                                            <div class="forca-senha-trilho">
+                                                <div class="forca-senha-progresso" id="barra-forca"></div>
+                                            </div>
+                                            <div class="forca-senha-texto">
+                                                <span>Segurança:</span>
+                                                <span class="forca-senha-nivel" id="nivel-forca">—</span>
+                                            </div>
+                                        </div>
+
+                                        <ul class="requisitos-senha" id="lista-requisitos">
+                                            <li class="requisito-item" id="req-len">
+                                                <i class="bi bi-circle"></i> Mínimo de 8 caracteres
+                                            </li>
+                                            <li class="requisito-item" id="req-upper">
+                                                <i class="bi bi-circle"></i> Letra maiúscula (A-Z)
+                                            </li>
+                                            <li class="requisito-item" id="req-num">
+                                                <i class="bi bi-circle"></i> Ao menos um número (0-9)
+                                            </li>
+                                            <li class="requisito-item" id="req-sym">
+                                                <i class="bi bi-circle"></i> Símbolo ou especial (@#$)
+                                            </li>
+                                        </ul>
+                                        <div class="invalid-feedback" id="erro-senha-cadastro">
+                                            <i class="bi bi-exclamation-circle-fill"></i> A senha precisa cumprir os
+                                            requisitos de segurança.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="campo-grupo">
+                                        <label for="campo-senha-confirma" class="campo-rotulo">
+                                            <span>Confirmação da Senha <span
+                                                    class="campo-rotulo-obrigatorio">*</span></span>
+                                        </label>
+                                        <div class="campo-wrapper">
+                                            <i class="bi bi-check2-circle campo-icone-esquerda" aria-hidden="true"></i>
+                                            <input type="password" id="campo-senha-confirma"
+                                                class="campo-controle tem-icone-esq" placeholder="Repita a senha"
+                                                required autocomplete="new-password" />
+                                        </div>
+                                        <div class="invalid-feedback" id="erro-senha-confirma">
+                                            <i class="bi bi-exclamation-circle-fill"></i> As senhas digitadas não
+                                            coincidem.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="painel-etapa" id="painel-etapa-3" data-passo="3">
+                            <div class="d-flex align-items-center mb-4">
+                                <span class="badge-etapa-num">4</span>
+                                <h2 class="h4 mb-0 fw-bold text-white">Revisão das Informações e Termos</h2>
+                            </div>
+
+                            <p class="text-secondary text-sm mb-4">
+                                Revise os dados abaixo com atenção antes de concluir. Após a criação da conta, a
+                                Secretaria de Esportes realizará a homologação oficial.
+                            </p>
+
+                            <div class="resumo-card-revisao">
+                                <div class="resumo-secao-titulo">
+                                    <i class="bi bi-building"></i> Instituição de Ensino
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Nome Oficial:</span>
+                                    <span class="resumo-dado-valor" id="rev-nome-oficial">—</span>
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Nome Fantasia / Sigla:</span>
+                                    <span class="resumo-dado-valor" id="rev-nome-fantasia">—</span>
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Rede / Documento:</span>
+                                    <span class="resumo-dado-valor" id="rev-rede-doc">—</span>
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Telefone:</span>
+                                    <span class="resumo-dado-valor" id="rev-telefone">—</span>
+                                </div>
+
+                                <div class="resumo-secao-titulo mt-4">
+                                    <i class="bi bi-geo-alt"></i> Localização
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Endereço Completo:</span>
+                                    <span class="resumo-dado-valor" id="rev-endereco">—</span>
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Bairro / CEP:</span>
+                                    <span class="resumo-dado-valor" id="rev-bairro-cep">—</span>
+                                </div>
+
+                                <div class="resumo-secao-titulo mt-4">
+                                    <i class="bi bi-person-badge"></i> Responsável & Login
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">Responsável:</span>
+                                    <span class="resumo-dado-valor" id="rev-responsavel">—</span>
+                                </div>
+                                <div class="resumo-dado-item">
+                                    <span class="resumo-dado-rotulo">E-mail de Login:</span>
+                                    <span class="resumo-dado-valor text-warning" id="rev-email">—</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="check-customizado mb-3">
+                                    <input type="checkbox" id="check-termos" required />
+                                    <span>
+                                        Declaro que li e concordo com o <strong>Regulamento Geral dos Jogos Escolares de
+                                            Vespasiano (JEVES 2026)</strong> e os <strong>Termos de Uso da
+                                            Plataforma</strong>.
+                                    </span>
+                                </label>
+                                <div class="invalid-feedback d-block text-danger" id="erro-termos"
+                                    style="display: none;">
+                                    É obrigatório aceitar o regulamento para prosseguir.
+                                </div>
+
+                                <label class="check-customizado">
+                                    <input type="checkbox" id="check-veracidade" required />
+                                    <span>
+                                        Declaro sob as penas da lei a veracidade dos dados institucionais informados e
+                                        autorizo o comitê organizador a validar a autenticidade junto aos órgãos
+                                        competentes.
+                                    </span>
+                                </label>
+                                <div class="invalid-feedback d-block text-danger" id="erro-veracidade"
+                                    style="display: none;">
+                                    É obrigatório declarar a veracidade das informações.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-acao-grupo" id="stepper-botoes">
+                            <button type="button" class="btn-jeves-contorno" id="btn-passo-voltar"
+                                style="visibility: hidden;">
+                                <i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar Etapa
+                            </button>
+
+                            <button type="button" class="btn-jeves-primario" id="btn-passo-avancar">
+                                <span>Próxima Etapa</span>
+                                <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-sucesso-overlay" id="modal-sucesso" role="dialog" aria-modal="true"
+        aria-labelledby="modal-sucesso-titulo">
+        <div class="modal-sucesso-caixa">
+            <div class="modal-sucesso-icone">
+                <i class="bi bi-check-lg"></i>
+            </div>
+            <span class="badge-status status-aprovada mb-3">Cadastro Concluído</span>
+            <h2 class="auth-titulo text-white mb-2" id="modal-sucesso-titulo">Conta da Escola Criada!</h2>
+            <p class="text-secondary text-sm mb-4">
+                A conta da sua escola foi cadastrada com sucesso nos Jogos Escolares de Vespasiano 2026. Enviamos uma
+                confirmação com os detalhes para o e-mail informado.
+            </p>
+
+            <div class="alerta-box alerta-sucesso text-start mb-4">
+                <i class="bi bi-check-circle-fill fs-5"></i>
+                <div class="text-sm">
+                    <strong>Próximo passo:</strong> Faça login na plataforma com o e-mail e senha cadastrados para
+                    iniciar a inscrição das modalidades esportivas e dos seus estudantes.
+                </div>
+            </div>
+
+            <a href="/publico/login.html" class="btn-jeves-primario w-100 justify-content-center py-3">
+                <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+                <span>Fazer Login Agora</span>
+            </a>
+        </div>
+    </div>
+
+    <footer class="rodape-jeves" role="contentinfo">
+        <div class="container">
+            <div class="row g-4 justify-content-between">
+                <div class="col-lg-4">
+                    <a href="/index.html" class="navbar-brand-jeves mb-3 d-inline-flex" aria-label="JEVES 2026">
+                        <img src="../assets/Img/logo.png" alt="" />
+                        <span class="texto-logo-jeves">JEVES</span>
+                    </a>
+                    <p class="rodape-descricao">
+                        Jogos Escolares de Vespasiano 2026. Incentivando a prática esportiva, a integração e a saúde
+                        dos estudantes do município.
+                    </p>
+                </div>
+
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Navegação</h2>
+                    <nav aria-label="Links rápidos">
+                        <a href="/index.html" class="rodape-link">Início</a>
+                        <a href="/publico/torneio.html" class="rodape-link">Torneios</a>
+                        <a href="/publico/calendario.html" class="rodape-link">Calendário</a>
+                    </nav>
+                </div>
+
+                <div class="col-sm-6 col-lg-2">
+                    <h2 class="rodape-titulo-coluna">Área Escolar</h2>
+                    <nav aria-label="Acesso e Suporte">
+                        <a href="/publico/login.html" class="rodape-link">Entrar</a>
+                        <a href="/publico/cadastro-escola.html" class="rodape-link ativo">Cadastrar Escola</a>
+                        <a href="/publico/recuperar-senha.html" class="rodape-link">Recuperar Senha</a>
+                    </nav>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <h2 class="rodape-titulo-coluna">Realização</h2>
+                    <address class="rodape-endereco">
+                        <p>Secretaria de Juventude e Esportes</p>
+                        <p>Prefeitura Municipal de Vespasiano — MG</p>
+                        <p>Praça de Esportes Cristóvão Jacques Bias Fortes</p>
+                        <p>Rua Sen. Modestino Gonçalves, 245 — Jardim Itaú</p>
+                    </address>
+                </div>
+            </div>
+
+            <hr class="rodape-divisor" />
+            <div class="rodape-base">
+                <p class="rodape-copyright">
+                    &copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        (function () {
+            'use strict';
+            const navbar = document.getElementById('navbar-principal');
+            const btnHamburguer = document.getElementById('btn-hamburguer');
+            const menuDropdown = document.getElementById('menu-dropdown-mobile');
+            const iconeHamburguer = document.getElementById('icone-hamburguer');
+
+            window.addEventListener('scroll', function () {
+                if (navbar) navbar.classList.toggle('rolado', window.scrollY > 40);
+            }, { passive: true });
+
+            if (btnHamburguer && menuDropdown) {
+                btnHamburguer.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const aberto = menuDropdown.classList.toggle('aberto');
+                    btnHamburguer.setAttribute('aria-expanded', String(aberto));
+                    if (iconeHamburguer) iconeHamburguer.className = aberto ? 'bi bi-x-lg' : 'bi bi-list';
+                });
+                document.addEventListener('click', function (e) {
+                    if (!menuDropdown.contains(e.target) && !btnHamburguer.contains(e.target)) {
+                        menuDropdown.classList.remove('aberto');
+                        btnHamburguer.setAttribute('aria-expanded', 'false');
+                        if (iconeHamburguer) iconeHamburguer.className = 'bi bi-list';
+                    }
+                });
+            }
+
+            const canvas = document.getElementById('canvas-particulas');
+            if (canvas) {
+                const ctx = canvas.getContext('2d');
+                let w = canvas.width = window.innerWidth;
+                let h = canvas.height = window.innerHeight;
+
+                window.addEventListener('resize', function () {
+                    w = canvas.width = window.innerWidth;
+                    h = canvas.height = window.innerHeight;
+                }, { passive: true });
+
+                const particulas = Array.from({ length: 60 }, function () {
+                    return {
+                        x: Math.random() * w,
+                        y: Math.random() * h,
+                        r: Math.random() * 1.8 + 0.4,
+                        vx: (Math.random() - 0.5) * 0.35,
+                        vy: (Math.random() - 0.5) * 0.35,
+                        alpha: Math.random() * 0.5 + 0.15,
+                        dourada: Math.random() > 0.8
+                    };
+                });
+
+                function animar() {
+                    ctx.clearRect(0, 0, w, h);
+                    particulas.forEach(function (p) {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        if (p.x < 0) p.x = w;
+                        if (p.x > w) p.x = 0;
+                        if (p.y < 0) p.y = h;
+                        if (p.y > h) p.y = 0;
+
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                        ctx.fillStyle = p.dourada ? '#F5B800' : '#4A6FD4';
+                        ctx.globalAlpha = p.alpha;
+                        ctx.fill();
+                    });
+                    requestAnimationFrame(animar);
+                }
+                animar();
+            }
+
+            // Toasts
+            function exibirToast(tipo, titulo, mensagem) {
+                const conteiner = document.getElementById('jeves-conteiner-toasts');
+                if (!conteiner) return;
+                const cores = { sucesso: '#2ECC71', erro: '#E74C3C', aviso: '#F39C12', info: '#3498DB' };
+                const icones = { sucesso: 'bi-check-circle-fill', erro: 'bi-x-circle-fill', aviso: 'bi-exclamation-triangle-fill', info: 'bi-info-circle-fill' };
+
+                const el = document.createElement('div');
+                Object.assign(el.style, {
+                    background: 'rgba(11, 22, 64, 0.98)',
+                    border: '1px solid rgba(42, 74, 175, 0.35)',
+                    borderLeft: '4px solid ' + (cores[tipo] || '#F5B800'),
+                    borderRadius: '14px',
+                    padding: '1rem 1.25rem',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.75rem',
+                    backdropFilter: 'blur(20px)',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.45)',
+                    opacity: '0',
+                    transform: 'translateX(20px)',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    fontFamily: "'Inter', sans-serif",
+                    marginTop: '0.5rem'
+                });
+
+                el.innerHTML = `
+                    <i class="bi ${icones[tipo] || 'bi-info-circle-fill'}" style="color:${cores[tipo]};font-size:1.25rem;flex-shrink:0;margin-top:2px;"></i>
+                    <div style="flex:1;min-width:0;">
+                        ${titulo ? `<div style="color:#fff;font-weight:600;font-size:.9rem;font-family:'Outfit',sans-serif;margin-bottom:2px;">${titulo}</div>` : ''}
+                        <div style="color:#A8B8D8;font-size:.875rem;line-height:1.45;">${mensagem}</div>
+                    </div>
+                    <button type="button" aria-label="Fechar" style="background:none;border:none;color:rgba(255,255,255,.4);cursor:pointer;padding:0;font-size:1.1rem;line-height:1;">
+                        <i class="bi bi-x"></i>
+                    </button>
+                `;
+
+                const btnFechar = el.querySelector('button');
+                btnFechar.addEventListener('click', function () {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateX(20px)';
+                    setTimeout(function () { el.remove(); }, 300);
+                });
+
+                conteiner.appendChild(el);
+                requestAnimationFrame(function () {
+                    requestAnimationFrame(function () {
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateX(0)';
+                    });
+                });
+
+                setTimeout(function () {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateX(20px)';
+                    setTimeout(function () { el.remove(); }, 300);
+                }, 4500);
+            }
+
+            function aplicarMascara(el, mascaraFn) {
+                if (!el) return;
+                el.addEventListener('input', function (e) {
+                    el.value = mascaraFn(el.value);
+                });
+            }
+
+            function mascaraCnpjInep(v) {
+                const d = v.replace(/\D/g, '');
+                if (d.length <= 8) return d;
+                return d.replace(/(\d{2})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1.$2')
+                    .replace(/(\d{3})(\d)/, '$1/$2')
+                    .replace(/(\d{4})(\d{1,2})/, '$1-$2')
+                    .substring(0, 18);
+            }
+
+            function mascaraCep(v) {
+                return v.replace(/\D/g, '')
+                    .replace(/(\d{5})(\d)/, '$1-$2')
+                    .substring(0, 9);
+            }
+
+            function mascaraTelefone(v) {
+                const d = v.replace(/\D/g, '');
+                return d.length <= 10
+                    ? d.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3').substring(0, 14)
+                    : d.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3').substring(0, 15);
+            }
+
+            const campoDoc = document.getElementById('campo-documento');
+            const campoCep = document.getElementById('campo-cep');
+            const campoTel = document.getElementById('campo-telefone-escola');
+            aplicarMascara(campoDoc, mascaraCnpjInep);
+            aplicarMascara(campoCep, mascaraCep);
+            aplicarMascara(campoTel, mascaraTelefone);
+
+            if (campoCep) {
+                campoCep.addEventListener('blur', function () {
+                    const digitos = campoCep.value.replace(/\D/g, '');
+                    if (digitos.length === 8) {
+                        const statusCep = document.getElementById('status-cep');
+                        if (statusCep) statusCep.textContent = 'Buscando...';
+
+                        fetch('https://viacep.com.br/ws/' + digitos + '/json/')
+                            .then(function (r) { return r.json(); })
+                            .then(function (data) {
+                                if (statusCep) statusCep.textContent = 'CEP Localizado';
+                                if (!data.erro) {
+                                    if (data.logradouro) document.getElementById('campo-logradouro').value = data.logradouro;
+                                    if (data.bairro) document.getElementById('campo-bairro').value = data.bairro;
+                                    document.getElementById('campo-logradouro').classList.add('is-valid');
+                                    document.getElementById('campo-bairro').classList.add('is-valid');
+                                    document.getElementById('campo-numero').focus();
+                                }
+                            })
+                            .catch(function () {
+                                if (statusCep) statusCep.textContent = 'Manual';
+                            });
+                    }
+                });
+            }
+
+            const btnToggleSenha = document.getElementById('btn-toggle-senha-cad');
+            const campoSenhaCad = document.getElementById('campo-senha-cadastro');
+            const iconeOlhoCad = document.getElementById('icone-olho-cad');
+            if (btnToggleSenha && campoSenhaCad && iconeOlhoCad) {
+                btnToggleSenha.addEventListener('click', function () {
+                    const tipo = campoSenhaCad.getAttribute('type') === 'password' ? 'text' : 'password';
+                    campoSenhaCad.setAttribute('type', tipo);
+                    iconeOlhoCad.className = tipo === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+                });
+            }
+
+            const barraForca = document.getElementById('barra-forca');
+            const nivelForca = document.getElementById('nivel-forca');
+            const reqLen = document.getElementById('req-len');
+            const reqUpper = document.getElementById('req-upper');
+            const reqNum = document.getElementById('req-num');
+            const reqSym = document.getElementById('req-sym');
+
+            function atualizarRequisito(item, valido) {
+                if (!item) return;
+                item.classList.toggle('cumprido', valido);
+                const icone = item.querySelector('i');
+                if (icone) icone.className = valido ? 'bi bi-check-circle-fill' : 'bi bi-circle';
+            }
+
+            if (campoSenhaCad) {
+                campoSenhaCad.addEventListener('input', function () {
+                    const s = this.value;
+                    const temLen = s.length >= 8;
+                    const temUpper = /[A-Z]/.test(s);
+                    const temNum = /[0-9]/.test(s);
+                    const temSym = /[^A-Za-z0-9]/.test(s);
+
+                    atualizarRequisito(reqLen, temLen);
+                    atualizarRequisito(reqUpper, temUpper);
+                    atualizarRequisito(reqNum, temNum);
+                    atualizarRequisito(reqSym, temSym);
+
+                    const acertos = [temLen, temUpper, temNum, temSym].filter(Boolean).length;
+                    barraForca.className = 'forca-senha-progresso';
+                    nivelForca.className = 'forca-senha-nivel';
+
+                    if (s.length === 0) {
+                        barraForca.style.width = '0%';
+                        nivelForca.textContent = '—';
+                    } else if (acertos <= 2) {
+                        barraForca.classList.add('fraca');
+                        nivelForca.classList.add('fraca');
+                        nivelForca.textContent = 'Fraca';
+                    } else if (acertos === 3) {
+                        barraForca.classList.add('media');
+                        nivelForca.classList.add('media');
+                        nivelForca.textContent = 'Média';
+                    } else {
+                        barraForca.classList.add('forte');
+                        nivelForca.classList.add('forte');
+                        nivelForca.textContent = 'Forte & Segura';
+                    }
+                });
+            }
+
+            let passoAtual = 0;
+            const totalPassos = 4;
+
+            const btnVoltar = document.getElementById('btn-passo-voltar');
+            const btnAvancar = document.getElementById('btn-passo-avancar');
+
+            function atualizarVisualStepper() {
+                for (let i = 0; i < totalPassos; i++) {
+                    const painel = document.getElementById('painel-etapa-' + i);
+                    if (painel) painel.classList.toggle('ativo', i === passoAtual);
+
+                    const indicador = document.getElementById('step-ind-' + i);
+                    if (indicador) {
+                        indicador.classList.remove('ativo', 'concluido');
+                        if (i === passoAtual) {
+                            indicador.classList.add('ativo');
+                            indicador.setAttribute('aria-current', 'step');
+                        } else if (i < passoAtual) {
+                            indicador.classList.add('concluido');
+                            indicador.removeAttribute('aria-current');
+                        } else {
+                            indicador.removeAttribute('aria-current');
+                        }
+                    }
+                }
+
+                if (btnVoltar) {
+                    btnVoltar.style.visibility = passoAtual === 0 ? 'hidden' : 'visible';
+                }
+                if (btnAvancar) {
+                    if (passoAtual === totalPassos - 1) {
+                        btnAvancar.innerHTML = '<i class="bi bi-check-circle" aria-hidden="true"></i> <span>Finalizar Cadastro da Escola</span>';
+                    } else {
+                        btnAvancar.innerHTML = '<span>Próxima Etapa</span> <i class="bi bi-arrow-right" aria-hidden="true"></i>';
+                    }
+                }
+
+                if (passoAtual === 3) {
+                    document.getElementById('rev-nome-oficial').textContent = document.getElementById('campo-nome-oficial').value;
+                    document.getElementById('rev-nome-fantasia').textContent = document.getElementById('campo-nome-fantasia').value;
+                    document.getElementById('rev-rede-doc').textContent = document.getElementById('campo-rede').value + ' • ' + document.getElementById('campo-documento').value;
+                    document.getElementById('rev-telefone').textContent = document.getElementById('campo-telefone-escola').value;
+                    document.getElementById('rev-endereco').textContent = document.getElementById('campo-logradouro').value + ', ' + document.getElementById('campo-numero').value;
+                    document.getElementById('rev-bairro-cep').textContent = document.getElementById('campo-bairro').value + ' — CEP ' + document.getElementById('campo-cep').value;
+                    document.getElementById('rev-responsavel').textContent = document.getElementById('campo-nome-responsavel').value + ' (' + document.getElementById('campo-cargo-responsavel').value + ')';
+                    document.getElementById('rev-email').textContent = document.getElementById('campo-email-acesso').value;
+                }
+
+                window.scrollTo({ top: 120, behavior: 'smooth' });
+            }
+
+            function validarPasso(indice) {
+                let valido = true;
+
+                if (indice === 0) {
+                    const nomeOficial = document.getElementById('campo-nome-oficial');
+                    const nomeFantasia = document.getElementById('campo-nome-fantasia');
+                    const rede = document.getElementById('campo-rede');
+                    const doc = document.getElementById('campo-documento');
+                    const tel = document.getElementById('campo-telefone-escola');
+
+                    if (!nomeOficial.value.trim() || nomeOficial.value.trim().length < 4) {
+                        nomeOficial.classList.add('is-invalid');
+                        valido = false;
+                    } else { nomeOficial.classList.remove('is-invalid'); nomeOficial.classList.add('is-valid'); }
+
+                    if (!nomeFantasia.value.trim()) {
+                        nomeFantasia.classList.add('is-invalid');
+                        valido = false;
+                    } else { nomeFantasia.classList.remove('is-invalid'); nomeFantasia.classList.add('is-valid'); }
+
+                    if (!rede.value) {
+                        rede.classList.add('is-invalid');
+                        valido = false;
+                    } else { rede.classList.remove('is-invalid'); rede.classList.add('is-valid'); }
+
+                    const docDigitos = doc.value.replace(/\D/g, '');
+                    if (docDigitos.length !== 8 && docDigitos.length !== 14) {
+                        doc.classList.add('is-invalid');
+                        valido = false;
+                    } else { doc.classList.remove('is-invalid'); doc.classList.add('is-valid'); }
+
+                    const telDigitos = tel.value.replace(/\D/g, '');
+                    if (telDigitos.length < 10) {
+                        tel.classList.add('is-invalid');
+                        valido = false;
+                    } else { tel.classList.remove('is-invalid'); tel.classList.add('is-valid'); }
+                }
+
+                if (indice === 1) {
+                    const cep = document.getElementById('campo-cep');
+                    const logradouro = document.getElementById('campo-logradouro');
+                    const numero = document.getElementById('campo-numero');
+                    const bairro = document.getElementById('campo-bairro');
+
+                    const cepDigitos = cep.value.replace(/\D/g, '');
+                    if (cepDigitos.length !== 8) {
+                        cep.classList.add('is-invalid');
+                        valido = false;
+                    } else { cep.classList.remove('is-invalid'); cep.classList.add('is-valid'); }
+
+                    if (!logradouro.value.trim()) {
+                        logradouro.classList.add('is-invalid');
+                        valido = false;
+                    } else { logradouro.classList.remove('is-invalid'); logradouro.classList.add('is-valid'); }
+
+                    if (!numero.value.trim()) {
+                        numero.classList.add('is-invalid');
+                        valido = false;
+                    } else { numero.classList.remove('is-invalid'); numero.classList.add('is-valid'); }
+
+                    if (!bairro.value.trim()) {
+                        bairro.classList.add('is-invalid');
+                        valido = false;
+                    } else { bairro.classList.remove('is-invalid'); bairro.classList.add('is-valid'); }
+                }
+
+                if (indice === 2) {
+                    const resp = document.getElementById('campo-nome-responsavel');
+                    const cargo = document.getElementById('campo-cargo-responsavel');
+                    const email = document.getElementById('campo-email-acesso');
+                    const emailConf = document.getElementById('campo-email-confirmacao');
+                    const senha = document.getElementById('campo-senha-cadastro');
+                    const senhaConf = document.getElementById('campo-senha-confirma');
+
+                    if (!resp.value.trim()) {
+                        resp.classList.add('is-invalid');
+                        valido = false;
+                    } else { resp.classList.remove('is-invalid'); resp.classList.add('is-valid'); }
+
+                    if (!cargo.value.trim()) {
+                        cargo.classList.add('is-invalid');
+                        valido = false;
+                    } else { cargo.classList.remove('is-invalid'); cargo.classList.add('is-valid'); }
+
+                    const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email.value.trim() || !regexEmail.test(email.value.trim())) {
+                        email.classList.add('is-invalid');
+                        valido = false;
+                    } else { email.classList.remove('is-invalid'); email.classList.add('is-valid'); }
+
+                    if (email.value.trim() !== emailConf.value.trim() || !emailConf.value.trim()) {
+                        emailConf.classList.add('is-invalid');
+                        valido = false;
+                    } else { emailConf.classList.remove('is-invalid'); emailConf.classList.add('is-valid'); }
+
+                    if (senha.value.length < 8 || !/[A-Z]/.test(senha.value) || !/[0-9]/.test(senha.value)) {
+                        senha.classList.add('is-invalid');
+                        valido = false;
+                    } else { senha.classList.remove('is-invalid'); senha.classList.add('is-valid'); }
+
+                    if (senha.value !== senhaConf.value || !senhaConf.value) {
+                        senhaConf.classList.add('is-invalid');
+                        valido = false;
+                    } else { senhaConf.classList.remove('is-invalid'); senhaConf.classList.add('is-valid'); }
+                }
+
+                if (indice === 3) {
+                    const checkTermos = document.getElementById('check-termos');
+                    const checkVeracidade = document.getElementById('check-veracidade');
+                    const erroTermos = document.getElementById('erro-termos');
+                    const erroVeracidade = document.getElementById('erro-veracidade');
+
+                    if (!checkTermos.checked) {
+                        erroTermos.style.display = 'block';
+                        valido = false;
+                    } else { erroTermos.style.display = 'none'; }
+
+                    if (!checkVeracidade.checked) {
+                        erroVeracidade.style.display = 'block';
+                        valido = false;
+                    } else { erroVeracidade.style.display = 'none'; }
+                }
+
+                return valido;
+            }
+
+            if (btnAvancar) {
+                btnAvancar.addEventListener('click', function () {
+                    if (!validarPasso(passoAtual)) {
+                        exibirToast('erro', 'Campos Incompletos', 'Por favor, revise os campos destacados nesta etapa antes de continuar.');
+                        return;
+                    }
+
+                    if (passoAtual < totalPassos - 1) {
+                        passoAtual++;
+                        atualizarVisualStepper();
+                    } else {
+                        btnAvancar.disabled = true;
+                        btnAvancar.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Processando cadastro...';
+
+                        /* =====================================================================
+                           [BANCO DE DADOS TEMPORÁRIO / MOCK FRONT-END]
+                           Substitua a simulação por uma requisição ao backend para salvar a escola.
+                           ===================================================================== */
+                        setTimeout(function () {
+                            const modalSucesso = document.getElementById('modal-sucesso');
+                            if (modalSucesso) modalSucesso.classList.add('ativo');
+                            exibirToast('sucesso', 'Cadastro Realizado!', 'A escola foi cadastrada com sucesso nos Jogos Escolares 2026!');
+                        }, 1200);
+                        /* =====================================================================
+                           [FIM DO BANCO DE DADOS TEMPORÁRIO / MOCK]
+                           ===================================================================== */
+                    }
+                });
+            }
+
+            if (btnVoltar) {
+                btnVoltar.addEventListener('click', function () {
+                    if (passoAtual > 0) {
+                        passoAtual--;
+                        atualizarVisualStepper();
+                    }
+                });
+            }
+
+            document.querySelectorAll('.campo-controle').forEach(function (input) {
+                input.addEventListener('input', function () {
+                    if (this.classList.contains('is-invalid')) this.classList.remove('is-invalid');
+                });
+            });
+
+        })();
+    </script>
+</body>
+
+</html>

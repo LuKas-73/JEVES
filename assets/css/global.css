@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--fonte-texto);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fonte-titulos);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--cor-texto-principal);
+}
+
+h1 { font-size: var(--tamanho-h1); }
+h2 { font-size: var(--tamanho-h2); }
+h3 { font-size: var(--tamanho-h3); }
+
+p {
+  font-size: var(--tamanho-texto);
+  color: var(--cor-texto-secundario);
+  line-height: 1.75;
+}
+
+a {
+  color: var(--cor-secundaria);
+  text-decoration: none;
+  transition: var(--transicao-rapida);
+}
+
+a:hover {
+  color: var(--cor-acento);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+address {
+  font-style: normal;
+}
+
+:focus-visible {
+  outline: 3px solid var(--cor-secundaria);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background-color: var(--cor-secundaria);
+  color: var(--cor-fundo);
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cor-fundo);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cor-superficie-2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cor-secundaria);
+}
+
+.secao {
+  padding: var(--espaco-3xl) 0;
+}
+
+.secao-escura {
+  background-color: var(--cor-fundo);
+}
+
+.secao-superficie {
+  background-color: var(--cor-superficie);
+}
+
+.secao-superficie-2 {
+  background-color: rgba(22, 32, 85, 0.6);
+}
+
+.titulo-secao {
+  font-family: var(--fonte-titulos);
+  font-weight: 800;
+  margin-bottom: var(--espaco-sm);
+}
+
+.subtitulo-secao {
+  color: var(--cor-texto-secundario);
+  font-size: 1.05rem;
+  margin-bottom: var(--espaco-xl);
+}
+
+.linha-decorativa {
+  width: 52px;
+  height: 4px;
+  background: var(--gradiente-dourado);
+  border-radius: 2px;
+  margin: var(--espaco-sm) 0 var(--espaco-lg);
+}
+
+.linha-decorativa.centro {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.gradiente-texto {
+  background: var(--gradiente-dourado);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card-jeves {
+  background: var(--gradiente-card);
+  border: 1px solid var(--cor-borda-suave);
+  border-radius: var(--borda-raio-md);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transicao-padrao);
+  overflow: hidden;
+  position: relative;
+}
+
+.card-jeves::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradiente-dourado);
+  opacity: 0;
+  transition: var(--transicao-padrao);
+}
+
+.card-jeves:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--sombra-lg), 0 0 0 1px rgba(245, 184, 0, 0.2);
+  border-color: rgba(245, 184, 0, 0.25);
+}
+
+.card-jeves:hover::before {
+  opacity: 1;
+}
+
+.btn-jeves-primario {
+  background: var(--gradiente-dourado);
+  color: #0B1640;
+  font-family: var(--fonte-titulos);
+  font-weight: 700;
+  padding: 0.8rem 2rem;
+  border-radius: var(--borda-raio-lg);
+  border: none;
+  cursor: pointer;
+  transition: var(--transicao-padrao);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: var(--sombra-dourada);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.btn-jeves-primario:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 36px rgba(245, 184, 0, 0.55);
+  color: #0B1640;
+  filter: brightness(1.08);
+}
+
+.btn-jeves-primario:active {
+  transform: translateY(-1px);
+}
+
+.btn-jeves-contorno {
+  background: transparent;
+  color: var(--cor-texto-principal);
+  font-family: var(--fonte-titulos);
+  font-weight: 600;
+  padding: 0.8rem 2rem;
+  border-radius: var(--borda-raio-lg);
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  cursor: pointer;
+  transition: var(--transicao-padrao);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-jeves-contorno:hover {
+  border-color: var(--cor-secundaria);
+  color: var(--cor-secundaria);
+  background: rgba(245, 184, 0, 0.07);
+  transform: translateY(-3px);
+}
+
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: var(--fonte-titulos);
+  letter-spacing: 0.02em;
+}
+
+.badge-status::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.status-rascunho { background: rgba(176, 190, 197, 0.12); color: #90A4AE; }
+.status-inscricoes-abertas { background: rgba(52, 152, 219, 0.15); color: #3498DB; }
+.status-em-andamento { background: rgba(245, 184, 0, 0.15); color: #F5B800; }
+.status-encerrado { background: rgba(120, 144, 156, 0.12); color: #78909C; }
+.status-pendente { background: rgba(243, 156, 18, 0.15); color: #F39C12; }
+.status-aprovada { background: rgba(46, 204, 113, 0.15); color: #2ECC71; }
+.status-correcao { background: rgba(232, 102, 10, 0.15); color: #E8660A; }
+.status-recusada { background: rgba(231, 76, 60, 0.15); color: #E74C3C; }
+.status-agendado { background: rgba(52, 152, 219, 0.15); color: #3498DB; }
+.status-finalizado { background: rgba(46, 204, 113, 0.15); color: #2ECC71; }
+
+.animado {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.animado.visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.atraso-1 { transition-delay: 0.1s; }
+.atraso-2 { transition-delay: 0.2s; }
+.atraso-3 { transition-delay: 0.3s; }
+.atraso-4 { transition-delay: 0.4s; }
+.atraso-5 { transition-delay: 0.5s; }
+.atraso-6 { transition-delay: 0.6s; }
+.atraso-7 { transition-delay: 0.7s; }
+.atraso-8 { transition-delay: 0.8s; }

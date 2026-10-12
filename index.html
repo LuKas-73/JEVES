@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="JEVES 2026 — Jogos Escolares de Vespasiano. A maior competição esportiva escolar do município. Acompanhe torneios, jogos e resultados em tempo real." />
+  <meta name="keywords"
+    content="JEVES, Jogos Escolares, Vespasiano, esporte escolar, torneios, futsal, vôlei, atletismo" />
+  <meta property="og:title" content="JEVES 2026 — Jogos Escolares de Vespasiano" />
+  <meta property="og:description"
+    content="A maior competição esportiva escolar de Vespasiano. Inscreva sua escola e acompanhe os jogos." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0B1640" />
+  <link rel="icon" type="image/png" href="assets/Img/logo.png" />
+  <title>JEVES 2026 — Jogos Escolares de Vespasiano</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+  <link rel="stylesheet" href="assets/css/variaveis.css" />
+  <link rel="stylesheet" href="assets/css/global.css" />
+  <link rel="stylesheet" href="assets/css/componentes.css" />
+
+  <style>
+    .heroi {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: #0B1640;
+    }
+
+    #canvas-particulas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .heroi-glow-a {
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26, 58, 143, 0.45) 0%, transparent 70%);
+      top: -200px;
+      left: -150px;
+      pointer-events: none;
+    }
+
+    .heroi-glow-b {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 102, 10, 0.2) 0%, transparent 70%);
+      bottom: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+
+    .heroi-conteudo {
+      position: relative;
+      z-index: 2;
+      padding: 120px 0 80px;
+      width: 100%;
+    }
+
+    .badge-evento {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 1.2rem;
+      border-radius: 100px;
+      border: 1px solid rgba(245, 184, 0, 0.35);
+      background: rgba(245, 184, 0, 0.08);
+      color: var(--cor-secundaria);
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: var(--espaco-lg);
+    }
+
+    .badge-evento .bi-fire {
+      color: var(--cor-acento);
+      filter: drop-shadow(0 0 4px rgba(232, 102, 10, 0.6));
+    }
+
+    .heroi-titulo {
+      font-family: var(--fonte-titulos);
+      font-weight: 900;
+      font-size: clamp(3.5rem, 10vw, 7.5rem);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--espaco-md);
+      text-shadow: 0 0 80px rgba(26, 58, 143, 0.5);
+    }
+
+    .heroi-titulo-destaque {
+      background: var(--gradiente-dourado);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+
+    .heroi-titulo-sub {
+      color: rgba(255, 255, 255, 0.85);
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: block;
+    }
+
+    .heroi-ano {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--borda-raio-sm);
+      padding: 0.1rem 0.65rem;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.1em;
+    }
+
+    .heroi-descricao {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: rgba(168, 184, 216, 0.9);
+      max-width: 560px;
+      line-height: 1.75;
+      margin: var(--espaco-xl) auto;
+    }
+
+    .heroi-acoes {
+      display: flex;
+      gap: var(--espaco-md);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--espaco-2xl);
+    }
+
+    .heroi-acoes .btn-jeves-primario {
+      font-size: 1.05rem;
+      padding: 1rem 2.4rem;
+    }
+
+    .heroi-acoes .btn-jeves-contorno {
+      font-size: 1.05rem;
+      padding: 1rem 2.4rem;
+    }
+
+    .heroi-chips {
+      display: flex;
+      gap: var(--espaco-md);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stat-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--borda-raio-md);
+      backdrop-filter: blur(8px);
+      min-width: 100px;
+    }
+
+    .stat-chip-numero {
+      font-family: var(--fonte-titulos);
+      font-weight: 800;
+      font-size: 1.6rem;
+      background: var(--gradiente-dourado);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .stat-chip-label {
+      font-size: 0.75rem;
+      color: rgba(168, 184, 216, 0.7);
+      margin-top: 0.25rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    .heroi-onda {
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      line-height: 0;
+      z-index: 2;
+    }
+
+    .heroi-onda svg {
+      width: 100%;
+      height: 80px;
+    }
+
+    .heroi-indicador-scroll {
+      position: absolute;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(168, 184, 216, 0.5);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-family: var(--fonte-titulos);
+      z-index: 3;
+      animation: pulsar-scroll 2s ease-in-out infinite;
+    }
+
+    .scroll-bolinha {
+      width: 24px;
+      height: 38px;
+      border: 2px solid rgba(168, 184, 216, 0.3);
+      border-radius: 12px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .scroll-bolinha::before {
+      content: '';
+      width: 4px;
+      height: 8px;
+      background: var(--cor-secundaria);
+      border-radius: 2px;
+      position: absolute;
+      top: 5px;
+      animation: rolar 1.5s ease-in-out infinite;
+    }
+
+    @keyframes rolar {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(16px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes pulsar-scroll {
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    .secao-numeros {
+      background: var(--cor-superficie);
+      padding: var(--espaco-3xl) 0;
+      border-bottom: 1px solid var(--cor-borda-suave);
+    }
+
+    .numero-card {
+      text-align: center;
+      padding: var(--espaco-xl);
+      border-radius: var(--borda-raio-md);
+      position: relative;
+      transition: var(--transicao-padrao);
+    }
+
+    .numero-icone {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(245, 184, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--espaco-md);
+      font-size: 1.5rem;
+      color: var(--cor-secundaria);
+      border: 1px solid rgba(245, 184, 0, 0.2);
+    }
+
+    .numero-valor {
+      display: block;
+      font-family: var(--fonte-titulos);
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      background: var(--gradiente-dourado);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .numero-label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--cor-texto-secundario);
+      margin-top: 0.4rem;
+      font-weight: 500;
+    }
+
+    .badge-secao-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(245, 184, 0, 0.1);
+      border: 1px solid rgba(245, 184, 0, 0.25);
+      color: var(--cor-secundaria);
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 100px;
+      margin-bottom: var(--espaco-sm);
+    }
+
+    .card-torneio {
+      border-radius: var(--borda-raio-lg);
+      background: var(--gradiente-card);
+      border: 1px solid var(--cor-borda-suave);
+      padding: var(--espaco-xl);
+      transition: var(--transicao-padrao);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-torneio::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 0;
+      transition: var(--transicao-padrao);
+      opacity: 0;
+    }
+
+    .card-torneio:hover::before {
+      opacity: 1;
+    }
+
+    .card-torneio:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--sombra-lg);
+      border-color: rgba(245, 184, 0, 0.2);
+    }
+
+    .card-torneio.cor-futsal::before {
+      background: linear-gradient(90deg, #E8660A, #F5B800);
+    }
+
+    .card-torneio.cor-volei::before {
+      background: linear-gradient(90deg, #1A3A8F, #3498DB);
+    }
+
+    .card-torneio.cor-atletismo::before {
+      background: linear-gradient(90deg, #2ECC71, #1A8F6E);
+    }
+
+    .torneio-icone {
+      width: 60px;
+      height: 60px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: var(--espaco-md);
+    }
+
+    .torneio-icone.futsal {
+      background: rgba(232, 102, 10, 0.15);
+      color: var(--cor-acento);
+      border: 1px solid rgba(232, 102, 10, 0.25);
+    }
+
+    .torneio-icone.volei {
+      background: rgba(26, 58, 143, 0.2);
+      color: #5B8BF5;
+      border: 1px solid rgba(26, 58, 143, 0.3);
+    }
+
+    .torneio-icone.atletismo {
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ECC71;
+      border: 1px solid rgba(46, 204, 113, 0.25);
+    }
+
+    .torneio-nome {
+      font-family: var(--fonte-titulos);
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .torneio-modalidade {
+      font-size: 0.85rem;
+      color: var(--cor-texto-secundario);
+      margin-bottom: var(--espaco-md);
+    }
+
+    .torneio-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--cor-texto-secundario);
+      margin-bottom: 0.4rem;
+    }
+
+    .torneio-info-item i {
+      color: var(--cor-secundaria);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .torneio-rodape {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: var(--espaco-lg);
+      padding-top: var(--espaco-md);
+      border-top: 1px solid var(--cor-borda-suave);
+    }
+
+    .btn-torneio {
+      background: none;
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-md);
+      color: var(--cor-texto-secundario);
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.1rem;
+      cursor: pointer;
+      transition: var(--transicao-rapida);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-torneio:hover {
+      border-color: var(--cor-secundaria);
+      color: var(--cor-secundaria);
+    }
+
+    .secao-jogos {
+      background: rgba(16, 25, 65, 0.7);
+    }
+
+    .tabs-jogos {
+      display: flex;
+      gap: 0.3rem;
+      background: rgba(11, 22, 64, 0.6);
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-md);
+      padding: 0.3rem;
+      display: inline-flex;
+      margin-bottom: var(--espaco-2xl);
+    }
+
+    .tab-btn {
+      padding: 0.6rem 1.6rem;
+      border-radius: calc(var(--borda-raio-md) - 4px);
+      border: none;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.55);
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transicao-padrao);
+    }
+
+    .tab-btn.ativo {
+      background: var(--gradiente-dourado);
+      color: #0B1640;
+      box-shadow: 0 2px 10px rgba(245, 184, 0, 0.35);
+    }
+
+    .tab-btn:not(.ativo):hover {
+      color: var(--cor-texto-principal);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .estado-vazio {
+      text-align: center;
+      padding: var(--espaco-3xl) 0;
+    }
+
+    .estado-vazio-icone {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(26, 58, 143, 0.15);
+      border: 1px solid var(--cor-borda-suave);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--espaco-xl);
+      font-size: 2.5rem;
+      color: var(--cor-texto-secundario);
+    }
+
+    .estado-vazio h3 {
+      font-size: 1.3rem;
+      margin-bottom: var(--espaco-sm);
+    }
+
+    .estado-vazio p {
+      max-width: 380px;
+      margin: 0 auto;
+      font-size: 0.95rem;
+    }
+
+    .card-jogo {
+      background: var(--gradiente-card);
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-lg);
+      padding: var(--espaco-lg) var(--espaco-xl);
+      transition: var(--transicao-padrao);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-jogo:hover {
+      transform: translateY(-4px);
+      border-color: rgba(245, 184, 0, 0.3);
+      box-shadow: var(--sombra-md);
+    }
+
+    .card-jogo-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--espaco-lg);
+      padding-bottom: var(--espaco-sm);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .badge-modalidade {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: var(--fonte-titulos);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-modalidade.futsal {
+      color: #E8660A;
+    }
+
+    .badge-modalidade.volei {
+      color: #3498DB;
+    }
+
+    .badge-jogo-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--cor-secundaria);
+      background: rgba(245, 184, 0, 0.1);
+      border: 1px solid rgba(245, 184, 0, 0.25);
+      border-radius: 100px;
+      padding: 0.2rem 0.75rem;
+    }
+
+    .card-jogo-confronto {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--espaco-md);
+      margin: var(--espaco-lg) 0;
+    }
+
+    .equipe-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    .equipe-icone {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(26, 58, 143, 0.3);
+      border: 1px solid rgba(42, 74, 175, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--cor-secundaria);
+    }
+
+    .equipe-nome {
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--cor-texto-principal);
+    }
+
+    .jogo-centro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0 var(--espaco-sm);
+    }
+
+    .badge-vs {
+      font-family: var(--fonte-titulos);
+      font-weight: 900;
+      font-size: 1.1rem;
+      color: var(--cor-acento);
+      background: rgba(232, 102, 10, 0.12);
+      border: 1px solid rgba(232, 102, 10, 0.25);
+      border-radius: 100px;
+      padding: 0.2rem 0.8rem;
+    }
+
+    .jogo-fase {
+      font-size: 0.75rem;
+      color: var(--cor-texto-secundario);
+    }
+
+    .card-jogo-rodape {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--cor-texto-secundario);
+      padding-top: var(--espaco-md);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .card-jogo-rodape span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .secao-sobre {
+      background: linear-gradient(180deg, #162055 0%, rgba(11, 22, 64, 0.95) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sobre-texto-destaque {
+      font-size: 1.12rem;
+      color: var(--cor-texto-principal);
+      line-height: 1.7;
+      margin-bottom: var(--espaco-md);
+    }
+
+    .sobre-texto {
+      font-size: 0.96rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.75;
+      margin-bottom: var(--espaco-xl);
+    }
+
+    .sobre-pilares {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--espaco-md);
+      margin-top: var(--espaco-xl);
+    }
+
+    .sobre-pilar-card {
+      background: rgba(22, 32, 85, 0.45);
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-md);
+      padding: var(--espaco-md);
+      display: flex;
+      gap: var(--espaco-md);
+      align-items: flex-start;
+      transition: var(--transicao-padrao);
+    }
+
+    .sobre-pilar-card:hover {
+      border-color: rgba(245, 184, 0, 0.3);
+      transform: translateY(-3px);
+      background: rgba(245, 184, 0, 0.05);
+    }
+
+    .sobre-pilar-icone {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(245, 184, 0, 0.12);
+      border: 1px solid rgba(245, 184, 0, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: var(--cor-secundaria);
+      flex-shrink: 0;
+    }
+
+    .sobre-pilar-titulo {
+      font-family: var(--fonte-titulos);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      margin-bottom: 0.25rem;
+    }
+
+    .sobre-pilar-desc {
+      font-size: 0.82rem;
+      color: var(--cor-texto-secundario);
+      line-height: 1.45;
+      margin: 0;
+    }
+
+    .card-sobre-destaque {
+      background: var(--gradiente-card);
+      border: 1px solid rgba(245, 184, 0, 0.3);
+      border-radius: var(--borda-raio-xl);
+      padding: var(--espaco-2xl);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(26, 58, 143, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-sobre-destaque::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 184, 0, 0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card-sobre-topo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--espaco-xl);
+      padding-bottom: var(--espaco-lg);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sobre-emblema-fogo {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(232, 102, 10, 0.25), rgba(245, 184, 0, 0.2));
+      border: 1px solid rgba(245, 184, 0, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--cor-acento);
+      filter: drop-shadow(0 0 8px rgba(232, 102, 10, 0.5));
+    }
+
+    .sobre-anos-badge {
+      text-align: center;
+    }
+
+    .sobre-anos-numero {
+      display: block;
+      font-family: var(--fonte-titulos);
+      font-size: 2.2rem;
+      font-weight: 900;
+      line-height: 1;
+      background: var(--gradiente-dourado);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sobre-anos-rotulo {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--cor-texto-secundario);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .card-sobre-titulo {
+      font-family: var(--fonte-titulos);
+      font-weight: 800;
+      font-size: 1.45rem;
+      margin-bottom: 0.3rem;
+      color: var(--cor-texto-principal);
+    }
+
+    .card-sobre-sub {
+      font-size: 0.88rem;
+      color: var(--cor-secundaria);
+      margin-bottom: var(--espaco-xl);
+      font-weight: 500;
+    }
+
+    .sobre-metricas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--espaco-md);
+      margin-bottom: var(--espaco-xl);
+    }
+
+    .sobre-metrica-item {
+      background: rgba(11, 22, 64, 0.7);
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-md);
+      padding: var(--espaco-md);
+      text-align: center;
+    }
+
+    .sobre-metrica-valor {
+      display: block;
+      font-family: var(--fonte-titulos);
+      font-weight: 800;
+      font-size: 1.4rem;
+      color: var(--cor-secundaria);
+      line-height: 1.2;
+    }
+
+    .sobre-metrica-label {
+      font-size: 0.72rem;
+      color: var(--cor-texto-secundario);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
+      display: block;
+    }
+
+    .card-sobre-locais {
+      background: rgba(22, 32, 85, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--borda-raio-md);
+      padding: var(--espaco-md);
+      margin-bottom: var(--espaco-lg);
+    }
+
+    .locais-titulo {
+      display: block;
+      font-family: var(--fonte-titulos);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--cor-texto-principal);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .locais-titulo i {
+      color: var(--cor-acento);
+    }
+
+    .locais-lista {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .locais-lista li {
+      font-size: 0.8rem;
+      color: var(--cor-texto-secundario);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      line-height: 1.35;
+    }
+
+    .locais-lista li i {
+      color: var(--cor-sucesso);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .card-sobre-orgao {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      padding-top: var(--espaco-md);
+    }
+
+    .card-sobre-orgao i {
+      color: var(--cor-secundaria);
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .calendario-conteiner {
+      background: var(--gradiente-card);
+      border: 1px solid var(--cor-borda-suave);
+      border-radius: var(--borda-raio-xl);
+      padding: var(--espaco-2xl);
+      box-shadow: var(--sombra-lg);
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .calendario-topo {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--espaco-xl);
+      padding-bottom: var(--espaco-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .calendario-mes-ano {
+      font-family: var(--fonte-titulos);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--cor-texto-principal);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 0;
+    }
+
+    .calendario-mes-ano i {
+      color: var(--cor-secundaria);
+    }
+
+    .calendario-botoes-nav {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-calendario-nav {
+      background: rgba(22, 32, 85, 0.6);
+      border: 1px solid var(--cor-borda-suave);
+      color: var(--cor-texto-principal);
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--borda-raio-sm);
+      cursor: pointer;
+      transition: var(--transicao-rapida);
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-calendario-nav:hover {
+      border-color: var(--cor-secundaria);
+      color: var(--cor-secundaria);
+      background: rgba(245, 184, 0, 0.1);
+    }
+
+    .calendario-dias-semana {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .dia-semana-rotulo {
+      font-family: var(--fonte-titulos);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--cor-texto-secundario);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 6px 0;
+    }
+
+    .calendario-grade {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .dia-celula {
+      min-height: 85px;
+      background: rgba(11, 22, 64, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--borda-raio-md);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transicao-padrao);
+      position: relative;
+      user-select: none;
+    }
+
+    .dia-celula.outro-mes {
+      opacity: 0.2;
+      background: transparent;
+      border-color: transparent;
+      cursor: default;
+    }
+
+    .dia-numero {
+      font-family: var(--fonte-titulos);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .dia-celula.tem-jogo {
+      cursor: pointer;
+      border-width: 1.5px;
+    }
+
+    .dia-celula.tem-jogo:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+      z-index: 2;
+    }
+
+    .dia-celula.jogo-futsal {
+      border-color: rgba(232, 102, 10, 0.7);
+      background: linear-gradient(135deg, rgba(232, 102, 10, 0.18), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-futsal .dia-numero {
+      color: #E8660A;
+      font-weight: 900;
+    }
+
+    .dia-celula.jogo-volei {
+      border-color: rgba(52, 152, 219, 0.7);
+      background: linear-gradient(135deg, rgba(52, 152, 219, 0.18), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-volei .dia-numero {
+      color: #3498DB;
+      font-weight: 900;
+    }
+
+    .dia-celula.jogo-handebol {
+      border-color: rgba(46, 204, 113, 0.7);
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.18), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-handebol .dia-numero {
+      color: #2ECC71;
+      font-weight: 900;
+    }
+
+    .dia-celula.jogo-basquete {
+      border-color: rgba(245, 184, 0, 0.7);
+      background: linear-gradient(135deg, rgba(245, 184, 0, 0.18), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-basquete .dia-numero {
+      color: #F5B800;
+      font-weight: 900;
+    }
+
+    .dia-celula.jogo-atletismo {
+      border-color: rgba(155, 89, 182, 0.7);
+      background: linear-gradient(135deg, rgba(155, 89, 182, 0.18), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-atletismo .dia-numero {
+      color: #9B59B6;
+      font-weight: 900;
+    }
+
+    .dia-celula.jogo-finais {
+      border-color: rgba(0, 210, 211, 0.7);
+      background: linear-gradient(135deg, rgba(0, 210, 211, 0.2), rgba(11, 22, 64, 0.85));
+    }
+
+    .dia-celula.jogo-finais .dia-numero {
+      color: #00D2D3;
+      font-weight: 900;
+    }
+
+    .dia-badge-jogo {
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: var(--fonte-titulos);
+      border-radius: 6px;
+      padding: 3px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: center;
+      display: block;
+      margin-top: auto;
+    }
+
+    .badge-cor-futsal {
+      background: rgba(232, 102, 10, 0.28);
+      color: #FFA07A;
+      border: 1px solid rgba(232, 102, 10, 0.45);
+    }
+
+    .badge-cor-volei {
+      background: rgba(52, 152, 219, 0.28);
+      color: #74B9FF;
+      border: 1px solid rgba(52, 152, 219, 0.45);
+    }
+
+    .badge-cor-handebol {
+      background: rgba(46, 204, 113, 0.28);
+      color: #55EFC4;
+      border: 1px solid rgba(46, 204, 113, 0.45);
+    }
+
+    .badge-cor-basquete {
+      background: rgba(245, 184, 0, 0.28);
+      color: #FFEAA7;
+      border: 1px solid rgba(245, 184, 0, 0.45);
+    }
+
+    .badge-cor-atletismo {
+      background: rgba(155, 89, 182, 0.28);
+      color: #D6A2E8;
+      border: 1px solid rgba(155, 89, 182, 0.45);
+    }
+
+    .badge-cor-finais {
+      background: rgba(0, 210, 211, 0.28);
+      color: #81ECEC;
+      border: 1px solid rgba(0, 210, 211, 0.45);
+    }
+
+    .calendario-legenda {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: var(--espaco-xl);
+      padding-top: var(--espaco-lg);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .legenda-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--cor-texto-secundario);
+      font-family: var(--fonte-titulos);
+      font-weight: 600;
+    }
+
+    .legenda-ponto {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .modal-jogo-custom {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1080;
+      background: rgba(6, 13, 48, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-jogo-custom.ativo {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-jogo-caixa {
+      background: #0B1640;
+      border: 1px solid rgba(245, 184, 0, 0.35);
+      border-radius: var(--borda-raio-xl);
+      max-width: 540px;
+      width: 100%;
+      padding: var(--espaco-2xl);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(245, 184, 0, 0.15);
+      position: relative;
+      animation: modalSurgir 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSurgir {
+      from {
+        transform: translateY(20px) scale(0.96);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal-jogo-fechar {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transicao-rapida);
+      font-size: 1.1rem;
+    }
+
+    .modal-jogo-fechar:hover {
+      background: rgba(232, 102, 10, 0.3);
+      color: var(--cor-acento);
+      border-color: var(--cor-acento);
+    }
+
+    .modal-jogo-header {
+      margin-bottom: var(--espaco-lg);
+      padding-bottom: var(--espaco-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-data-destaque {
+      font-family: var(--fonte-titulos);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--cor-texto-principal);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-jogo-partidas {
+      display: flex;
+      flex-direction: column;
+      gap: var(--espaco-md);
+    }
+
+    .divisor-onda {
+      line-height: 0;
+      margin-bottom: -1px;
+    }
+
+    .divisor-onda svg {
+      width: 100%;
+      height: 60px;
+    }
+
+    @media (max-width: 768px) {
+      .heroi-titulo {
+        font-size: clamp(3rem, 14vw, 5rem);
+      }
+
+      .heroi-conteudo {
+        padding: 100px 0 60px;
+      }
+
+      .heroi-indicador-scroll {
+        display: none;
+      }
+
+      .stat-chip {
+        min-width: 80px;
+        padding: 0.6rem 1rem;
+      }
+
+      .stat-chip-numero {
+        font-size: 1.3rem;
+      }
+
+      .card-jogo {
+        padding: var(--espaco-md);
+      }
+
+      .card-jogo-confronto {
+        gap: var(--espaco-sm);
+      }
+
+      .equipe-nome {
+        font-size: 0.85rem;
+      }
+
+      .calendario-conteiner {
+        padding: var(--espaco-md);
+      }
+
+      .dia-celula {
+        min-height: 54px;
+        padding: 4px;
+      }
+
+      .dia-numero {
+        font-size: 0.75rem;
+      }
+
+      .dia-badge-jogo {
+        font-size: 0.52rem;
+        padding: 2px 2px;
+      }
+
+      .calendario-dias-semana {
+        gap: 4px;
+      }
+
+      .calendario-grade {
+        gap: 4px;
+      }
+
+      .dia-semana-rotulo {
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar-jeves" id="navbar-principal" role="navigation" aria-label="Navegação principal">
+    <div class="container">
+      <div class="navbar-conteudo-wrapper">
+        <div class="navbar-secao-esquerda">
+          <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Início">
+            <img src="assets/Img/logo.png" alt="" />
+            <span class="texto-logo-jeves">JEVES</span>
+          </a>
+        </div>
+
+        <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
+          <a href="/index.html" class="nav-link-jeves ativo" aria-current="page">Início</a>
+          <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
+          <a href="/publico/calendario.html" class="nav-link-jeves">Calendário</a>
+        </nav>
+
+        <div class="navbar-secao-direita">
+          <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+            <span>Entrar</span>
+          </a>
+
+          <button class="navbar-toggler-jeves d-lg-none" id="btn-hamburguer" type="button" aria-expanded="false"
+            aria-controls="menu-dropdown-mobile" aria-label="Abrir menu de navegação">
+            <i class="bi bi-list" id="icone-hamburguer" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="menu-dropdown-mobile" id="menu-dropdown-mobile" aria-hidden="true">
+          <div class="menu-dropdown-mobile-cabecalho">
+            <span class="menu-dropdown-mobile-titulo">Navegação</span>
+            <span class="badge-item-temporada">2026</span>
+          </div>
+          <div class="menu-dropdown-mobile-lista">
+            <a href="/index.html" class="menu-dropdown-item ativo" aria-current="page">
+              <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+              <span>Início</span>
+            </a>
+            <a href="/publico/torneios.html" class="menu-dropdown-item">
+              <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+              <span>Torneios</span>
+            </a>
+            <a href="/publico/calendario.html" class="menu-dropdown-item">
+              <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+              <span>Calendário</span>
+            </a>
+          </div>
+          <div class="menu-dropdown-mobile-divisor"></div>
+          <div class="menu-dropdown-mobile-rodape">
+            <a href="/publico/login.html" class="btn-entrar-mobile">
+              <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
+              <span>Entrar</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo-principal">
+
+    <section class="heroi" id="heroi" aria-label="Apresentação JEVES 2026">
+      <canvas id="canvas-particulas" aria-hidden="true"></canvas>
+      <div class="heroi-glow-a" aria-hidden="true"></div>
+      <div class="heroi-glow-b" aria-hidden="true"></div>
+
+      <div class="container heroi-conteudo">
+        <div class="row justify-content-center">
+          <div class="col-lg-9 text-center">
+
+            <div class="badge-evento animado" aria-label="Temporada 2026">
+              <span>Temporada 2026</span>
+            </div>
+
+            <h1 class="heroi-titulo animado atraso-1">
+              <span class="heroi-titulo-destaque">JEVES</span>
+              <span class="heroi-titulo-sub">Jogos Escolares</span>
+              <span class="heroi-titulo-sub" style="opacity:.6">de Vespasiano <span class="heroi-ano">2026</span></span>
+            </h1>
+
+            <p class="heroi-descricao animado atraso-2">
+              A maior competição esportiva escolar do município de Vespasiano. Futsal, vôlei, atletismo e muito mais —
+              tudo em uma única plataforma para escolas, organizadores e toda a comunidade.
+            </p>
+
+            <div class="heroi-acoes animado atraso-3">
+              <a href="/publico/torneios.html" class="btn-jeves-primario" id="btn-ver-torneios">
+                Ver Torneios
+              </a>
+              <a href="/publico/cadastro-escola.html" class="btn-jeves-contorno" id="btn-cta-escola-heroi">
+                Sou uma Escola
+              </a>
+            </div>
+
+            <div class="heroi-chips animado atraso-4" role="list" aria-label="Estatísticas do JEVES">
+              <div class="stat-chip" role="listitem">
+                <span class="stat-chip-numero" data-contador="0">0</span>
+                <span class="stat-chip-label">Escolas</span>
+              </div>
+              <div class="stat-chip" role="listitem">
+                <span class="stat-chip-numero" data-contador="0">0</span>
+                <span class="stat-chip-label">Torneios</span>
+              </div>
+              <div class="stat-chip" role="listitem">
+                <span class="stat-chip-numero" data-contador="0">0</span>
+                <span class="stat-chip-label">Atletas</span>
+              </div>
+              <div class="stat-chip" role="listitem">
+                <span class="stat-chip-numero" data-contador="0">0</span>
+                <span class="stat-chip-label">Modalidades</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="heroi-onda" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 80" preserveAspectRatio="none">
+          <path fill="rgba(22, 32, 85, 0.4)" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z"></path>
+          <path fill="#162055" d="M0,55 C480,10 960,80 1440,50 L1440,80 L0,80 Z"></path>
+        </svg>
+      </div>
+    </section>
+
+    <section class="secao secao-sobre" id="secao-sobre" aria-labelledby="titulo-sobre">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-7">
+            <span class="badge-secao-label animado" aria-hidden="true">
+              Tradição e Juventude
+            </span>
+            <h2 class="titulo-secao text-start animado atraso-1" id="titulo-sobre">
+              Mais de 30 Anos Conectando Gerações pelo <span class="gradiente-texto">Esporte</span>
+            </h2>
+
+            <p class="sobre-texto-destaque animado atraso-2">
+              Criado em <strong>1994</strong>, o <strong>JEVES (Jogos Escolares de Vespasiano)</strong> é o maior evento
+              esportivo estudantil da nossa cidade, agregando, agitando e mobilizando estudantes, professores e
+              comunidades escolares de todas as regiões do município.
+            </p>
+
+            <p class="sobre-texto animado atraso-2">
+              Realizado pela <strong>Prefeitura Municipal de Vespasiano</strong> através da <strong>Secretaria Municipal
+                de Juventude e Esportes</strong>, a competição reúne escolas municipais, estaduais e particulares. Mais
+              do que disputas e medalhas, o JEVES celebra a união, a formação cidadã, o respeito, o fair play e a paixão
+              pelo esporte.
+            </p>
+
+            <div class="sobre-pilares animado atraso-3">
+              <div class="sobre-pilar-card">
+                <div class="sobre-pilar-icone"><i class="bi bi-award-fill"></i></div>
+                <div>
+                  <h3 class="sobre-pilar-titulo">30 Anos de História</h3>
+                  <p class="sobre-pilar-desc">Desde a primeira edição em 1994, revelando novos talentos e fortalecendo a
+                    cultura esportiva de Vespasiano.</p>
+                </div>
+              </div>
+              <div class="sobre-pilar-card">
+                <div class="sobre-pilar-icone"><i class="bi bi-people-fill"></i></div>
+                <div>
+                  <h3 class="sobre-pilar-titulo">Todas as Redes de Ensino</h3>
+                  <p class="sobre-pilar-desc">Mobilização ampla e integrada entre escolas municipais, estaduais e
+                    particulares do município.</p>
+                </div>
+              </div>
+              <div class="sobre-pilar-card">
+                <div class="sobre-pilar-icone"><i class="bi bi-geo-alt-fill"></i></div>
+                <div>
+                  <h3 class="sobre-pilar-titulo">Praças Esportivas Oficiais</h3>
+                  <p class="sobre-pilar-desc">Jogos sediados na Praça de Esportes Crispim Jacques Bias Fortes,
+                    Poliesportivo Raimundo Cardoso e quadras escolares.</p>
+                </div>
+              </div>
+              <div class="sobre-pilar-card">
+                <div class="sobre-pilar-icone"><i class="bi bi-flag-fill"></i></div>
+                <div>
+                  <h3 class="sobre-pilar-titulo">7 Modalidades Oficiais</h3>
+                  <p class="sobre-pilar-desc">Disputas em futsal, voleibol, vôlei de praia, basquete, handebol,
+                    atletismo e xadrez.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-5 animado atraso-3">
+            <div class="card-sobre-destaque">
+              <div class="card-sobre-topo">
+                <div class="sobre-anos-badge">
+                  <span class="sobre-anos-numero">30+</span>
+                  <span class="sobre-anos-rotulo">Anos de Tradição</span>
+                </div>
+              </div>
+
+              <div class="card-sobre-corpo">
+                <h3 class="card-sobre-titulo">Jogos Escolares de Vespasiano</h3>
+                <p class="card-sobre-sub">Unindo esporte, juventude e educação.</p>
+
+                <div class="sobre-metricas-grid">
+                  <div class="sobre-metrica-item">
+                    <span class="sobre-metrica-valor">1994</span>
+                    <span class="sobre-metrica-label">Ano de Estreia</span>
+                  </div>
+                  <div class="sobre-metrica-item">
+                    <span class="sobre-metrica-valor">19+</span>
+                    <span class="sobre-metrica-label">Escolas Participantes</span>
+                  </div>
+                  <div class="sobre-metrica-item">
+                    <span class="sobre-metrica-valor">7+</span>
+                    <span class="sobre-metrica-label">Modalidades</span>
+                  </div>
+                  <div class="sobre-metrica-item">
+                    <span class="sobre-metrica-valor">100%</span>
+                    <span class="sobre-metrica-label">Gratuito e Cidadão</span>
+                  </div>
+                </div>
+
+                <div class="card-sobre-locais">
+                  <span class="locais-titulo"> Principais Praças Esportivas</span>
+                  <ul class="locais-lista">
+                    <li><i class="bi bi-check2"></i> Praça de Esportes Crispim Jacques Bias Fortes (Bairro Jardim Itaú)
+                    </li>
+                    <li><i class="bi bi-check2"></i> Poliesportivo Raimundo Cardoso da Fonseca (Bairro Caieiras)</li>
+                    <li><i class="bi bi-check2"></i> Quadra da E.E. Machado de Assis (Bairro Názia)</li>
+                  </ul>
+                </div>
+
+                <div class="card-sobre-orgao">
+                  <span>Prefeitura Municipal de Vespasiano · Secretaria de Juventude e Esportes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="rodape-jeves" role="contentinfo">
+      <div class="container">
+        <div class="row g-5 rodape-corpo">
+          <div class="col-lg-4">
+            <a href="/index.html" class="rodape-logo" aria-label="JEVES — Página inicial">
+              JEVES
+            </a>
+            <p class="rodape-tagline">Jogos Escolares de Vespasiano — Tradição e esporte conectando gerações desde 1994.
+            </p>
+            <div class="rodape-redes" aria-label="Redes sociais da Prefeitura de Vespasiano">
+              <a href="#" class="icone-social" aria-label="Instagram" rel="noopener noreferrer" target="_blank">
+                <i class="bi bi-instagram" aria-hidden="true"></i>
+              </a>
+              <a href="#" class="icone-social" aria-label="Facebook" rel="noopener noreferrer" target="_blank">
+                <i class="bi bi-facebook" aria-hidden="true"></i>
+              </a>
+              <a href="#" class="icone-social" aria-label="YouTube" rel="noopener noreferrer" target="_blank">
+                <i class="bi bi-youtube" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-lg-2">
+            <h2 class="rodape-titulo-coluna">Plataforma</h2>
+            <nav aria-label="Links da plataforma">
+              <a href="/index.html" class="rodape-link">Início</a>
+              <a href="#secao-sobre" class="rodape-link">Sobre Nós</a>
+              <a href="/publico/torneios.html" class="rodape-link">Torneios</a>
+              <a href="/publico/jogos.html" class="rodape-link">Jogos</a>
+            </nav>
+          </div>
+
+          <div class="col-sm-6 col-lg-2">
+            <h2 class="rodape-titulo-coluna">Acesso</h2>
+            <nav aria-label="Links de acesso">
+              <a href="/publico/login.html" class="rodape-link">Entrar</a>
+              <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
+              <a href="/publico/recuperar-senha.html" class="rodape-link">Recuperar Senha</a>
+            </nav>
+          </div>
+
+          <div class="col-sm-6 col-lg-4">
+            <h2 class="rodape-titulo-coluna">Realização</h2>
+            <address class="rodape-endereco">
+              <p>Secretaria de Juventude e Esportes</p>
+              <p>Prefeitura Municipal de Vespasiano — MG</p>
+              <p>Praça de Esportes Cristóvão Jacques Bias Fortes</p>
+              <p>Rua Sen. Modestino Gonçalves, 245 — Jardim Itaú</p>
+              <a href="/publico/privacidade.html" class="rodape-link mt-2 d-inline-block">Política de Privacidade</a>
+              <a href="/publico/termos.html" class="rodape-link">Termos de Uso</a>
+            </address>
+          </div>
+        </div>
+
+        <hr class="rodape-divisor" />
+        <div class="rodape-base">
+          <p class="rodape-copyright">
+            &copy; 2026 JEVES — Jogos Escolares de Vespasiano. Todos os direitos reservados.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      (function () {
+        const navbar = document.getElementById('navbar-principal');
+        window.addEventListener('scroll', function () {
+          navbar.classList.toggle('rolado', window.scrollY > 60);
+        }, { passive: true });
+      })();
+
+      (function () {
+        const btnHamburguer = document.getElementById('btn-hamburguer');
+        const menuDropdown = document.getElementById('menu-dropdown-mobile');
+        const iconeHamburguer = document.getElementById('icone-hamburguer');
+
+        if (!btnHamburguer || !menuDropdown) return;
+
+        function alternarMenu(abrir) {
+          const estaAberto = typeof abrir === 'boolean' ? abrir : !menuDropdown.classList.contains('aberto');
+          menuDropdown.classList.toggle('aberto', estaAberto);
+          btnHamburguer.setAttribute('aria-expanded', estaAberto ? 'true' : 'false');
+          menuDropdown.setAttribute('aria-hidden', estaAberto ? 'false' : 'true');
+          if (iconeHamburguer) {
+            iconeHamburguer.className = estaAberto ? 'bi bi-x-lg' : 'bi bi-list';
+          }
+        }
+
+        btnHamburguer.addEventListener('click', function (e) {
+          e.stopPropagation();
+          alternarMenu();
+        });
+
+        document.addEventListener('click', function (e) {
+          if (!menuDropdown.contains(e.target) && !btnHamburguer.contains(e.target)) {
+            alternarMenu(false);
+          }
+        });
+
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape') {
+            alternarMenu(false);
+          }
+        });
+
+        menuDropdown.querySelectorAll('a').forEach(function (link) {
+          link.addEventListener('click', function () {
+            alternarMenu(false);
+          });
+        });
+      })();
+
+      (function () {
+        const canvas = document.getElementById('canvas-particulas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let largura = canvas.width = window.innerWidth;
+        let altura = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', function () {
+          largura = canvas.width = window.innerWidth;
+          altura = canvas.height = window.innerHeight;
+          particulas.forEach(function (p) { p.x = Math.random() * largura; p.y = Math.random() * altura; });
+        }, { passive: true });
+
+        function criarParticula() {
+          return {
+            x: Math.random() * largura,
+            y: Math.random() * altura,
+            raio: Math.random() * 1.8 + 0.4,
+            vx: (Math.random() - 0.5) * 0.4,
+            vy: (Math.random() - 0.5) * 0.4,
+            opacidade: Math.random() * 0.55 + 0.1,
+            dourada: Math.random() > 0.82,
+          };
+        }
+
+        const particulas = Array.from({ length: 130 }, criarParticula);
+
+        function animar() {
+          ctx.clearRect(0, 0, largura, altura);
+          particulas.forEach(function (p) {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0) p.x = largura;
+            if (p.x > largura) p.x = 0;
+            if (p.y < 0) p.y = altura;
+            if (p.y > altura) p.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.raio, 0, Math.PI * 2);
+            ctx.fillStyle = p.dourada ? '#F5B800' : '#4A6FD4';
+            ctx.globalAlpha = p.opacidade;
+            ctx.fill();
+          });
+
+          for (var i = 0; i < particulas.length; i++) {
+            for (var j = i + 1; j < particulas.length; j++) {
+              var dx = particulas[i].x - particulas[j].x;
+              var dy = particulas[i].y - particulas[j].y;
+              var dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < 90) {
+                ctx.beginPath();
+                ctx.moveTo(particulas[i].x, particulas[i].y);
+                ctx.lineTo(particulas[j].x, particulas[j].y);
+                ctx.strokeStyle = '#3A5FBF';
+                ctx.globalAlpha = (1 - dist / 90) * 0.18;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+              }
+            }
+          }
+
+          ctx.globalAlpha = 1;
+          requestAnimationFrame(animar);
+        }
+
+        animar();
+      })();
+
+      (function () {
+        var observador = new IntersectionObserver(function (entradas) {
+          entradas.forEach(function (entrada) {
+            if (entrada.isIntersecting) {
+              entrada.target.classList.add('visivel');
+            }
+          });
+        }, { threshold: 0.08 });
+
+        document.querySelectorAll('.animado').forEach(function (el) {
+          observador.observe(el);
+        });
+      })();
+    </script>
+</body>
+
+</html>
