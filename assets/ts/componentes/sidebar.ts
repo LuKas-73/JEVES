@@ -57,7 +57,7 @@ function gerarSidebar(conteiner: HTMLElement, perfil: PerfilSidebar, paginaAtual
   conteiner.innerHTML = `
     <aside class="sidebar-jeves" id="sidebar-principal" aria-label="Menu ${nomesPerfil[perfil]}">
       <div class="sidebar-topo">
-        <a href="/index.html" class="sidebar-logo" aria-label="JEVES 2026">
+        <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026">
           <i class="bi bi-fire" aria-hidden="true"></i>
           <span>JEVES</span>
         </a>
@@ -78,7 +78,7 @@ function gerarSidebar(conteiner: HTMLElement, perfil: PerfilSidebar, paginaAtual
   const btnSair = document.getElementById('btn-sair');
   btnSair?.addEventListener('click', () => {
     localStorage.clear();
-    window.location.href = '/publico/login.html';
+    window.location.href = '../publico/login.html';
   });
 }
 

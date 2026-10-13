@@ -10,7 +10,7 @@ function gerarRodape(conteiner: HTMLElement, opcao: OpcaoRodape = {}): void {
       <div class="container">
         <div class="row g-5 rodape-corpo">
           <div class="col-lg-4">
-            <a href="/index.html" class="rodape-logo" aria-label="JEVES — Página inicial">
+            <a href="../index.html" class="rodape-logo" aria-label="JEVES — Página inicial">
               <i class="bi bi-fire" aria-hidden="true"></i> JEVES
             </a>
             <p class="rodape-tagline">Jogos Escolares de Vespasiano — Unindo esporte, juventude e educação.</p>
@@ -29,17 +29,17 @@ function gerarRodape(conteiner: HTMLElement, opcao: OpcaoRodape = {}): void {
           <div class="col-sm-6 col-lg-2">
             <h2 class="rodape-titulo-coluna">Plataforma</h2>
             <nav aria-label="Links da plataforma">
-              <a href="/index.html" class="rodape-link">Início</a>
-              <a href="/publico/torneios.html" class="rodape-link">Torneios</a>
-              <a href="/publico/jogos.html" class="rodape-link">Jogos</a>
+              <a href="../index.html" class="rodape-link">Início</a>
+              <a href="./torneio.html" class="rodape-link">Torneios</a>
+              <a href="./jogos.html" class="rodape-link">Jogos</a>
             </nav>
           </div>
           <div class="col-sm-6 col-lg-2">
             <h2 class="rodape-titulo-coluna">Acesso</h2>
             <nav aria-label="Links de acesso">
-              <a href="/publico/login.html" class="rodape-link">Entrar</a>
-              <a href="/publico/cadastro-escola.html" class="rodape-link">Cadastrar Escola</a>
-              <a href="/publico/recuperar-senha.html" class="rodape-link">Recuperar Senha</a>
+              <a href="./login.html" class="rodape-link">Entrar</a>
+              <a href="./cadastro_escola.html" class="rodape-link">Cadastrar Escola</a>
+              <a href="./recuperar_senha.html" class="rodape-link">Recuperar Senha</a>
             </nav>
           </div>
           <div class="col-sm-6 col-lg-4">
@@ -50,8 +50,8 @@ function gerarRodape(conteiner: HTMLElement, opcao: OpcaoRodape = {}): void {
               <a href="tel:+553135589000" class="rodape-link">
                 <i class="bi bi-telephone" aria-hidden="true"></i> (31) 3558-9000
               </a>
-              <a href="/publico/privacidade.html" class="rodape-link">Política de Privacidade</a>
-              <a href="/publico/termos.html" class="rodape-link">Termos de Uso</a>
+              <a href="./privacidade.html" class="rodape-link">Política de Privacidade</a>
+              <a href="./termos.html" class="rodape-link">Termos de Uso</a>
             </address>
           </div>
         </div>

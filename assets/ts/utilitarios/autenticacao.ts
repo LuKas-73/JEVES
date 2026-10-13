@@ -47,7 +47,7 @@ function salvarSessao(sessao: SessaoUsuario): void {
 function encerrarSessao(): void {
   localStorage.removeItem(CHAVE_SESSAO);
   localStorage.removeItem(CHAVE_TOKEN);
-  window.location.href = '/publico/login.html';
+  window.location.href = '../publico/login.html';
 }
 
 function estaAutenticado(): boolean {
@@ -64,7 +64,7 @@ function verificarPerfil(perfil: PerfilUsuario): boolean {
 
 function redirecionarSeNaoAutenticado(): void {
   if (!estaAutenticado()) {
-    window.location.href = '/publico/login.html';
+    window.location.href = '../publico/login.html';
   }
 }
 
@@ -77,11 +77,11 @@ function redirecionarSeAutenticado(): void {
 function exigirPerfil(perfil: PerfilUsuario): void {
   const usuario = obterUsuario();
   if (!usuario) {
-    window.location.href = '/publico/login.html';
+    window.location.href = '../publico/login.html';
     return;
   }
   if (usuario.perfil !== perfil) {
-    window.location.href = '/erros/403.html';
+    window.location.href = '../erros/403.html';
   }
 }
 

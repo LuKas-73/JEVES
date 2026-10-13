@@ -68,19 +68,19 @@ function gerarNavbarPublica(conteiner: HTMLElement): void {
       <div class="container">
         <div class="navbar-conteudo-wrapper">
           <div class="navbar-secao-esquerda">
-            <a href="/index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Página inicial">
+            <a href="../index.html" class="navbar-brand-jeves" aria-label="JEVES 2026 — Página inicial">
               <span class="texto-logo-jeves">JEVES</span>
             </a>
           </div>
 
           <nav class="navbar-secao-centro d-none d-lg-flex" aria-label="Links principais">
-            <a href="/index.html" class="nav-link-jeves">Início</a>
-            <a href="/publico/torneios.html" class="nav-link-jeves">Torneios</a>
-            <a href="/publico/jogos.html" class="nav-link-jeves">Jogos</a>
+            <a href="../index.html" class="nav-link-jeves">Início</a>
+            <a href="./torneio.html" class="nav-link-jeves">Torneios</a>
+            <a href="./jogos.html" class="nav-link-jeves">Jogos</a>
           </nav>
 
           <div class="navbar-secao-direita">
-            <a href="/publico/login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
+            <a href="./login.html" class="btn-entrar-nav d-none d-lg-inline-flex" id="btn-entrar-navbar">
               <span>Entrar</span>
             </a>
 
@@ -96,22 +96,22 @@ function gerarNavbarPublica(conteiner: HTMLElement): void {
               <span class="badge-item-temporada">2026</span>
             </div>
             <div class="menu-dropdown-mobile-lista">
-              <a href="/index.html" class="menu-dropdown-item">
+              <a href="../index.html" class="menu-dropdown-item">
                 <i class="bi bi-house-door-fill" aria-hidden="true"></i>
                 <span>Início</span>
               </a>
-              <a href="/publico/torneios.html" class="menu-dropdown-item">
+              <a href="./torneio.html" class="menu-dropdown-item">
                 <i class="bi bi-trophy-fill" aria-hidden="true"></i>
                 <span>Torneios</span>
               </a>
-              <a href="/publico/jogos.html" class="menu-dropdown-item">
+              <a href="./jogos.html" class="menu-dropdown-item">
                 <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
                 <span>Jogos</span>
               </a>
             </div>
             <div class="menu-dropdown-mobile-divisor"></div>
             <div class="menu-dropdown-mobile-rodape">
-              <a href="/publico/login.html" class="btn-entrar-mobile">
+              <a href="./login.html" class="btn-entrar-mobile">
                 <i class="bi bi-box-arrow-in-right" aria-hidden="true"></i>
                 <span>Entrar</span>
               </a>

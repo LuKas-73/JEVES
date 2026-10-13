@@ -67,7 +67,7 @@ function gerarBarSuperior(conteiner: HTMLElement, opcao: OpcaoBarSuperior): void
 
   document.getElementById('btn-sair-top')?.addEventListener('click', () => {
     localStorage.clear();
-    window.location.href = '/publico/login.html';
+    window.location.href = '../publico/login.html';
   });
 
   const btnToggle = document.getElementById('btn-toggle-sidebar');
