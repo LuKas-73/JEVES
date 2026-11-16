@@ -1,0 +1,991 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Crie ou edite um torneio do JEVES 2026." />
+        <meta name="theme-color" content="#0B1640" />
+        <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+        <title>Criar torneio | JEVES 2026</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="../assets/css/variaveis.css" />
+        <link rel="stylesheet" href="../assets/css/global.css" />
+        <link rel="stylesheet" href="../assets/css/componentes.css" />
+        <style>
+            body {
+                min-height: 100vh;
+                background: #0b1640;
+            }
+
+            .app {
+                min-height: 100vh;
+            }
+
+            .conteudo {
+                min-height: 100vh;
+                margin-left: 270px;
+                transition: var(--transicao-padrao);
+            }
+
+            .conteudo-principal {
+                max-width: 1500px;
+                padding: clamp(1.25rem, 3vw, 2.5rem);
+                margin: 0 auto;
+            }
+
+            .cabecalho {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 1.25rem;
+                margin-bottom: 1.6rem;
+            }
+
+            .cabecalho h1 {
+                margin: 0 0 0.35rem;
+                font: 800 clamp(1.7rem, 3vw, 2.4rem) / 1.2 var(--fonte-titulos);
+            }
+
+            .cabecalho p {
+                margin: 0;
+                color: var(--cor-texto-secundario);
+            }
+
+            .badge-secao-label {
+                margin-bottom: 0.45rem;
+                color: var(--cor-secundaria);
+                font-size: 0.73rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .card-jeves {
+                min-width: 0;
+                padding: 1.3rem;
+                background: var(--gradiente-card);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-lg);
+                box-shadow: var(--sombra-sm);
+            }
+
+            .card-jeves + .card-jeves {
+                margin-top: 1.2rem;
+            }
+
+            .status-organizador {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                max-width: 100%;
+                padding: 0.27rem 0.58rem;
+                border-radius: 100px;
+                color: #b6c8ed;
+                background: rgba(168, 184, 216, 0.12);
+                font-size: 0.68rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .status-em-análise,
+            .status-inscrições-abertas {
+                color: #ffd36a;
+                background: rgba(243, 156, 18, 0.13);
+            }
+
+            .status-correção-solicitada {
+                color: #ff9a85;
+                background: rgba(231, 76, 60, 0.13);
+            }
+
+            .status-aprovada,
+            .status-encerrado {
+                color: #77e2a2;
+                background: rgba(46, 204, 113, 0.12);
+            }
+
+            .status-recusada,
+            .status-cancelado {
+                color: #ff9a85;
+                background: rgba(231, 76, 60, 0.13);
+            }
+
+            .status-agendado,
+            .status-em-andamento {
+                color: #a9d8ff;
+                background: rgba(52, 152, 219, 0.13);
+            }
+
+            .formulario {
+                max-width: 1000px;
+                margin: 0 auto;
+                padding: clamp(1.2rem, 3vw, 2rem);
+            }
+
+            .cabecalho-form {
+                display: flex;
+                align-items: center;
+                gap: 0.85rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .icone-formulario {
+                display: grid;
+                place-items: center;
+                width: 46px;
+                height: 46px;
+                flex: 0 0 46px;
+                border-radius: 14px;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                font-size: 1.2rem;
+            }
+
+            .cabecalho-form h2 {
+                margin: 0 0 0.2rem;
+                font: 700 1.12rem var(--fonte-titulos);
+            }
+
+            .cabecalho-form p {
+                margin: 0;
+                font-size: 0.8rem;
+            }
+
+            .form-org-grade {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .campo-grupo {
+                display: grid;
+                gap: 0.35rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .campo-grupo > label,
+            .campo-grupo > span {
+                color: var(--cor-texto-secundario);
+                font-size: 0.78rem;
+                font-weight: 600;
+            }
+
+            .campo-grupo input,
+            .campo-grupo select,
+            .campo-grupo textarea {
+                width: 100%;
+                min-height: 42px;
+                padding: 0.6rem 0.75rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.75);
+                border: 1px solid rgba(42, 74, 175, 0.42);
+                border-radius: var(--borda-raio-sm);
+                font: 0.85rem var(--fonte-texto);
+            }
+
+            .campo-grupo textarea {
+                min-height: 95px;
+                resize: vertical;
+            }
+
+            .campo-grupo input:focus,
+            .campo-grupo select:focus,
+            .campo-grupo textarea:focus {
+                border-color: var(--cor-secundaria);
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(245, 184, 0, 0.12);
+            }
+
+            .campo-grupo select option {
+                color: #fff;
+                background: #162055;
+            }
+
+            .campo-grupo small {
+                color: var(--cor-texto-secundario);
+                font-size: 0.69rem;
+            }
+
+            .campo-largo {
+                grid-column: 1 / -1;
+            }
+
+            .aviso-form {
+                margin: 1rem 0 0;
+                color: var(--cor-texto-secundario);
+                font-size: 0.77rem;
+            }
+
+            .aviso-form i {
+                color: var(--cor-secundaria);
+            }
+
+            .acoes-form {
+                display: flex;
+                justify-content: flex-end;
+                gap: 0.75rem;
+                margin-top: 1.3rem;
+            }
+
+            .acoes-form .btn-jeves-primario,
+            .acoes-form .btn-jeves-contorno {
+                padding: 0.65rem 1.2rem;
+                font-size: 0.86rem;
+            }
+
+            .aviso-demo-rodape {
+                margin: 2rem 0 0;
+                padding-top: 1rem;
+                color: rgba(168, 184, 216, 0.65);
+                border-top: 1px solid var(--cor-borda-suave);
+                font-size: 0.74rem;
+            }
+
+            .aviso-demo-rodape i {
+                color: var(--cor-secundaria);
+            }
+
+            .aviso-toast {
+                position: fixed;
+                z-index: 9999;
+                right: 1.25rem;
+                bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                max-width: min(400px, calc(100vw - 2.5rem));
+                padding: 0.9rem 1.1rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.97);
+                border: 1px solid var(--cor-borda-suave);
+                border-left: 4px solid var(--cor-sucesso);
+                border-radius: var(--borda-raio-md);
+                box-shadow: var(--sombra-lg);
+                font-size: 0.82rem;
+            }
+
+            .aviso-toast i {
+                color: var(--cor-sucesso);
+            }
+
+            .aviso-toast.aviso-erro {
+                border-left-color: var(--cor-erro);
+            }
+
+            .aviso-toast.aviso-erro i {
+                color: var(--cor-erro);
+            }
+
+            .d-none {
+                display: none !important;
+            }
+
+            .sidebar-jeves.aberto {
+                transform: translateX(0);
+            }
+
+            .usuario-link {
+                cursor: default;
+            }
+
+            @media (max-width: 768px) {
+                .sidebar-jeves {
+                    transform: translateX(-100%);
+                }
+
+                .conteudo {
+                    margin-left: 0;
+                }
+
+                .bar-superior {
+                    padding: 0 1rem;
+                }
+
+                .bar-superior-titulo {
+                    display: none;
+                }
+
+                .conteudo-principal {
+                    padding: 1.15rem;
+                }
+
+                .cabecalho {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .cabecalho > .btn-jeves-primario,
+                .cabecalho > .btn-jeves-contorno {
+                    align-self: stretch;
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 540px) {
+                .form-org-grade {
+                    grid-template-columns: 1fr;
+                }
+
+                .campo-largo {
+                    grid-column: auto;
+                }
+
+                .acoes-form {
+                    flex-direction: column;
+                }
+
+                .acoes-form > * {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        </style>
+    </head>
+    <body data-static-content="true" data-page="torneio-form">
+        <div class="app">
+            <aside class="sidebar-jeves" id="sidebar-org" aria-label="Navegação do painel">
+                <div class="sidebar-topo">
+                    <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+                        <i class="bi bi-fire" aria-hidden="true"></i>
+                        <span>JEVES</span>
+                    </a>
+                    <span class="sidebar-perfil-label">Área do Organizador</span>
+                </div>
+                <nav class="sidebar-nav" aria-label="Menu do organizador">
+                    <a href="painel.html" class="item-sidebar">
+                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
+                        <span>Painel</span>
+                    </a>
+                    <a href="torneios.html" class="item-sidebar ativo" aria-current="page">
+                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                        <span>Meus torneios</span>
+                    </a>
+                    <a href="inscricoes.html" class="item-sidebar">
+                        <i class="bi bi-clipboard-data-fill" aria-hidden="true"></i>
+                        <span>Inscrições</span>
+                    </a>
+                    <a href="equipes.html" class="item-sidebar">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span>Equipes</span>
+                    </a>
+                    <a href="locais.html" class="item-sidebar">
+                        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
+                        <span>Locais</span>
+                    </a>
+                    <a href="jogos.html" class="item-sidebar">
+                        <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
+                        <span>Jogos</span>
+                    </a>
+                    <a href="resultados.html" class="item-sidebar">
+                        <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
+                        <span>Resultados</span>
+                    </a>
+                </nav>
+                <div class="sidebar-rodape">
+                    <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
+                        <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
+                        <span>Sair da conta</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="conteudo">
+                <header class="bar-superior" role="banner">
+                    <div class="bar-superior-esquerda">
+                        <button
+                            class="btn-toggle-sidebar"
+                            id="btn-menu-org"
+                            type="button"
+                            aria-label="Abrir menu"
+                            aria-expanded="false"
+                            aria-controls="sidebar-org"
+                        >
+                            <i class="bi bi-list" aria-hidden="true"></i>
+                        </button>
+                        <h2 class="bar-superior-titulo" id="titulo-pagina">Criar torneio</h2>
+                    </div>
+                    <div class="bar-superior-direita">
+                        <a class="btn-notificacoes" href="inscricoes.html" aria-label="Ver atualizações de inscrições">
+                            <i class="bi bi-bell" aria-hidden="true"></i>
+                            <span class="ponto-notificacao" aria-hidden="true"></span>
+                        </a>
+                        <a
+                            class="usuario-info usuario-link"
+                            href="painel.html"
+                            aria-label="Abrir perfil de Prof. Carlos Santana"
+                        >
+                            <span class="avatar-usuario" aria-hidden="true">PC</span>
+                            <span class="nome-usuario">Prof. Carlos Santana</span>
+                            <i class="bi bi-chevron-down chevron-usuario" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </header>
+                <main class="conteudo-principal" id="app-organizador" aria-labelledby="titulo-pagina">
+                    <header class="cabecalho">
+                        <div>
+                            <div class="badge-secao-label">Área do organizador · JEVES 2026</div>
+                            <h1>Criar Torneio</h1>
+                            <p>Defina as informações, o período e as regras da competição.</p>
+                        </div>
+                        <a href="torneios.html" class="btn-jeves-contorno"
+                            ><i class="bi bi-arrow-left"></i> Voltar aos torneios</a
+                        >
+                    </header>
+                    <form class="card-jeves formulario" id="form-torneio">
+                        <div class="cabecalho-form">
+                            <span class="icone-formulario"><i class="bi bi-trophy"></i></span>
+                            <div>
+                                <h2>Informações gerais</h2>
+                                <p>Os campos com asterisco são obrigatórios.</p>
+                            </div>
+                        </div>
+                        <div class="form-org-grade">
+                            <div class="campo-grupo campo-largo">
+                                <label for="torneio-nome">Nome do torneio *</label
+                                ><input
+                                    id="torneio-nome"
+                                    name="nome"
+                                    required
+                                    maxlength="120"
+                                    value=""
+                                    placeholder="Ex.: Jogos Escolares de Vespasiano 2026"
+                                />
+                            </div>
+                            <div class="campo-grupo campo-largo">
+                                <label for="torneio-descricao">Descrição</label
+                                ><textarea
+                                    id="torneio-descricao"
+                                    name="descricao"
+                                    rows="3"
+                                    maxlength="500"
+                                    placeholder="Apresente os objetivos da competição"
+                                ></textarea>
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="torneio-inicio">Início do torneio *</label
+                                ><input id="torneio-inicio" name="inicio" type="date" required value="" />
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="torneio-fim">Fim do torneio *</label
+                                ><input id="torneio-fim" name="fim" type="date" required value="" />
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="torneio-abertura">Abertura das inscrições *</label
+                                ><input id="torneio-abertura" name="abertura" type="date" required value="" />
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="torneio-encerramento">Encerramento das inscrições *</label
+                                ><input id="torneio-encerramento" name="encerramento" type="date" required value="" />
+                            </div>
+                            <div class="campo-grupo">
+                                <label for="torneio-status">Situação</label
+                                ><select id="torneio-status" name="status">
+                                    <option>Rascunho</option>
+                                    <option>Inscrições abertas</option>
+                                    <option>Em andamento</option>
+                                    <option>Encerrado</option>
+                                </select>
+                            </div>
+                            <div class="campo-grupo campo-largo">
+                                <label for="torneio-regras">Regulamento e regras</label
+                                ><textarea
+                                    id="torneio-regras"
+                                    name="regras"
+                                    rows="5"
+                                    placeholder="Informe regras gerais e documentos necessários"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <p class="aviso-form">
+                            <i class="bi bi-info-circle"></i> Modalidades e categorias podem ser configuradas após
+                            salvar o torneio.
+                        </p>
+                        <div class="acoes-form">
+                            <a href="torneios.html" class="btn-jeves-contorno">Cancelar</a
+                            ><button type="submit" class="btn-jeves-primario">
+                                <i class="bi bi-check2"></i> Criar torneio
+                            </button>
+                        </div>
+                    </form>
+                    <p class="aviso-demo-rodape">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
+                        salvas somente neste navegador.
+                    </p>
+                </main>
+            </div>
+        </div>
+        <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            (function () {
+                "use strict";
+                const pagina = document.body.dataset.page || "painel";
+                const root = document.getElementById("app-organizador");
+                const chaves = {
+                    sessao: "jeves_sessao",
+                    torneios: "jeves_torneios_demo",
+                    inscricoes: "jeves_organizador_inscricoes_demo",
+                    equipes: "jeves_organizador_equipes_demo",
+                    alunos: "jeves_organizador_alunos_demo",
+                    locais: "jeves_organizador_locais_demo",
+                    jogos: "jeves_organizador_jogos_demo",
+                    usuario: "jeves_organizador_usuario_demo",
+                };
+                const paginas = [
+                    { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
+                    { id: "torneios", nome: "Meus torneios", icone: "bi-trophy-fill", arquivo: "torneios.html" },
+                    {
+                        id: "inscricoes",
+                        nome: "Inscrições",
+                        icone: "bi-clipboard-data-fill",
+                        arquivo: "inscricoes.html",
+                    },
+                    { id: "equipes", nome: "Equipes", icone: "bi-people-fill", arquivo: "equipes.html" },
+                    { id: "locais", nome: "Locais", icone: "bi-geo-alt-fill", arquivo: "locais.html" },
+                    { id: "jogos", nome: "Jogos", icone: "bi-calendar-event-fill", arquivo: "jogos.html" },
+                    { id: "resultados", nome: "Resultados", icone: "bi-bar-chart-fill", arquivo: "resultados.html" },
+                ];
+                const modalidadesDisponiveis = [
+                    "Futsal",
+                    "Voleibol",
+                    "Handebol",
+                    "Basquetebol",
+                    "Atletismo",
+                    "Xadrez",
+                    "Tênis de mesa",
+                ];
+                const categoriasDisponiveis = [
+                    "Sub-13 Masculino",
+                    "Sub-15 Masculino",
+                    "Sub-17 Masculino",
+                    "Sub-13 Feminino",
+                    "Sub-15 Feminino",
+                    "Sub-17 Feminino",
+                ];
+                let sessao;
+
+                function escapar(valor) {
+                    return String(valor ?? "").replace(
+                        /[&<>"']/g,
+                        (caractere) =>
+                            ({
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#39;",
+                            })[caractere],
+                    );
+                }
+
+                function ler(chave, padrao = []) {
+                    try {
+                        const valor = localStorage.getItem(chave);
+                        return valor ? JSON.parse(valor) : padrao;
+                    } catch (erro) {
+                        console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
+                        return padrao;
+                    }
+                }
+
+                function salvar(chave, valor) {
+                    try {
+                        localStorage.setItem(chave, JSON.stringify(valor));
+                        return true;
+                    } catch (erro) {
+                        console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
+                        notificar("erro", "Não foi possível salvar os dados neste navegador.");
+                        return false;
+                    }
+                }
+
+                function obterSessao() {
+                    try {
+                        const valor = JSON.parse(localStorage.getItem(chaves.sessao) || "null");
+                        return valor && valor.usuario && valor.expiracao > Date.now() ? valor : null;
+                    } catch (erro) {
+                        console.error("Não foi possível validar a sessão local.", erro);
+                        return null;
+                    }
+                }
+
+                sessao = obterSessao();
+                if (sessao && sessao.usuario.perfil !== "organizador") {
+                    window.location.replace("../erros/403.html");
+                    return;
+                }
+                const sessaoValida = sessao;
+                sessao ||= {
+                    token: "jeves_organizador_demo",
+                    usuario: {
+                        id: 101,
+                        nome: "Prof. Carlos Santana",
+                        email: "comissao.jogos@vespasiano.mg.gov.br",
+                        perfil: "organizador",
+                        escolaId: null,
+                    },
+                    expiracao: Date.now() + 86400000,
+                };
+
+                const usuarioPadrao = {
+                    nome: sessao.usuario.nome || "Prof. Carlos Santana",
+                    email: sessao.usuario.email || "comissao.jogos@vespasiano.mg.gov.br",
+                };
+                const deveRenderizar = Boolean(
+                    sessaoValida ||
+                        location.search ||
+                        Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+                );
+                const torneiosPadrao = [
+                    {
+                        id: "jeves-2026",
+                        nome: "Jogos Escolares de Vespasiano 2026",
+                        descricao: "Competição escolar municipal para integração e incentivo à prática esportiva.",
+                        inicio: "2026-08-10",
+                        fim: "2026-08-28",
+                        abertura: "2026-05-01",
+                        encerramento: "2026-06-30",
+                        status: "Inscrições abertas",
+                        regras: "Cada escola deve apresentar autorização dos responsáveis e documentação dos estudantes.",
+                        modalidades: [
+                            { nome: "Futsal", categorias: ["Sub-15 Feminino", "Sub-17 Masculino"] },
+                            { nome: "Voleibol", categorias: ["Sub-17 Masculino"] },
+                        ],
+                    },
+                    {
+                        id: "festival-atletismo-2026",
+                        nome: "Festival Escolar de Atletismo 2026",
+                        descricao: "Festival municipal de provas de pista e campo.",
+                        inicio: "2026-09-15",
+                        fim: "2026-09-16",
+                        abertura: "2026-06-01",
+                        encerramento: "2026-08-20",
+                        status: "Rascunho",
+                        regras: "Cada escola poderá inscrever estudantes de acordo com as categorias disponíveis.",
+                        modalidades: [{ nome: "Atletismo", categorias: ["Sub-15 Feminino", "Sub-17 Masculino"] }],
+                    },
+                ];
+                const equipesPadrao = [
+                    {
+                        id: "e1",
+                        nome: "Futsal Feminino Sub-15",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        tecnico: "Prof. Renata Alves",
+                        escola: "Colégio Tiradentes Vespasiano",
+                        alunos: [
+                            { id: "a1", numero: "10", posicao: "Ala" },
+                            { id: "a2", numero: "7", posicao: "Fixa" },
+                        ],
+                    },
+                    {
+                        id: "e2",
+                        nome: "Voleibol Masculino Sub-17",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        tecnico: "Prof. Marcos Silva",
+                        escola: "Colégio Tiradentes Vespasiano",
+                        alunos: [
+                            { id: "a3", numero: "4", posicao: "Levantador" },
+                            { id: "a5", numero: "12", posicao: "Ponteiro" },
+                        ],
+                    },
+                    {
+                        id: "e3",
+                        nome: "Machado de Assis · Futsal Feminino Sub-15",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        tecnico: "Prof. Joana Martins",
+                        escola: "E. E. Machado de Assis",
+                        alunos: [
+                            { id: "b1", numero: "8", posicao: "Ala" },
+                            { id: "b2", numero: "9", posicao: "Pivô" },
+                        ],
+                    },
+                ];
+                const inscricoesPadrao = [
+                    {
+                        id: "i1",
+                        torneioId: "jeves-2026",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        equipeId: "e1",
+                        alunosIds: ["a1", "a2"],
+                        status: "Correção solicitada",
+                        observacao: "Confira o número de matrícula de uma atleta e reenvie a lista da equipe.",
+                        data: "2026-06-02",
+                    },
+                    {
+                        id: "i2",
+                        torneioId: "jeves-2026",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        equipeId: "e2",
+                        alunosIds: ["a3", "a5"],
+                        status: "Em análise",
+                        observacao: "",
+                        data: "2026-06-04",
+                    },
+                    {
+                        id: "i3",
+                        torneioId: "jeves-2026",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        equipeId: "e3",
+                        alunosIds: ["b1", "b2"],
+                        status: "Aprovada",
+                        observacao: "",
+                        data: "2026-06-05",
+                    },
+                ];
+                const locaisPadrao = [
+                    {
+                        id: "l1",
+                        nome: "Ginásio Municipal",
+                        endereco: "Rua Sen. Modestino Gonçalves, 245",
+                        bairro: "Jardim Itaú",
+                        cidade: "Vespasiano",
+                        capacidade: 800,
+                        modalidades: ["Futsal", "Voleibol", "Handebol", "Basquetebol"],
+                    },
+                    {
+                        id: "l2",
+                        nome: "Poliesportivo Centro",
+                        endereco: "Praça de Esportes, 50",
+                        bairro: "Centro",
+                        cidade: "Vespasiano",
+                        capacidade: 500,
+                        modalidades: ["Voleibol", "Basquetebol"],
+                    },
+                ];
+                const jogosPadrao = [
+                    {
+                        id: "j1",
+                        torneioId: "jeves-2026",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        casaId: "e1",
+                        visitanteId: "e3",
+                        localId: "l1",
+                        data: "2026-08-18",
+                        hora: "14:30",
+                        placarCasa: "",
+                        placarVisitante: "",
+                        status: "Agendado",
+                    },
+                    {
+                        id: "j2",
+                        torneioId: "jeves-2026",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        casaId: "e2",
+                        visitanteId: "e1",
+                        localId: "l2",
+                        data: "2026-08-21",
+                        hora: "10:00",
+                        placarCasa: 2,
+                        placarVisitante: 1,
+                        status: "Encerrado",
+                    },
+                ];
+                const alunosPadrao = [
+                    { id: "a1", nome: "Ana Clara Ferreira", nascimento: "2012-04-18", ano: "8º ano", equipeId: "e1" },
+                    { id: "a2", nome: "Beatriz Souza Lima", nascimento: "2011-09-02", ano: "9º ano", equipeId: "e1" },
+                    {
+                        id: "a3",
+                        nome: "Caio Henrique Santos",
+                        nascimento: "2010-01-27",
+                        ano: "1º ano EM",
+                        equipeId: "e2",
+                    },
+                    {
+                        id: "a5",
+                        nome: "Eduardo Martins Costa",
+                        nascimento: "2009-11-05",
+                        ano: "2º ano EM",
+                        equipeId: "e2",
+                    },
+                    { id: "b1", nome: "Fernanda Martins", nascimento: "2011-03-14", ano: "9º ano", equipeId: "e3" },
+                    { id: "b2", nome: "Gabriela Oliveira", nascimento: "2011-07-26", ano: "9º ano", equipeId: "e3" },
+                ];
+
+                if (!localStorage.getItem(chaves.usuario)) salvar(chaves.usuario, usuarioPadrao);
+                if (!localStorage.getItem(chaves.torneios)) salvar(chaves.torneios, torneiosPadrao);
+                if (!localStorage.getItem(chaves.inscricoes)) salvar(chaves.inscricoes, inscricoesPadrao);
+                if (!localStorage.getItem(chaves.equipes)) salvar(chaves.equipes, equipesPadrao);
+                if (!localStorage.getItem(chaves.locais)) salvar(chaves.locais, locaisPadrao);
+                if (!localStorage.getItem(chaves.jogos)) salvar(chaves.jogos, jogosPadrao);
+                if (!localStorage.getItem(chaves.alunos)) salvar(chaves.alunos, alunosPadrao);
+
+                function getUsuario() {
+                    return ler(chaves.usuario, usuarioPadrao);
+                }
+
+                function todos(chave) {
+                    return ler(chave, []);
+                }
+
+                function nomeTorneio(id) {
+                    return todos(chaves.torneios).find((item) => item.id === id)?.nome || "Torneio removido";
+                }
+
+                function nomeEquipe(id) {
+                    return todos(chaves.equipes).find((item) => item.id === id)?.nome || "Equipe não informada";
+                }
+
+                function nomeEscola(id) {
+                    return todos(chaves.equipes).find((item) => item.id === id)?.escola || "Escola não informada";
+                }
+
+                function nomeLocal(id) {
+                    return todos(chaves.locais).find((item) => item.id === id)?.nome || "Local não definido";
+                }
+
+                function dataPt(data) {
+                    if (!data) return "—";
+                    const valor = new Date(`${data}T12:00:00`);
+                    return Number.isNaN(valor.getTime()) ? "—" : valor.toLocaleDateString("pt-BR");
+                }
+
+                function classeStatus(status) {
+                    return `status-${String(status).toLowerCase().replaceAll(" ", "-")}`;
+                }
+
+                function badge(status) {
+                    return `<span class="status-organizador ${classeStatus(status)}">${escapar(status)}</span>`;
+                }
+
+                function notificar(tipo, mensagem) {
+                    document.getElementById("aviso-organizador")?.remove();
+                    const elemento = document.createElement("div");
+                    elemento.id = "aviso-organizador";
+                    elemento.className = `aviso-toast ${tipo === "erro" ? "aviso-erro" : ""}`;
+                    elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
+                    elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
+                    const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
+                    conteiner.appendChild(elemento);
+                    window.setTimeout(() => elemento.remove(), 4000);
+                }
+
+                function titulo(tituloPagina, descricao, acao = "") {
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área do organizador · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                }
+
+                function moldura(conteudo, tituloPagina) {
+                    if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
+                        root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
+                    }
+                    document.title = `${tituloPagina} | JEVES 2026`;
+                    document.getElementById("titulo-pagina").textContent = tituloPagina;
+                    const usuario = getUsuario();
+                    const iniciais = (usuario.nome || "Organizador")
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((parte) => parte[0] || "")
+                        .join("")
+                        .toUpperCase();
+                    document.querySelector(".avatar-usuario").textContent = iniciais;
+                    document.querySelector(".nome-usuario").textContent = usuario.nome;
+                    document.querySelector('[data-action="sair"]').addEventListener("click", () => {
+                        localStorage.removeItem(chaves.sessao);
+                        localStorage.removeItem("jeves_token");
+                        window.location.replace("../publico/login.html");
+                    });
+                    document.getElementById("btn-menu-org").addEventListener("click", (event) => {
+                        const botao = event.currentTarget;
+                        const aberto = document.getElementById("sidebar-org").classList.toggle("aberto");
+                        botao.setAttribute("aria-expanded", String(aberto));
+                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                    });
+                }
+
+                function tabelaInscricoes(inscricoes) {
+                    return `<div class="tabela-responsiva"><table class="tabela-jeves"><thead><tr><th>Escola / Equipe</th><th>Torneio</th><th>Modalidade</th><th>Enviada em</th><th>Status</th><th></th></tr></thead><tbody>${inscricoes.map((item) => `<tr><td><strong>${escapar(nomeEscola(item.equipeId))}</strong><small>${escapar(nomeEquipe(item.equipeId))}</small></td><td>${escapar(nomeTorneio(item.torneioId))}</td><td>${escapar(item.modalidade)}<small>${escapar(item.categoria)}</small></td><td>${dataPt(item.data)}</td><td>${badge(item.status)}</td><td><a class="botao-icone" href="inscricao-analise.html?id=${encodeURIComponent(item.id)}"><i class="bi bi-search"></i> Analisar</a></td></tr>`).join("")}</tbody></table></div>`;
+                }
+
+                function opcoesEquipe(valor = "") {
+                    return todos(chaves.equipes)
+                        .map(
+                            (equipe) =>
+                                `<option value="${escapar(equipe.id)}" ${equipe.id === valor ? "selected" : ""}>${escapar(equipe.nome)} · ${escapar(equipe.escola)}</option>`,
+                        )
+                        .join("");
+                }
+
+                function opcoesTorneio(valor = "") {
+                    return todos(chaves.torneios)
+                        .map(
+                            (torneio) =>
+                                `<option value="${escapar(torneio.id)}" ${torneio.id === valor ? "selected" : ""}>${escapar(torneio.nome)}</option>`,
+                        )
+                        .join("");
+                }
+
+                function opcoesLocal(valor = "") {
+                    return todos(chaves.locais)
+                        .map(
+                            (local) =>
+                                `<option value="${escapar(local.id)}" ${local.id === valor ? "selected" : ""}>${escapar(local.nome)}</option>`,
+                        )
+                        .join("");
+                }
+
+                function renderTorneioForm() {
+                    const id = new URLSearchParams(location.search).get("id");
+                    const atual = todos(chaves.torneios).find((item) => item.id === id);
+                    const editar = Boolean(atual);
+                    moldura(
+                        `${titulo(editar ? "Editar Torneio" : "Criar Torneio", "Defina as informações, o período e as regras da competição.", '<a href="torneios.html" class="btn-jeves-contorno"><i class="bi bi-arrow-left"></i> Voltar aos torneios</a>')}
+      <form class="card-jeves formulario" id="form-torneio"><div class="cabecalho-form"><span class="icone-formulario"><i class="bi bi-trophy"></i></span><div><h2>Informações gerais</h2><p>Os campos com asterisco são obrigatórios.</p></div></div>
+        <div class="form-org-grade"><div class="campo-grupo campo-largo"><label for="torneio-nome">Nome do torneio *</label><input id="torneio-nome" name="nome" required maxlength="120" value="${escapar(atual?.nome || "")}" placeholder="Ex.: Jogos Escolares de Vespasiano 2026" /></div>
+        <div class="campo-grupo campo-largo"><label for="torneio-descricao">Descrição</label><textarea id="torneio-descricao" name="descricao" rows="3" maxlength="500" placeholder="Apresente os objetivos da competição">${escapar(atual?.descricao || "")}</textarea></div>
+        <div class="campo-grupo"><label for="torneio-inicio">Início do torneio *</label><input id="torneio-inicio" name="inicio" type="date" required value="${escapar(atual?.inicio || "")}" /></div>
+        <div class="campo-grupo"><label for="torneio-fim">Fim do torneio *</label><input id="torneio-fim" name="fim" type="date" required value="${escapar(atual?.fim || "")}" /></div>
+        <div class="campo-grupo"><label for="torneio-abertura">Abertura das inscrições *</label><input id="torneio-abertura" name="abertura" type="date" required value="${escapar(atual?.abertura || "")}" /></div>
+        <div class="campo-grupo"><label for="torneio-encerramento">Encerramento das inscrições *</label><input id="torneio-encerramento" name="encerramento" type="date" required value="${escapar(atual?.encerramento || "")}" /></div>
+        <div class="campo-grupo"><label for="torneio-status">Situação</label><select id="torneio-status" name="status"><option ${atual?.status === "Rascunho" ? "selected" : ""}>Rascunho</option><option ${atual?.status === "Inscrições abertas" ? "selected" : ""}>Inscrições abertas</option><option ${atual?.status === "Em andamento" ? "selected" : ""}>Em andamento</option><option ${atual?.status === "Encerrado" ? "selected" : ""}>Encerrado</option></select></div>
+        <div class="campo-grupo campo-largo"><label for="torneio-regras">Regulamento e regras</label><textarea id="torneio-regras" name="regras" rows="5" placeholder="Informe regras gerais e documentos necessários">${escapar(atual?.regras || "")}</textarea></div></div>
+        <p class="aviso-form"><i class="bi bi-info-circle"></i> Modalidades e categorias podem ser configuradas após salvar o torneio.</p><div class="acoes-form"><a href="torneios.html" class="btn-jeves-contorno">Cancelar</a><button type="submit" class="btn-jeves-primario"><i class="bi bi-check2"></i> ${editar ? "Salvar alterações" : "Criar torneio"}</button></div>
+      </form>`,
+                        editar ? "Editar Torneio" : "Criar Torneio",
+                    );
+                    document.getElementById("form-torneio").addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        const dados = Object.fromEntries(new FormData(event.currentTarget).entries());
+                        if (dados.fim < dados.inicio)
+                            return notificar("erro", "A data final do torneio deve ser posterior à data inicial.");
+                        if (dados.encerramento < dados.abertura)
+                            return notificar("erro", "O encerramento das inscrições deve ser posterior à abertura.");
+                        if (dados.inicio < dados.abertura || dados.fim < dados.encerramento)
+                            return notificar(
+                                "erro",
+                                "As datas do torneio e do período de inscrição não são compatíveis.",
+                            );
+                        const lista = todos(chaves.torneios);
+                        const salvo = {
+                            id: editar ? atual.id : `t${Date.now()}`,
+                            ...dados,
+                            modalidades: atual?.modalidades || [],
+                        };
+                        const resultado = editar
+                            ? lista.map((item) => (item.id === id ? salvo : item))
+                            : [...lista, salvo];
+                        if (salvar(chaves.torneios, resultado))
+                            window.location.href = `torneio-modalidades.html?id=${encodeURIComponent(salvo.id)}`;
+                    });
+                }
+
+                renderTorneioForm();
+            })();
+        </script>
+    </body>
+</html>

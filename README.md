@@ -42,9 +42,9 @@ Desenvolvido com **HTML5, CSS3, TypeScript e Bootstrap**, o sistema conta com um
 
 ### Ambientes do Sistema:
 1. **Público:** Início, listagem de torneios, detalhes de jogos/torneios, login, cadastro de escolas, recuperação de senha e termos de uso.
-2. **Área da Escola:** Dashboard gerencial, perfil da instituição, gestão de equipes, cadastro de alunos e acompanhamento de inscrições passo a passo (*Stepper*).
-3. **Área do Organizador:** Criação/edição de torneios, configuração de modalidades/categorias, análise de inscrições, cadastro de locais e lançamento de resultados/placares.
-4. **Área Administrativa:** Gestão global de usuários, escolas, modalidades e categorias.
+2. **Área da Escola:** Dashboard gerencial, perfil da instituição e do usuário, gestão de equipes e alunos, torneios disponíveis e inscrições acompanhadas por status. A interface da escola está em `escola/`.
+3. **Área do Organizador:** Criação/edição de torneios, configuração de modalidades/categorias, análise de inscrições, cadastro de locais, agendamento de jogos e lançamento de resultados/placares. A interface do organizador está em `organizador/`.
+4. **Área Administrativa:** Gestão global de usuários, escolas, modalidades e categorias. A interface administrativa está em `admin/`.
 
 ---
 

@@ -1,0 +1,1118 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Painel de gestão da plataforma JEVES 2026." />
+        <meta name="theme-color" content="#0B1640" />
+        <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+        <title>Painel | JEVES 2026</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="../assets/css/variaveis.css" />
+        <link rel="stylesheet" href="../assets/css/global.css" />
+        <link rel="stylesheet" href="../assets/css/componentes.css" />
+        <style>
+            body {
+                min-height: 100vh;
+                background: #0b1640;
+            }
+
+            .app {
+                min-height: 100vh;
+            }
+
+            .conteudo {
+                min-height: 100vh;
+                margin-left: 270px;
+                transition: var(--transicao-padrao);
+            }
+
+            .sidebar-jeves.colapsado + .conteudo {
+                margin-left: 72px;
+            }
+
+            .conteudo-principal {
+                max-width: 1440px;
+                padding: clamp(1.25rem, 3vw, 2.5rem);
+                margin: 0 auto;
+            }
+
+            .cabecalho {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 1.25rem;
+                margin-bottom: 1.75rem;
+            }
+
+            .cabecalho h1 {
+                font-family: var(--fonte-titulos);
+                font-weight: 800;
+                font-size: clamp(1.7rem, 3vw, 2.4rem);
+                margin: 0 0 0.35rem;
+            }
+
+            .cabecalho p {
+                color: var(--cor-texto-secundario);
+                margin: 0;
+            }
+
+            .badge-secao-label {
+                color: var(--cor-secundaria);
+                font-size: 0.73rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 0.45rem;
+            }
+
+            .card-jeves {
+                background: var(--gradiente-card);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-lg);
+                padding: 1.35rem;
+                box-shadow: var(--sombra-sm);
+            }
+
+            .card-jeves + .card-jeves {
+                margin-top: 1.25rem;
+            }
+
+            .card-jeves h2,
+            .card-jeves h3 {
+                font-family: var(--fonte-titulos);
+                font-weight: 700;
+            }
+
+            .cartao-titulo {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .cartao-titulo h2,
+            .cartao-titulo h3 {
+                margin: 0;
+                font-size: 1.1rem;
+            }
+
+            .grade-indicadores {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 1rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .indicador {
+                display: flex;
+                align-items: center;
+                gap: 0.9rem;
+                min-width: 0;
+            }
+
+            .indicador-icone {
+                width: 46px;
+                height: 46px;
+                flex: 0 0 46px;
+                display: grid;
+                place-items: center;
+                border-radius: 14px;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                font-size: 1.2rem;
+            }
+
+            .indicador-valor {
+                display: block;
+                font: 800 1.5rem/1 var(--fonte-titulos);
+            }
+
+            .indicador-rotulo {
+                display: block;
+                margin-top: 0.35rem;
+                color: var(--cor-texto-secundario);
+                font-size: 0.78rem;
+            }
+
+            .atalhos {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 0.85rem;
+            }
+
+            .atalho {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                color: var(--cor-texto-principal);
+                text-decoration: none;
+                background: rgba(255, 255, 255, 0.035);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-md);
+                padding: 0.9rem;
+                transition: var(--transicao-rapida);
+            }
+
+            .atalho:hover {
+                color: var(--cor-secundaria);
+                border-color: var(--cor-borda);
+                transform: translateY(-2px);
+            }
+
+            .atalho i {
+                color: var(--cor-secundaria);
+                font-size: 1.15rem;
+            }
+
+            .status {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                border-radius: 100px;
+                padding: 0.28rem 0.65rem;
+                font-size: 0.72rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .status-aprovada,
+            .status-confirmada {
+                color: #77e2a2;
+                background: rgba(46, 204, 113, 0.12);
+            }
+
+            .status-pendente,
+            .status-em-análise {
+                color: #ffd36a;
+                background: rgba(243, 156, 18, 0.13);
+            }
+
+            .status-correção-solicitada {
+                color: #ff9a85;
+                background: rgba(231, 76, 60, 0.13);
+            }
+
+            .status-rascunho {
+                color: #b6c8ed;
+                background: rgba(168, 184, 216, 0.12);
+            }
+
+            .aviso-demo-rodape {
+                margin: 2rem 0 0;
+                padding-top: 1rem;
+                border-top: 1px solid var(--cor-borda-suave);
+                color: rgba(168, 184, 216, 0.65);
+                font-size: 0.75rem;
+            }
+
+            .aviso-demo-rodape i,
+            .texto-dourado,
+            .link-dourado {
+                color: var(--cor-secundaria);
+            }
+
+            .link-dourado {
+                font-size: 0.82rem;
+                font-weight: 600;
+            }
+
+            .link-dourado:hover {
+                color: #fff;
+            }
+
+            .usuario-link {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .grade-painel {
+                display: grid;
+                grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+                gap: 1.25rem;
+                margin: 1.25rem 0;
+            }
+
+            .lista-painel {
+                display: grid;
+            }
+
+            .linha-inscricao {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.8rem 0;
+                color: var(--cor-texto-principal);
+                text-decoration: none;
+                border-bottom: 1px solid var(--cor-borda-suave);
+            }
+
+            .linha-inscricao:last-child {
+                border-bottom: 0;
+            }
+
+            .linha-inscricao:hover .linha-texto strong {
+                color: var(--cor-secundaria);
+            }
+
+            .linha-icone {
+                width: 38px;
+                height: 38px;
+                display: grid;
+                place-items: center;
+                border-radius: 12px;
+                background: rgba(245, 184, 0, 0.1);
+                color: var(--cor-secundaria);
+            }
+
+            .linha-texto {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .linha-texto strong,
+            .linha-texto small {
+                display: block;
+            }
+
+            .linha-texto strong {
+                font-size: 0.86rem;
+            }
+
+            .linha-texto small {
+                margin-top: 0.15rem;
+                color: var(--cor-texto-secundario);
+                font-size: 0.74rem;
+            }
+
+            .texto-vazio {
+                margin: 0.5rem 0 0;
+                font-size: 0.88rem;
+            }
+
+            .chip-agenda {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                border-radius: 100px;
+                padding: 0.32rem 0.65rem;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                border: 1px solid rgba(245, 184, 0, 0.2);
+                font-size: 0.72rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .agenda-jogos {
+                display: grid;
+                gap: 0.75rem;
+            }
+
+            .jogo-painel {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 0.75rem;
+                background: rgba(255, 255, 255, 0.035);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-md);
+            }
+
+            .jogo-data {
+                width: 48px;
+                height: 52px;
+                display: flex;
+                flex: 0 0 48px;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                border-radius: 12px;
+                background: rgba(26, 58, 143, 0.35);
+            }
+
+            .jogo-data strong {
+                color: var(--cor-secundaria);
+                font: 800 1.25rem/1 var(--fonte-titulos);
+            }
+
+            .jogo-data small {
+                color: var(--cor-texto-secundario);
+                font-size: 0.62rem;
+                font-weight: 700;
+            }
+
+            .jogo-painel > span:last-child strong,
+            .jogo-painel > span:last-child small {
+                display: block;
+            }
+
+            .jogo-painel > span:last-child strong {
+                font-size: 0.78rem;
+            }
+
+            .jogo-painel > span:last-child small {
+                color: var(--cor-texto-secundario);
+                font-size: 0.7rem;
+                margin-top: 0.2rem;
+            }
+
+            .status-resumo {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+
+            .status-resumo-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-md);
+                color: var(--cor-texto-secundario);
+                text-decoration: none;
+                font-size: 0.78rem;
+            }
+
+            .status-resumo-item strong {
+                color: var(--cor-texto-principal);
+                font-size: 1.1rem;
+            }
+
+            .aviso-toast {
+                position: fixed;
+                z-index: 9999;
+                right: 1.25rem;
+                bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                max-width: min(400px, calc(100vw - 2.5rem));
+                padding: 0.9rem 1.1rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.97);
+                border: 1px solid var(--cor-borda-suave);
+                border-left: 4px solid var(--cor-sucesso);
+                border-radius: var(--borda-raio-md);
+                box-shadow: var(--sombra-lg);
+                font-size: 0.82rem;
+                animation: entrada-etapa 0.2s ease-out;
+            }
+
+            .aviso-toast i {
+                color: var(--cor-sucesso);
+            }
+
+            .aviso-toast.aviso-erro {
+                border-left-color: var(--cor-erro);
+            }
+
+            .aviso-toast.aviso-erro i {
+                color: var(--cor-erro);
+            }
+
+            .d-none {
+                display: none !important;
+            }
+
+            .sidebar-jeves.aberto {
+                transform: translateX(0);
+            }
+
+            @media (max-width: 1100px) {
+                .grade-indicadores {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            @media (max-width: 768px) {
+                .sidebar-jeves {
+                    transform: translateX(-100%);
+                }
+
+                .sidebar-jeves.aberto {
+                    transform: translateX(0);
+                }
+
+                .conteudo,
+                .sidebar-jeves.colapsado + .conteudo {
+                    margin-left: 0;
+                }
+
+                .bar-superior {
+                    padding: 0 1rem;
+                }
+
+                .bar-superior-titulo {
+                    display: none;
+                }
+
+                .conteudo-principal {
+                    padding: 1.15rem;
+                }
+
+                .cabecalho {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .cabecalho > .btn-jeves-primario {
+                    align-self: stretch;
+                    justify-content: center;
+                }
+
+                .grade-painel {
+                    grid-template-columns: 1fr;
+                }
+
+                .atalhos {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            @media (max-width: 520px) {
+                .grade-indicadores {
+                    grid-template-columns: 1fr;
+                }
+
+                .usuario-info .nome-usuario,
+                .usuario-info .chevron-usuario {
+                    display: none;
+                }
+
+                .status-resumo {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body data-static-content="true" data-page="painel">
+        <div class="app">
+            <aside class="sidebar-jeves" id="sidebar-principal" aria-label="Navegação do painel">
+                <div class="sidebar-topo">
+                    <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+                        <i class="bi bi-fire" aria-hidden="true"></i>
+                        <span>JEVES</span>
+                    </a>
+                    <span class="sidebar-perfil-label">Área da Escola</span>
+                </div>
+                <nav class="sidebar-nav" aria-label="Menu da escola">
+                    <a href="painel.html" class="item-sidebar ativo" aria-current="page">
+                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
+                        <span>Painel</span>
+                    </a>
+                    <a href="torneios-disponiveis.html" class="item-sidebar">
+                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                        <span>Torneios disponíveis</span>
+                    </a>
+                    <a href="nova-inscricao.html" class="item-sidebar">
+                        <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+                        <span>Nova inscrição</span>
+                    </a>
+                    <a href="inscricoes.html" class="item-sidebar">
+                        <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
+                        <span>Minhas inscrições</span>
+                    </a>
+                    <a href="equipes.html" class="item-sidebar">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span>Equipes</span>
+                    </a>
+                    <a href="alunos.html" class="item-sidebar">
+                        <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+                        <span>Alunos</span>
+                    </a>
+                    <a href="perfil-escola.html" class="item-sidebar">
+                        <i class="bi bi-building-fill" aria-hidden="true"></i>
+                        <span>Perfil da escola</span>
+                    </a>
+                    <a href="meu-perfil.html" class="item-sidebar">
+                        <i class="bi bi-person-gear" aria-hidden="true"></i>
+                        <span>Meu perfil</span>
+                    </a>
+                </nav>
+                <div class="sidebar-rodape">
+                    <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
+                        <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
+                        <span>Sair da conta</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="conteudo">
+                <header class="bar-superior" role="banner">
+                    <div class="bar-superior-esquerda">
+                        <button
+                            class="btn-toggle-sidebar"
+                            id="btn-menu-escola"
+                            type="button"
+                            aria-label="Abrir menu"
+                            aria-expanded="false"
+                            aria-controls="sidebar-principal"
+                        >
+                            <i class="bi bi-list" aria-hidden="true"></i>
+                        </button>
+                        <h2 class="bar-superior-titulo" id="titulo-pagina">Painel</h2>
+                    </div>
+                    <div class="bar-superior-direita">
+                        <a class="btn-notificacoes" href="inscricoes.html" aria-label="Ver atualizações de inscrições">
+                            <i class="bi bi-bell" aria-hidden="true"></i>
+                            <span class="ponto-notificacao" aria-hidden="true"></span>
+                        </a>
+                        <a
+                            class="usuario-info usuario-link"
+                            href="meu-perfil.html"
+                            aria-label="Abrir perfil de Colégio Tiradentes Vespasiano"
+                        >
+                            <span class="avatar-usuario" aria-hidden="true">CT</span>
+                            <span class="nome-usuario">Colégio Tiradentes Vespasiano</span>
+                            <i class="bi bi-chevron-down chevron-usuario" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </header>
+                <main class="conteudo-principal" id="app-escola" aria-labelledby="titulo-pagina">
+                    <header class="cabecalho">
+                        <div>
+                            <div class="badge-secao-label">Área da escola · JEVES 2026</div>
+                            <h1>Olá, Colégio Tiradentes!</h1>
+                            <p>Acompanhe as inscrições, equipes e próximos jogos da sua escola.</p>
+                        </div>
+                        <a href="nova-inscricao.html" class="btn-jeves-primario"
+                            ><i class="bi bi-plus-lg"></i> Nova inscrição</a
+                        >
+                    </header>
+                    <div class="grade-indicadores">
+                        <article class="card-jeves indicador">
+                            <span class="indicador-icone"
+                                ><i class="bi bi-clipboard-check-fill" aria-hidden="true"></i></span
+                            ><span
+                                ><strong class="indicador-valor">2</strong
+                                ><span class="indicador-rotulo">Inscrições no torneio</span></span
+                            >
+                        </article>
+                        <article class="card-jeves indicador">
+                            <span class="indicador-icone"><i class="bi bi-people-fill" aria-hidden="true"></i></span
+                            ><span
+                                ><strong class="indicador-valor">2</strong
+                                ><span class="indicador-rotulo">Equipes cadastradas</span></span
+                            >
+                        </article>
+                        <article class="card-jeves indicador">
+                            <span class="indicador-icone"
+                                ><i class="bi bi-person-badge-fill" aria-hidden="true"></i></span
+                            ><span
+                                ><strong class="indicador-valor">5</strong
+                                ><span class="indicador-rotulo">Alunos no elenco</span></span
+                            >
+                        </article>
+                        <article class="card-jeves indicador">
+                            <span class="indicador-icone"
+                                ><i class="bi bi-calendar-event-fill" aria-hidden="true"></i></span
+                            ><span
+                                ><strong class="indicador-valor">2</strong
+                                ><span class="indicador-rotulo">Próximos jogos</span></span
+                            >
+                        </article>
+                    </div>
+                    <section class="card-jeves">
+                        <div class="cartao-titulo">
+                            <h2><i class="bi bi-lightning-charge-fill texto-dourado"></i> Acesso rápido</h2>
+                        </div>
+                        <div class="atalhos">
+                            <a class="atalho" href="torneios-disponiveis.html"
+                                ><i class="bi bi-trophy-fill"></i
+                                ><span
+                                    ><strong>Torneios disponíveis</strong
+                                    ><small>Veja as competições abertas</small></span
+                                ><i class="bi bi-arrow-right ms-auto"></i
+                            ></a>
+                            <a class="atalho" href="equipes.html"
+                                ><i class="bi bi-people-fill"></i
+                                ><span
+                                    ><strong>Gerenciar equipes</strong
+                                    ><small>Organize seus times e atletas</small></span
+                                ><i class="bi bi-arrow-right ms-auto"></i
+                            ></a>
+                            <a class="atalho" href="alunos.html"
+                                ><i class="bi bi-person-badge-fill"></i
+                                ><span
+                                    ><strong>Cadastro de alunos</strong
+                                    ><small>Mantenha o elenco atualizado</small></span
+                                ><i class="bi bi-arrow-right ms-auto"></i
+                            ></a>
+                        </div>
+                    </section>
+                    <div class="grade-painel">
+                        <section class="card-jeves">
+                            <div class="cartao-titulo">
+                                <h2>Inscrições recentes</h2>
+                                <a href="inscricoes.html" class="link-dourado"
+                                    >Ver todas <i class="bi bi-arrow-right"></i
+                                ></a>
+                            </div>
+                            <div class="lista-painel">
+                                <a class="linha-inscricao" href="inscricao-detalhe.html?id=i1"
+                                    ><span class="linha-icone"><i class="bi bi-trophy-fill"></i></span
+                                    ><span class="linha-texto"
+                                        ><strong>Futsal · Sub-15 Feminino</strong
+                                        ><small>Jogos Escolares de Vespasiano 2026</small></span
+                                    ><span class="status status-correção-solicitada">Correção solicitada</span></a
+                                ><a class="linha-inscricao" href="inscricao-detalhe.html?id=i2"
+                                    ><span class="linha-icone"><i class="bi bi-trophy-fill"></i></span
+                                    ><span class="linha-texto"
+                                        ><strong>Voleibol · Sub-17 Masculino</strong
+                                        ><small>Jogos Escolares de Vespasiano 2026</small></span
+                                    ><span class="status status-em-análise">Em análise</span></a
+                                >
+                            </div>
+                        </section>
+                        <section class="card-jeves">
+                            <div class="cartao-titulo">
+                                <h2>Próximos jogos</h2>
+                                <span class="chip-agenda"><i class="bi bi-calendar3"></i> Agenda</span>
+                            </div>
+                            <div class="agenda-jogos">
+                                <article class="jogo-painel">
+                                    <span class="jogo-data"><strong>18</strong><small>AGO</small></span
+                                    ><span
+                                        ><strong>Futsal · Sub-15 Feminino</strong
+                                        ><small>Colégio Tiradentes × E. E. Machado de Assis</small
+                                        ><small><i class="bi bi-clock"></i> 14:30 · Ginásio Municipal</small></span
+                                    >
+                                </article>
+                                <article class="jogo-painel">
+                                    <span class="jogo-data"><strong>21</strong><small>AGO</small></span
+                                    ><span
+                                        ><strong>Voleibol · Sub-17 Masculino</strong
+                                        ><small>Colégio Tiradentes × E. E. Maria de Lourdes</small
+                                        ><small><i class="bi bi-clock"></i> 10:00 · Poliesportivo Centro</small></span
+                                    >
+                                </article>
+                            </div>
+                        </section>
+                    </div>
+                    <section class="card-jeves">
+                        <div class="cartao-titulo">
+                            <h2>Status das inscrições</h2>
+                            <a href="inscricoes.html" class="link-dourado"
+                                >Acompanhar <i class="bi bi-arrow-right"></i
+                            ></a>
+                        </div>
+                        <div class="status-resumo">
+                            <a href="inscricoes.html" class="status-resumo-item"
+                                ><span>Aprovada</span><strong>0</strong></a
+                            ><a href="inscricoes.html" class="status-resumo-item"
+                                ><span>Em análise</span><strong>1</strong></a
+                            ><a href="inscricoes.html" class="status-resumo-item"
+                                ><span>Correção solicitada</span><strong>1</strong></a
+                            >
+                        </div>
+                    </section>
+                    <p class="aviso-demo-rodape">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
+                        salvas somente neste navegador.
+                    </p>
+                </main>
+            </div>
+        </div>
+        <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            (function () {
+                "use strict";
+                const chaveSessao = "jeves_sessao";
+                const chaves = {
+                    escola: "jeves_escola_demo",
+                    alunos: "jeves_alunos_demo",
+                    equipes: "jeves_equipes_demo",
+                    inscricoes: "jeves_inscricoes_demo",
+                    usuario: "jeves_usuario_demo",
+                };
+                const pagina = document.body.dataset.page || "painel";
+                const paginas = [
+                    { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
+                    {
+                        id: "torneios-disponiveis",
+                        nome: "Torneios disponíveis",
+                        icone: "bi-trophy-fill",
+                        arquivo: "torneios-disponiveis.html",
+                    },
+                    {
+                        id: "nova-inscricao",
+                        nome: "Nova inscrição",
+                        icone: "bi-plus-circle-fill",
+                        arquivo: "nova-inscricao.html",
+                    },
+                    {
+                        id: "inscricoes",
+                        nome: "Minhas inscrições",
+                        icone: "bi-clipboard-check-fill",
+                        arquivo: "inscricoes.html",
+                    },
+                    { id: "equipes", nome: "Equipes", icone: "bi-people-fill", arquivo: "equipes.html" },
+                    { id: "alunos", nome: "Alunos", icone: "bi-person-badge-fill", arquivo: "alunos.html" },
+                    {
+                        id: "perfil-escola",
+                        nome: "Perfil da escola",
+                        icone: "bi-building-fill",
+                        arquivo: "perfil-escola.html",
+                    },
+                    { id: "meu-perfil", nome: "Meu perfil", icone: "bi-person-gear", arquivo: "meu-perfil.html" },
+                ];
+                const torneios = [
+                    {
+                        id: "jeves-2026",
+                        nome: "Jogos Escolares de Vespasiano 2026",
+                        periodo: "10 a 28 de agosto de 2026",
+                        prazo: "Inscrições até 30 de junho",
+                        modalidades: ["Futsal", "Voleibol", "Handebol", "Basquetebol", "Atletismo"],
+                        situacao: "Inscrições abertas",
+                    },
+                    {
+                        id: "jeves-atletismo-2026",
+                        nome: "Festival Escolar de Atletismo 2026",
+                        periodo: "15 e 16 de setembro de 2026",
+                        prazo: "Inscrições até 20 de agosto",
+                        modalidades: ["Atletismo"],
+                        situacao: "Inscrições abertas",
+                    },
+                ];
+                const catalogoModalidades = {
+                    Futsal: [
+                        "Sub-13 Masculino",
+                        "Sub-15 Masculino",
+                        "Sub-17 Masculino",
+                        "Sub-15 Feminino",
+                        "Sub-17 Feminino",
+                    ],
+                    Voleibol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Handebol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Basquetebol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Atletismo: [
+                        "Sub-13 Masculino",
+                        "Sub-15 Masculino",
+                        "Sub-17 Masculino",
+                        "Sub-13 Feminino",
+                        "Sub-15 Feminino",
+                        "Sub-17 Feminino",
+                    ],
+                };
+                const root = document.getElementById("app-escola");
+                let sessao;
+                let estadoInscricao = {
+                    passo: 0,
+                    torneioId: "",
+                    modalidade: "",
+                    categoria: "",
+                    equipeId: "",
+                    alunosIds: [],
+                };
+
+                function escapar(valor) {
+                    return String(valor ?? "").replace(
+                        /[&<>"']/g,
+                        (caractere) =>
+                            ({
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#39;",
+                            })[caractere],
+                    );
+                }
+
+                function carregar(chave, padrao) {
+                    try {
+                        const salvo = localStorage.getItem(chave);
+                        return salvo ? JSON.parse(salvo) : padrao;
+                    } catch (erro) {
+                        console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
+                        return padrao;
+                    }
+                }
+
+                function salvar(chave, valor) {
+                    try {
+                        localStorage.setItem(chave, JSON.stringify(valor));
+                        return true;
+                    } catch (erro) {
+                        console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
+                        toast("erro", "Não foi possível salvar os dados neste navegador.");
+                        return false;
+                    }
+                }
+
+                function obterSessao() {
+                    try {
+                        const valor = JSON.parse(localStorage.getItem(chaveSessao) || "null");
+                        if (!valor || !valor.usuario || !valor.expiracao || Date.now() > valor.expiracao) return null;
+                        return valor;
+                    } catch (erro) {
+                        console.error("Não foi possível validar a sessão local.", erro);
+                        return null;
+                    }
+                }
+
+                sessao = obterSessao();
+                if (sessao && sessao.usuario.perfil !== "escola") {
+                    window.location.replace("../erros/403.html");
+                    return;
+                }
+                const sessaoValida = sessao;
+                sessao ||= {
+                    token: "jeves_escola_demo",
+                    usuario: {
+                        id: 1,
+                        nome: "Colégio Tiradentes Vespasiano",
+                        email: "escola.tiradentes@vespasiano.mg.gov.br",
+                        perfil: "escola",
+                        escolaId: 1,
+                    },
+                    expiracao: Date.now() + 86400000,
+                };
+
+                const escolaPadrao = {
+                    nome: sessao.usuario.nome || "Colégio Tiradentes Vespasiano",
+                    nomeCurto: "Colégio Tiradentes",
+                    cnpj: "12.345.678/0001-90",
+                    ineP: "31234567",
+                    email: sessao.usuario.email || "escola.tiradentes@vespasiano.mg.gov.br",
+                    telefone: "(31) 3621-2026",
+                    diretor: "Maria Aparecida Oliveira",
+                    endereco: "Rua Dona Mariana da Costa, 120",
+                    bairro: "Centro",
+                    cidade: "Vespasiano",
+                    cep: "33200-000",
+                };
+                const alunosPadrao = [
+                    { id: "a1", nome: "Ana Clara Ferreira", nascimento: "2012-04-18", ano: "8º ano", equipeId: "e1" },
+                    { id: "a2", nome: "Beatriz Souza Lima", nascimento: "2011-09-02", ano: "9º ano", equipeId: "e1" },
+                    {
+                        id: "a3",
+                        nome: "Caio Henrique Santos",
+                        nascimento: "2010-01-27",
+                        ano: "1º ano EM",
+                        equipeId: "e2",
+                    },
+                    { id: "a4", nome: "Daniela Alves Rocha", nascimento: "2012-07-14", ano: "8º ano", equipeId: "" },
+                    {
+                        id: "a5",
+                        nome: "Eduardo Martins Costa",
+                        nascimento: "2009-11-05",
+                        ano: "2º ano EM",
+                        equipeId: "e2",
+                    },
+                ];
+                const equipesPadrao = [
+                    {
+                        id: "e1",
+                        nome: "Futsal Feminino Sub-15",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        tecnico: "Prof. Renata Alves",
+                        alunos: [
+                            { id: "a1", numero: "10", posicao: "Ala" },
+                            { id: "a2", numero: "7", posicao: "Fixa" },
+                        ],
+                    },
+                    {
+                        id: "e2",
+                        nome: "Voleibol Masculino Sub-17",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        tecnico: "Prof. Marcos Silva",
+                        alunos: [
+                            { id: "a3", numero: "4", posicao: "Levantador" },
+                            { id: "a5", numero: "12", posicao: "Ponteiro" },
+                        ],
+                    },
+                ];
+                const inscricoesPadrao = [
+                    {
+                        id: "i1",
+                        torneioId: "jeves-2026",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        equipeId: "e1",
+                        alunosIds: ["a1", "a2"],
+                        status: "Correção solicitada",
+                        observacao: "Confira o número de matrícula de uma atleta e reenvie a lista da equipe.",
+                        data: "2026-06-02",
+                    },
+                    {
+                        id: "i2",
+                        torneioId: "jeves-2026",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        equipeId: "e2",
+                        alunosIds: ["a3", "a5"],
+                        status: "Em análise",
+                        observacao: "",
+                        data: "2026-06-04",
+                    },
+                ];
+                const deveRenderizar = Boolean(
+                    sessaoValida ||
+                        location.search ||
+                        Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+                );
+                if (!localStorage.getItem(chaves.escola)) salvar(chaves.escola, escolaPadrao);
+                if (!localStorage.getItem(chaves.alunos)) salvar(chaves.alunos, alunosPadrao);
+                if (!localStorage.getItem(chaves.equipes)) salvar(chaves.equipes, equipesPadrao);
+                if (!localStorage.getItem(chaves.inscricoes)) salvar(chaves.inscricoes, inscricoesPadrao);
+                if (!localStorage.getItem(chaves.usuario))
+                    salvar(chaves.usuario, {
+                        nome: sessao.usuario.nome || "Maria Aparecida Oliveira",
+                        email: sessao.usuario.email || escolaPadrao.email,
+                        telefone: "(31) 99999-2026",
+                    });
+
+                function ler(chave) {
+                    return carregar(chave, []);
+                }
+
+                function getEscola() {
+                    return carregar(chaves.escola, escolaPadrao);
+                }
+
+                function getUsuario() {
+                    return carregar(chaves.usuario, { nome: "Responsável da escola", email: "", telefone: "" });
+                }
+
+                function nomeTorneio(id) {
+                    return torneios.find((torneio) => torneio.id === id)?.nome || "Torneio";
+                }
+
+                function nomeEquipe(id) {
+                    return ler(chaves.equipes).find((equipe) => equipe.id === id)?.nome || "Equipe não informada";
+                }
+
+                function nomeAluno(id) {
+                    return ler(chaves.alunos).find((aluno) => aluno.id === id)?.nome || "Aluno não encontrado";
+                }
+
+                function statusClass(status) {
+                    return `status-${status.toLowerCase().replaceAll(" ", "-")}`;
+                }
+
+                function badge(status) {
+                    return `<span class="status ${statusClass(status)}">${escapar(status)}</span>`;
+                }
+
+                function toast(tipo, mensagem) {
+                    const existente = document.getElementById("aviso-escola");
+                    existente?.remove();
+                    const elemento = document.createElement("div");
+                    elemento.id = "aviso-escola";
+                    elemento.className = `aviso-toast aviso-${tipo}`;
+                    elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
+                    elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
+                    const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
+                    conteiner.appendChild(elemento);
+                    window.setTimeout(() => elemento.remove(), 4000);
+                }
+
+                function cabecalho(titulo, descricao, acao = "") {
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área da escola · JEVES 2026</div><h1>${escapar(titulo)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                }
+
+                function moldura(conteudo, titulo) {
+                    if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
+                        root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
+                    }
+                    document.title = `${titulo} | JEVES 2026`;
+                    document.getElementById("titulo-pagina").textContent = titulo;
+                    const usuario = getUsuario();
+                    const iniciais = (usuario.nome || "Escola")
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((parte) => parte[0] || "")
+                        .join("")
+                        .toUpperCase();
+                    document.querySelector(".avatar-usuario").textContent = iniciais;
+                    document.querySelector(".nome-usuario").textContent = usuario.nome;
+                    document.querySelector('[data-action="sair"]').addEventListener("click", () => {
+                        localStorage.removeItem(chaveSessao);
+                        localStorage.removeItem("jeves_token");
+                        window.location.replace("../publico/login.html");
+                    });
+                    document.getElementById("btn-menu-escola").addEventListener("click", (event) => {
+                        const botao = event.currentTarget;
+                        const aberto = document.getElementById("sidebar-principal").classList.toggle("aberto");
+                        botao.setAttribute("aria-expanded", String(aberto));
+                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                    });
+                }
+
+                function atualizarCategorias(modalidade, select, categoriaSelecionada = "") {
+                    const categorias = catalogoModalidades[modalidade] || [];
+                    select.innerHTML = `<option value="">Selecione a categoria</option>${categorias.map((categoria) => `<option value="${escapar(categoria)}" ${categoria === categoriaSelecionada ? "selected" : ""}>${escapar(categoria)}</option>`).join("")}`;
+                }
+
+                function renderPainel() {
+                    const escola = getEscola();
+                    const inscricoes = ler(chaves.inscricoes);
+                    const equipes = ler(chaves.equipes);
+                    const alunos = ler(chaves.alunos);
+                    const conteudo = `
+      ${cabecalho(`Olá, ${escola.nomeCurto || escola.nome}!`, "Acompanhe as inscrições, equipes e próximos jogos da sua escola.", '<a href="nova-inscricao.html" class="btn-jeves-primario"><i class="bi bi-plus-lg"></i> Nova inscrição</a>')}
+      <div class="grade-indicadores">
+        ${[
+            ["bi-clipboard-check-fill", inscricoes.length, "Inscrições no torneio"],
+            ["bi-people-fill", equipes.length, "Equipes cadastradas"],
+            ["bi-person-badge-fill", alunos.length, "Alunos no elenco"],
+            ["bi-calendar-event-fill", 2, "Próximos jogos"],
+        ]
+            .map(
+                ([icone, valor, rotulo]) =>
+                    `<article class="card-jeves indicador"><span class="indicador-icone"><i class="bi ${icone}" aria-hidden="true"></i></span><span><strong class="indicador-valor">${valor}</strong><span class="indicador-rotulo">${rotulo}</span></span></article>`,
+            )
+            .join("")}
+      </div>
+      <section class="card-jeves">
+        <div class="cartao-titulo"><h2><i class="bi bi-lightning-charge-fill texto-dourado"></i> Acesso rápido</h2></div>
+        <div class="atalhos">
+          <a class="atalho" href="torneios-disponiveis.html"><i class="bi bi-trophy-fill"></i><span><strong>Torneios disponíveis</strong><small>Veja as competições abertas</small></span><i class="bi bi-arrow-right ms-auto"></i></a>
+          <a class="atalho" href="equipes.html"><i class="bi bi-people-fill"></i><span><strong>Gerenciar equipes</strong><small>Organize seus times e atletas</small></span><i class="bi bi-arrow-right ms-auto"></i></a>
+          <a class="atalho" href="alunos.html"><i class="bi bi-person-badge-fill"></i><span><strong>Cadastro de alunos</strong><small>Mantenha o elenco atualizado</small></span><i class="bi bi-arrow-right ms-auto"></i></a>
+        </div>
+      </section>
+      <div class="grade-painel">
+        <section class="card-jeves"><div class="cartao-titulo"><h2>Inscrições recentes</h2><a href="inscricoes.html" class="link-dourado">Ver todas <i class="bi bi-arrow-right"></i></a></div>
+          ${
+              inscricoes.length
+                  ? `<div class="lista-painel">${inscricoes
+                        .slice(0, 3)
+                        .map(
+                            (inscricao) =>
+                                `<a class="linha-inscricao" href="inscricao-detalhe.html?id=${encodeURIComponent(inscricao.id)}"><span class="linha-icone"><i class="bi bi-trophy-fill"></i></span><span class="linha-texto"><strong>${escapar(inscricao.modalidade)} · ${escapar(inscricao.categoria)}</strong><small>${escapar(nomeTorneio(inscricao.torneioId))}</small></span>${badge(inscricao.status)}</a>`,
+                        )
+                        .join("")}</div>`
+                  : '<p class="texto-vazio">Ainda não há inscrições. Explore os torneios disponíveis para começar.</p>'
+          }
+        </section>
+        <section class="card-jeves"><div class="cartao-titulo"><h2>Próximos jogos</h2><span class="chip-agenda"><i class="bi bi-calendar3"></i> Agenda</span></div>
+          <div class="agenda-jogos"><article class="jogo-painel"><span class="jogo-data"><strong>18</strong><small>AGO</small></span><span><strong>Futsal · Sub-15 Feminino</strong><small>Colégio Tiradentes × E. E. Machado de Assis</small><small><i class="bi bi-clock"></i> 14:30 · Ginásio Municipal</small></span></article><article class="jogo-painel"><span class="jogo-data"><strong>21</strong><small>AGO</small></span><span><strong>Voleibol · Sub-17 Masculino</strong><small>Colégio Tiradentes × E. E. Maria de Lourdes</small><small><i class="bi bi-clock"></i> 10:00 · Poliesportivo Centro</small></span></article></div>
+        </section>
+      </div>
+      <section class="card-jeves"><div class="cartao-titulo"><h2>Status das inscrições</h2><a href="inscricoes.html" class="link-dourado">Acompanhar <i class="bi bi-arrow-right"></i></a></div><div class="status-resumo">${["Aprovada", "Em análise", "Correção solicitada"].map((status) => `<a href="inscricoes.html" class="status-resumo-item"><span>${status}</span><strong>${inscricoes.filter((item) => item.status === status).length}</strong></a>`).join("")}</div></section>`;
+                    moldura(conteudo, "Painel");
+                }
+
+                renderPainel();
+            })();
+        </script>
+    </body>
+</html>

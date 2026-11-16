@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Gerencie contas, perfis e acessos da plataforma JEVES 2026." />
+        <meta name="theme-color" content="#0B1640" />
+        <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+        <title>Usuários | JEVES 2026</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="../assets/css/variaveis.css" />
+        <link rel="stylesheet" href="../assets/css/global.css" />
+        <link rel="stylesheet" href="../assets/css/componentes.css" />
+        <style>
+            body {
+                min-height: 100vh;
+                background: #0b1640;
+            }
+
+            .app {
+                min-height: 100vh;
+            }
+
+            .conteudo {
+                min-height: 100vh;
+                margin-left: 270px;
+            }
+
+            .conteudo-principal {
+                max-width: 1480px;
+                padding: clamp(1.25rem, 3vw, 2.5rem);
+                margin: 0 auto;
+            }
+
+            .cabecalho {
+                display: flex;
+                align-items: flex-end;
+                justify-content: space-between;
+                gap: 1.25rem;
+                margin-bottom: 1.6rem;
+            }
+
+            .cabecalho h1 {
+                margin: 0 0 0.35rem;
+                font: 800 clamp(1.7rem, 3vw, 2.4rem) / 1.2 var(--fonte-titulos);
+            }
+
+            .cabecalho p {
+                margin: 0;
+                color: var(--cor-texto-secundario);
+            }
+
+            .badge-secao-label {
+                margin-bottom: 0.45rem;
+                color: var(--cor-secundaria);
+                font-size: 0.73rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+
+            .card-jeves {
+                min-width: 0;
+                padding: 1.3rem;
+                background: var(--gradiente-card);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-lg);
+                box-shadow: var(--sombra-sm);
+            }
+
+            .card-jeves + .card-jeves {
+                margin-top: 1.2rem;
+            }
+
+            .cartao-titulo {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .cartao-titulo h2 {
+                margin: 0;
+                font: 700 1.1rem var(--fonte-titulos);
+            }
+
+            .tabela-responsiva {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            .tabela-jeves {
+                width: 100%;
+                min-width: 760px;
+                border-collapse: collapse;
+            }
+
+            .tabela-jeves th,
+            .tabela-jeves td {
+                padding: 0.8rem 0.65rem;
+                border-bottom: 1px solid var(--cor-borda-suave);
+                text-align: left;
+                vertical-align: middle;
+                font-size: 0.8rem;
+            }
+
+            .tabela-jeves th {
+                color: var(--cor-texto-secundario);
+                font-size: 0.67rem;
+                font-weight: 700;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+            .tabela-jeves td {
+                color: rgba(255, 255, 255, 0.88);
+            }
+
+            .tabela-jeves td strong,
+            .tabela-jeves td small {
+                display: block;
+            }
+
+            .tabela-jeves td small {
+                margin-top: 0.15rem;
+                color: var(--cor-texto-secundario);
+                font-size: 0.69rem;
+            }
+
+            .tabela-jeves tbody tr:last-child td {
+                border-bottom: 0;
+            }
+
+            .tabela-jeves tbody tr:hover {
+                background: rgba(42, 74, 175, 0.08);
+            }
+
+            .tabela-jeves tbody tr[hidden] {
+                display: none;
+            }
+
+            .status {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+                padding: 0.27rem 0.58rem;
+                border-radius: 100px;
+                font-size: 0.68rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .status-ativo {
+                color: #77e2a2;
+                background: rgba(46, 204, 113, 0.12);
+            }
+
+            .status-inativo {
+                color: #ff9a85;
+                background: rgba(231, 76, 60, 0.13);
+            }
+
+            .perfil-chip {
+                display: inline-flex;
+                padding: 0.25rem 0.55rem;
+                color: #b6c8ed;
+                background: rgba(168, 184, 216, 0.12);
+                border-radius: 100px;
+                font-size: 0.68rem;
+                text-transform: capitalize;
+            }
+
+            .acoes-tabela {
+                display: flex;
+                gap: 0.35rem;
+            }
+
+            .botao-icone {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.35rem;
+                min-width: 32px;
+                min-height: 32px;
+                padding: 0.35rem 0.5rem;
+                color: var(--cor-secundaria);
+                background: transparent;
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-sm);
+                text-decoration: none;
+                font-size: 0.74rem;
+                cursor: pointer;
+            }
+
+            .botao-icone:hover {
+                color: #fff;
+                border-color: var(--cor-borda);
+            }
+
+            .botao-icone.acao-desativar {
+                color: #ff9a85;
+            }
+
+            .contador {
+                display: inline-grid;
+                place-items: center;
+                min-width: 24px;
+                height: 24px;
+                margin-left: 0.3rem;
+                padding: 0 0.35rem;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.12);
+                border-radius: 100px;
+                font-size: 0.68rem;
+                vertical-align: middle;
+            }
+
+            .busca {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                min-width: min(320px, 100%);
+                padding: 0.48rem 0.7rem;
+                color: var(--cor-secundaria);
+                background: rgba(11, 22, 64, 0.6);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-sm);
+            }
+
+            .busca input {
+                width: 100%;
+                color: #fff;
+                background: transparent;
+                border: 0;
+                outline: 0;
+                font: 0.77rem var(--fonte-texto);
+            }
+
+            .busca input::placeholder {
+                color: var(--cor-texto-secundario);
+            }
+
+            .formulario {
+                max-width: 1050px;
+                margin: 1.2rem auto 0;
+                padding: clamp(1.2rem, 3vw, 2rem);
+            }
+
+            .cabecalho-form {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .icone-formulario {
+                display: grid;
+                place-items: center;
+                width: 44px;
+                height: 44px;
+                flex: 0 0 44px;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                border-radius: 13px;
+                font-size: 1.15rem;
+            }
+
+            .cabecalho-form h2 {
+                margin: 0 0 0.2rem;
+                font: 700 1.08rem var(--fonte-titulos);
+            }
+
+            .cabecalho-form p {
+                margin: 0;
+                color: var(--cor-texto-secundario);
+                font-size: 0.77rem;
+            }
+
+            .form-admin-grade {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+                gap: 0.9rem;
+            }
+
+            .campo {
+                display: grid;
+                gap: 0.35rem;
+            }
+
+            .campo label {
+                color: var(--cor-texto-secundario);
+                font-size: 0.76rem;
+                font-weight: 600;
+            }
+
+            .campo input,
+            .campo select {
+                width: 100%;
+                min-height: 42px;
+                padding: 0.6rem 0.75rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.75);
+                border: 1px solid rgba(42, 74, 175, 0.42);
+                border-radius: var(--borda-raio-sm);
+                font: 0.84rem var(--fonte-texto);
+            }
+
+            .campo input:focus,
+            .campo select:focus {
+                border-color: var(--cor-secundaria);
+                outline: 0;
+                box-shadow: 0 0 0 0.2rem rgba(245, 184, 0, 0.12);
+            }
+
+            .campo select option {
+                color: #fff;
+                background: #162055;
+            }
+
+            .campo-largo {
+                grid-column: 1 / -1;
+            }
+
+            .check {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                align-self: center;
+                color: var(--cor-texto-secundario);
+                font-size: 0.78rem;
+            }
+
+            .check input {
+                width: 16px;
+                height: 16px;
+                accent-color: var(--cor-secundaria);
+            }
+
+            .acoes-form {
+                display: flex;
+                justify-content: flex-end;
+                gap: 0.65rem;
+                margin-top: 1.2rem;
+            }
+
+            .acoes-form .btn-jeves-primario,
+            .acoes-form .btn-jeves-contorno {
+                padding: 0.63rem 1rem;
+                font-size: 0.84rem;
+            }
+
+            .estado-vazio {
+                padding: 2rem 1rem;
+                color: var(--cor-texto-secundario);
+                text-align: center;
+            }
+
+            .estado-vazio > i {
+                display: grid;
+                place-items: center;
+                width: 52px;
+                height: 52px;
+                margin: 0 auto 0.7rem;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                border-radius: 50%;
+                font-size: 1.3rem;
+            }
+
+            .estado-vazio h3 {
+                margin: 0 0 0.35rem;
+                color: #fff;
+                font: 700 1rem var(--fonte-titulos);
+            }
+
+            .estado-vazio p {
+                margin: 0;
+                font-size: 0.78rem;
+            }
+
+            .aviso-demo-rodape {
+                margin: 2rem 0 0;
+                padding-top: 1rem;
+                color: rgba(168, 184, 216, 0.65);
+                border-top: 1px solid var(--cor-borda-suave);
+                font-size: 0.74rem;
+            }
+
+            .aviso-demo-rodape i {
+                color: var(--cor-secundaria);
+            }
+
+            .selo {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                color: var(--cor-secundaria);
+                font-size: 0.7rem;
+                font-weight: 700;
+            }
+
+            .usuario {
+                cursor: default;
+            }
+
+            .aviso-toast {
+                position: fixed;
+                z-index: 9999;
+                right: 1.25rem;
+                bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                max-width: min(400px, calc(100vw - 2.5rem));
+                padding: 0.9rem 1.1rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.97);
+                border: 1px solid var(--cor-borda-suave);
+                border-left: 4px solid var(--cor-sucesso);
+                border-radius: var(--borda-raio-md);
+                box-shadow: var(--sombra-lg);
+                font-size: 0.82rem;
+            }
+
+            .aviso-toast i {
+                color: var(--cor-sucesso);
+            }
+
+            .aviso-toast.aviso-erro {
+                border-left-color: var(--cor-erro);
+            }
+
+            .aviso-toast.aviso-erro i {
+                color: var(--cor-erro);
+            }
+
+            .d-none {
+                display: none !important;
+            }
+
+            .sidebar-jeves.aberto {
+                transform: translateX(0);
+            }
+
+            @media (max-width: 768px) {
+                .sidebar-jeves {
+                    transform: translateX(-100%);
+                }
+
+                .conteudo {
+                    margin-left: 0;
+                }
+
+                .bar-superior {
+                    padding: 0 1rem;
+                }
+
+                .bar-superior-titulo,
+                .selo,
+                .usuario .nome-usuario {
+                    display: none;
+                }
+
+                .conteudo-principal {
+                    padding: 1.15rem;
+                }
+
+                .cabecalho {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .cabecalho > .btn-jeves-primario {
+                    align-self: stretch;
+                    justify-content: center;
+                }
+            }
+
+            @media (max-width: 540px) {
+                .form-admin-grade {
+                    grid-template-columns: 1fr;
+                }
+
+                .campo-largo {
+                    grid-column: auto;
+                }
+
+                .cartao-titulo {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .busca {
+                    width: 100%;
+                }
+
+                .acoes-form {
+                    flex-direction: column;
+                }
+
+                .acoes-form > * {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
+        </style>
+    </head>
+    <body data-static-content="true" data-page="usuarios">
+        <div class="app">
+            <aside class="sidebar-jeves" id="sidebar-admin" aria-label="Navegação do painel">
+                <div class="sidebar-topo">
+                    <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+                        <i class="bi bi-fire" aria-hidden="true"></i>
+                        <span>JEVES</span>
+                    </a>
+                    <span class="sidebar-perfil-label">Administração</span>
+                </div>
+                <nav class="sidebar-nav" aria-label="Menu administrativo">
+                    <a href="painel.html" class="item-sidebar">
+                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
+                        <span>Painel</span>
+                    </a>
+                    <a href="usuarios.html" class="item-sidebar ativo" aria-current="page">
+                        <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
+                        <span>Usuários</span>
+                    </a>
+                    <a href="escolas.html" class="item-sidebar">
+                        <i class="bi bi-building-fill" aria-hidden="true"></i>
+                        <span>Escolas</span>
+                    </a>
+                    <a href="modalidades.html" class="item-sidebar">
+                        <i class="bi bi-activity" aria-hidden="true"></i>
+                        <span>Modalidades</span>
+                    </a>
+                    <a href="categorias.html" class="item-sidebar">
+                        <i class="bi bi-tags-fill" aria-hidden="true"></i>
+                        <span>Categorias</span>
+                    </a>
+                </nav>
+                <div class="sidebar-rodape">
+                    <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
+                        <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
+                        <span>Sair da conta</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="conteudo">
+                <header class="bar-superior" role="banner">
+                    <div class="bar-superior-esquerda">
+                        <button
+                            class="btn-toggle-sidebar"
+                            id="btn-menu-admin"
+                            type="button"
+                            aria-label="Abrir menu"
+                            aria-expanded="false"
+                            aria-controls="sidebar-admin"
+                        >
+                            <i class="bi bi-list" aria-hidden="true"></i>
+                        </button>
+                        <h2 class="bar-superior-titulo" id="titulo-pagina">Usuários</h2>
+                    </div>
+                    <div class="bar-superior-direita">
+                        <span class="selo"
+                            ><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Administrador</span
+                        >
+                        <span class="usuario-info usuario">
+                            <span class="avatar-usuario" aria-hidden="true">AG</span>
+                            <span class="nome-usuario">Administração Geral SEMESP</span>
+                        </span>
+                    </div>
+                </header>
+                <main class="conteudo-principal" id="app-admin" aria-labelledby="titulo-pagina">
+                    <header class="cabecalho">
+                        <div>
+                            <div class="badge-secao-label">Administração · JEVES 2026</div>
+                            <h1>Usuários</h1>
+                            <p>Crie e edite contas, defina perfis e controle o acesso à plataforma.</p>
+                        </div>
+                        <a href="#form-usuario" class="btn-jeves-primario"
+                            ><i class="bi bi-person-plus"></i> Novo usuário</a
+                        >
+                    </header>
+                    <section class="card-jeves">
+                        <div class="cartao-titulo">
+                            <h2>Contas cadastradas <span class="contador">3</span></h2>
+                            <label class="busca"
+                                ><i class="bi bi-search"></i
+                                ><input
+                                    id="busca-usuarios"
+                                    type="search"
+                                    placeholder="Buscar por nome, e-mail ou perfil"
+                                    aria-label="Buscar usuários"
+                            /></label>
+                        </div>
+                        <div class="tabela-responsiva">
+                            <table class="tabela-jeves">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Perfil</th>
+                                        <th>Escola vinculada</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        data-busca="prof. carlos santana comissao.jogos@vespasiano.mg.gov.br organizador "
+                                    >
+                                        <td><strong>Prof. Carlos Santana</strong></td>
+                                        <td>comissao.jogos@vespasiano.mg.gov.br</td>
+                                        <td><span class="perfil-chip">organizador</span></td>
+                                        <td>—</td>
+                                        <td>
+                                            <span class="status status-ativo"
+                                                ><i class="bi bi-check-circle-fill"></i>Ativo</span
+                                            >
+                                        </td>
+                                        <td>
+                                            <div class="acoes-tabela">
+                                                <button type="button" class="botao-icone" data-editar-usuario="u1">
+                                                    <i class="bi bi-pencil"></i
+                                                    ><span class="sr-only">Editar</span></button
+                                                ><button
+                                                    type="button"
+                                                    class="botao-icone acao-desativar"
+                                                    data-alternar-usuario="u1"
+                                                    aria-label="Desativar Prof. Carlos Santana"
+                                                >
+                                                    <i class="bi bi-person-slash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        data-busca="maria aparecida oliveira escola.tiradentes@vespasiano.mg.gov.br escola colégio tiradentes vespasiano"
+                                    >
+                                        <td><strong>Maria Aparecida Oliveira</strong></td>
+                                        <td>escola.tiradentes@vespasiano.mg.gov.br</td>
+                                        <td><span class="perfil-chip">escola</span></td>
+                                        <td>Colégio Tiradentes Vespasiano</td>
+                                        <td>
+                                            <span class="status status-ativo"
+                                                ><i class="bi bi-check-circle-fill"></i>Ativo</span
+                                            >
+                                        </td>
+                                        <td>
+                                            <div class="acoes-tabela">
+                                                <button type="button" class="botao-icone" data-editar-usuario="u2">
+                                                    <i class="bi bi-pencil"></i
+                                                    ><span class="sr-only">Editar</span></button
+                                                ><button
+                                                    type="button"
+                                                    class="botao-icone acao-desativar"
+                                                    data-alternar-usuario="u2"
+                                                    aria-label="Desativar Maria Aparecida Oliveira"
+                                                >
+                                                    <i class="bi bi-person-slash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        data-busca="joana martins joana.martins@machado.edu.br escola e. e. machado de assis"
+                                    >
+                                        <td><strong>Joana Martins</strong></td>
+                                        <td>joana.martins@machado.edu.br</td>
+                                        <td><span class="perfil-chip">escola</span></td>
+                                        <td>E. E. Machado de Assis</td>
+                                        <td>
+                                            <span class="status status-inativo"
+                                                ><i class="bi bi-pause-circle-fill"></i>Inativo</span
+                                            >
+                                        </td>
+                                        <td>
+                                            <div class="acoes-tabela">
+                                                <button type="button" class="botao-icone" data-editar-usuario="u3">
+                                                    <i class="bi bi-pencil"></i
+                                                    ><span class="sr-only">Editar</span></button
+                                                ><button
+                                                    type="button"
+                                                    class="botao-icone"
+                                                    data-alternar-usuario="u3"
+                                                    aria-label="Ativar Joana Martins"
+                                                >
+                                                    <i class="bi bi-person-check"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <form class="card-jeves formulario" id="form-usuario">
+                        <div class="cabecalho-form">
+                            <span class="icone-formulario"><i class="bi bi-person-vcard"></i></span>
+                            <div>
+                                <h2 id="titulo-form-usuario">Criar usuário</h2>
+                                <p>Defina o perfil e os dados de acesso do usuário.</p>
+                            </div>
+                        </div>
+                        <input id="usuario-id" type="hidden" />
+                        <div class="form-admin-grade">
+                            <div class="campo campo-largo">
+                                <label for="usuario-nome">Nome completo *</label
+                                ><input id="usuario-nome" required maxlength="120" placeholder="Nome da pessoa" />
+                            </div>
+                            <div class="campo">
+                                <label for="usuario-email">E-mail de acesso *</label
+                                ><input
+                                    id="usuario-email"
+                                    type="email"
+                                    required
+                                    placeholder="nome@instituicao.edu.br"
+                                />
+                            </div>
+                            <div class="campo">
+                                <label for="usuario-perfil">Perfil *</label
+                                ><select id="usuario-perfil" required>
+                                    <option value="">Selecione</option>
+                                    <option value="escola">Escola</option>
+                                    <option value="organizador">Organizador</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="campo campo-largo" id="grupo-escola-usuario">
+                                <label for="usuario-escola">Escola vinculada</label
+                                ><select id="usuario-escola">
+                                    <option value="">Nenhuma escola vinculada</option>
+                                    <option>Colégio Tiradentes Vespasiano</option>
+                                    <option>E. E. Machado de Assis</option>
+                                    <option>E. E. Maria de Lourdes</option>
+                                </select>
+                            </div>
+                            <label class="check"
+                                ><input id="usuario-ativo" type="checkbox" checked /> Usuário ativo</label
+                            >
+                        </div>
+                        <div class="acoes-form">
+                            <button type="button" class="btn-jeves-contorno d-none" id="cancelar-edicao-usuario">
+                                Cancelar edição</button
+                            ><button type="submit" class="btn-jeves-primario">
+                                <i class="bi bi-check2"></i> Salvar usuário
+                            </button>
+                        </div>
+                    </form>
+                    <p class="aviso-demo-rodape">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
+                        salvas somente neste navegador.
+                    </p>
+                </main>
+            </div>
+        </div>
+        <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            (function () {
+                "use strict";
+                const pagina = document.body.dataset.page || "painel";
+                const root = document.getElementById("app-admin");
+                const chaves = {
+                    sessao: "jeves_sessao",
+                    usuarios: "jeves_admin_usuarios_demo",
+                    escolas: "jeves_admin_escolas_demo",
+                    modalidades: "jeves_admin_modalidades_demo",
+                    categorias: "jeves_admin_categorias_demo",
+                    usuario: "jeves_admin_usuario_demo",
+                };
+                const paginas = [
+                    { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
+                    { id: "usuarios", nome: "Usuários", icone: "bi-person-lines-fill", arquivo: "usuarios.html" },
+                    { id: "escolas", nome: "Escolas", icone: "bi-building-fill", arquivo: "escolas.html" },
+                    { id: "modalidades", nome: "Modalidades", icone: "bi-activity", arquivo: "modalidades.html" },
+                    { id: "categorias", nome: "Categorias", icone: "bi-tags-fill", arquivo: "categorias.html" },
+                ];
+                let sessao;
+
+                function escapar(valor) {
+                    return String(valor ?? "").replace(
+                        /[&<>"']/g,
+                        (caractere) =>
+                            ({
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#39;",
+                            })[caractere],
+                    );
+                }
+
+                function ler(chave, padrao = []) {
+                    try {
+                        const valor = localStorage.getItem(chave);
+                        return valor ? JSON.parse(valor) : padrao;
+                    } catch (erro) {
+                        console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
+                        return padrao;
+                    }
+                }
+
+                function salvar(chave, valor) {
+                    try {
+                        localStorage.setItem(chave, JSON.stringify(valor));
+                        return true;
+                    } catch (erro) {
+                        console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
+                        notificar("erro", "Não foi possível salvar os dados neste navegador.");
+                        return false;
+                    }
+                }
+
+                function obterSessao() {
+                    try {
+                        const valor = JSON.parse(localStorage.getItem(chaves.sessao) || "null");
+                        return valor && valor.usuario && valor.expiracao > Date.now() ? valor : null;
+                    } catch (erro) {
+                        console.error("Não foi possível validar a sessão local.", erro);
+                        return null;
+                    }
+                }
+
+                sessao = obterSessao();
+                if (sessao && sessao.usuario.perfil !== "admin") {
+                    window.location.replace("../erros/403.html");
+                    return;
+                }
+                const sessaoValida = sessao;
+                sessao ||= {
+                    token: "jeves_admin_demo",
+                    usuario: {
+                        id: 501,
+                        nome: "Administração Geral SEMESP",
+                        email: "secretaria.esportes@vespasiano.mg.gov.br",
+                        perfil: "admin",
+                        escolaId: null,
+                    },
+                    expiracao: Date.now() + 86400000,
+                };
+
+                const usuariosPadrao = [
+                    {
+                        id: "u1",
+                        nome: "Prof. Carlos Santana",
+                        email: "comissao.jogos@vespasiano.mg.gov.br",
+                        perfil: "organizador",
+                        escola: "",
+                        ativo: true,
+                    },
+                    {
+                        id: "u2",
+                        nome: "Maria Aparecida Oliveira",
+                        email: "escola.tiradentes@vespasiano.mg.gov.br",
+                        perfil: "escola",
+                        escola: "Colégio Tiradentes Vespasiano",
+                        ativo: true,
+                    },
+                    {
+                        id: "u3",
+                        nome: "Joana Martins",
+                        email: "joana.martins@machado.edu.br",
+                        perfil: "escola",
+                        escola: "E. E. Machado de Assis",
+                        ativo: false,
+                    },
+                ];
+                const escolasPadrao = [
+                    {
+                        id: "e1",
+                        nome: "Colégio Tiradentes Vespasiano",
+                        cnpj: "12.345.678/0001-90",
+                        ineP: "31234567",
+                        cidade: "Vespasiano",
+                        email: "escola.tiradentes@vespasiano.mg.gov.br",
+                        ativo: true,
+                    },
+                    {
+                        id: "e2",
+                        nome: "E. E. Machado de Assis",
+                        cnpj: "23.456.789/0001-01",
+                        ineP: "31234568",
+                        cidade: "Vespasiano",
+                        email: "joana.martins@machado.edu.br",
+                        ativo: true,
+                    },
+                    {
+                        id: "e3",
+                        nome: "E. E. Maria de Lourdes",
+                        cnpj: "34.567.890/0001-12",
+                        ineP: "31234569",
+                        cidade: "Vespasiano",
+                        email: "contato@mariadelourdes.edu.br",
+                        ativo: false,
+                    },
+                ];
+                const modalidadesPadrao = [
+                    { id: "m1", nome: "Futsal", descricao: "Futebol de salão", ativo: true },
+                    { id: "m2", nome: "Voleibol", descricao: "Voleibol de quadra", ativo: true },
+                    { id: "m3", nome: "Handebol", descricao: "Handebol de quadra", ativo: true },
+                    { id: "m4", nome: "Basquetebol", descricao: "Basquetebol de quadra", ativo: true },
+                    { id: "m5", nome: "Atletismo", descricao: "Provas de pista e campo", ativo: true },
+                    { id: "m6", nome: "Xadrez", descricao: "Xadrez escolar", ativo: false },
+                ];
+                const categoriasPadrao = [
+                    {
+                        id: "c1",
+                        nome: "Sub-13 Masculino",
+                        idadeMinima: 11,
+                        idadeMaxima: 13,
+                        genero: "Masculino",
+                        ativo: true,
+                    },
+                    {
+                        id: "c2",
+                        nome: "Sub-15 Masculino",
+                        idadeMinima: 13,
+                        idadeMaxima: 15,
+                        genero: "Masculino",
+                        ativo: true,
+                    },
+                    {
+                        id: "c3",
+                        nome: "Sub-17 Masculino",
+                        idadeMinima: 15,
+                        idadeMaxima: 17,
+                        genero: "Masculino",
+                        ativo: true,
+                    },
+                    {
+                        id: "c4",
+                        nome: "Sub-13 Feminino",
+                        idadeMinima: 11,
+                        idadeMaxima: 13,
+                        genero: "Feminino",
+                        ativo: true,
+                    },
+                    {
+                        id: "c5",
+                        nome: "Sub-15 Feminino",
+                        idadeMinima: 13,
+                        idadeMaxima: 15,
+                        genero: "Feminino",
+                        ativo: true,
+                    },
+                    {
+                        id: "c6",
+                        nome: "Sub-17 Feminino",
+                        idadeMinima: 15,
+                        idadeMaxima: 17,
+                        genero: "Feminino",
+                        ativo: true,
+                    },
+                ];
+                const usuarioPadrao = {
+                    nome: sessao.usuario.nome || "Administração Geral SEMESP",
+                    email: sessao.usuario.email || "secretaria.esportes@vespasiano.mg.gov.br",
+                };
+                const deveRenderizar = Boolean(
+                    sessaoValida ||
+                        location.search ||
+                        Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+                );
+
+                Object.entries({
+                    [chaves.usuarios]: usuariosPadrao,
+                    [chaves.escolas]: escolasPadrao,
+                    [chaves.modalidades]: modalidadesPadrao,
+                    [chaves.categorias]: categoriasPadrao,
+                    [chaves.usuario]: usuarioPadrao,
+                }).forEach(([chave, padrao]) => {
+                    if (!localStorage.getItem(chave)) salvar(chave, padrao);
+                });
+
+                function todos(chave) {
+                    return ler(chave, []);
+                }
+
+                function notificar(tipo, mensagem) {
+                    document.getElementById("aviso-admin")?.remove();
+                    const elemento = document.createElement("div");
+                    elemento.id = "aviso-admin";
+                    elemento.className = `aviso-toast ${tipo === "erro" ? "aviso-erro" : ""}`;
+                    elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
+                    elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
+                    const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
+                    conteiner.appendChild(elemento);
+                    window.setTimeout(() => elemento.remove(), 4000);
+                }
+
+                function badgeAtivo(ativo) {
+                    const classe = ativo ? "status-ativo-admin" : "status-inativo-admin";
+                    const rotulo = ativo ? "Ativo" : "Inativo";
+                    return `<span class="status ${classe}"><i class="bi ${ativo ? "bi-check-circle-fill" : "bi-pause-circle-fill"}"></i>${rotulo}</span>`;
+                }
+
+                function titulo(tituloPagina, descricao, acao = "") {
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Administração · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                }
+
+                function moldura(conteudo, tituloPagina) {
+                    if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
+                        root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
+                    }
+                    document.title = `${tituloPagina} | JEVES 2026`;
+                    document.getElementById("titulo-pagina").textContent = tituloPagina;
+                    const usuario = ler(chaves.usuario, usuarioPadrao);
+                    const iniciais = (usuario.nome || "Admin")
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((parte) => parte[0] || "")
+                        .join("")
+                        .toUpperCase();
+                    document.querySelector(".avatar-usuario").textContent = iniciais;
+                    document.querySelector(".nome-usuario").textContent = usuario.nome;
+                    document.querySelector('[data-action="sair"]').addEventListener("click", () => {
+                        localStorage.removeItem(chaves.sessao);
+                        localStorage.removeItem("jeves_token");
+                        window.location.replace("../publico/login.html");
+                    });
+                    document.getElementById("btn-menu-admin").addEventListener("click", (event) => {
+                        const botao = event.currentTarget;
+                        const aberto = document.getElementById("sidebar-admin").classList.toggle("aberto");
+                        botao.setAttribute("aria-expanded", String(aberto));
+                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                    });
+                }
+
+                function tabelaUsuarios(usuarios) {
+                    return `<div class="tabela-responsiva"><table class="tabela-jeves"><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Escola vinculada</th><th>Status</th><th>Ações</th></tr></thead><tbody>${usuarios.map((usuario) => `<tr data-busca="${escapar(`${usuario.nome} ${usuario.email} ${usuario.perfil} ${usuario.escola}`.toLowerCase())}"><td><strong>${escapar(usuario.nome)}</strong></td><td>${escapar(usuario.email)}</td><td><span class="perfil-chip">${escapar(usuario.perfil)}</span></td><td>${escapar(usuario.escola || "—")}</td><td>${badgeAtivo(usuario.ativo)}</td><td><div class="acoes-tabela"><button type="button" class="botao-icone" data-editar-usuario="${escapar(usuario.id)}"><i class="bi bi-pencil"></i><span class="sr-only">Editar</span></button><button type="button" class="botao-icone ${usuario.ativo ? "acao-desativar" : ""}" data-alternar-usuario="${escapar(usuario.id)}" aria-label="${usuario.ativo ? "Desativar" : "Ativar"} ${escapar(usuario.nome)}"><i class="bi ${usuario.ativo ? "bi-person-slash" : "bi-person-check"}"></i></button></div></td></tr>`).join("")}</tbody></table></div>`;
+                }
+
+                function renderUsuarios() {
+                    const usuarios = todos(chaves.usuarios);
+                    moldura(
+                        `${titulo("Usuários", "Crie e edite contas, defina perfis e controle o acesso à plataforma.", '<a href="#form-usuario" class="btn-jeves-primario"><i class="bi bi-person-plus"></i> Novo usuário</a>')}
+      <section class="card-jeves"><div class="cartao-titulo"><h2>Contas cadastradas <span class="contador">${usuarios.length}</span></h2><label class="busca"><i class="bi bi-search"></i><input id="busca-usuarios" type="search" placeholder="Buscar por nome, e-mail ou perfil" aria-label="Buscar usuários" /></label></div>
+      ${usuarios.length ? tabelaUsuarios(usuarios) : '<div class="estado-vazio"><i class="bi bi-person-x"></i><h3>Nenhum usuário cadastrado</h3><p>Use o formulário abaixo para criar o primeiro usuário.</p></div>'}
+      </section>
+      <form class="card-jeves formulario" id="form-usuario"><div class="cabecalho-form"><span class="icone-formulario"><i class="bi bi-person-vcard"></i></span><div><h2 id="titulo-form-usuario">Criar usuário</h2><p>Defina o perfil e os dados de acesso do usuário.</p></div></div><input id="usuario-id" type="hidden" />
+        <div class="form-admin-grade"><div class="campo campo-largo"><label for="usuario-nome">Nome completo *</label><input id="usuario-nome" required maxlength="120" placeholder="Nome da pessoa" /></div><div class="campo"><label for="usuario-email">E-mail de acesso *</label><input id="usuario-email" type="email" required placeholder="nome@instituicao.edu.br" /></div><div class="campo"><label for="usuario-perfil">Perfil *</label><select id="usuario-perfil" required><option value="">Selecione</option><option value="escola">Escola</option><option value="organizador">Organizador</option><option value="admin">Administrador</option></select></div><div class="campo campo-largo" id="grupo-escola-usuario"><label for="usuario-escola">Escola vinculada</label><select id="usuario-escola"><option value="">Nenhuma escola vinculada</option>${todos(
+            chaves.escolas,
+        )
+            .map((escola) => `<option>${escapar(escola.nome)}</option>`)
+            .join(
+                "",
+            )}</select></div><label class="check"><input id="usuario-ativo" type="checkbox" checked /> Usuário ativo</label></div>
+        <div class="acoes-form"><button type="button" class="btn-jeves-contorno d-none" id="cancelar-edicao-usuario">Cancelar edição</button><button type="submit" class="btn-jeves-primario"><i class="bi bi-check2"></i> Salvar usuário</button></div>
+      </form>`,
+                        "Usuários",
+                    );
+                    document.getElementById("busca-usuarios").addEventListener("input", (event) => {
+                        const termo = event.currentTarget.value.trim().toLowerCase();
+                        document.querySelectorAll(".tabela-jeves tbody tr").forEach((linha) => {
+                            linha.hidden = !linha.dataset.busca.includes(termo);
+                        });
+                    });
+                    document.getElementById("usuario-perfil").addEventListener("change", (event) => {
+                        document
+                            .getElementById("grupo-escola-usuario")
+                            .classList.toggle("d-none", event.currentTarget.value !== "escola");
+                    });
+                    document.querySelectorAll("[data-editar-usuario]").forEach((botao) =>
+                        botao.addEventListener("click", () => {
+                            const usuario = todos(chaves.usuarios).find(
+                                (item) => item.id === botao.dataset.editarUsuario,
+                            );
+                            if (!usuario) return;
+                            document.getElementById("usuario-id").value = usuario.id;
+                            document.getElementById("usuario-nome").value = usuario.nome;
+                            document.getElementById("usuario-email").value = usuario.email;
+                            document.getElementById("usuario-perfil").value = usuario.perfil;
+                            document.getElementById("usuario-escola").value = usuario.escola;
+                            document.getElementById("usuario-ativo").checked = usuario.ativo;
+                            document
+                                .getElementById("grupo-escola-usuario")
+                                .classList.toggle("d-none", usuario.perfil !== "escola");
+                            document.getElementById("titulo-form-usuario").textContent = "Editar usuário";
+                            document.getElementById("cancelar-edicao-usuario").classList.remove("d-none");
+                            document.getElementById("form-usuario").scrollIntoView({ behavior: "smooth" });
+                        }),
+                    );
+                    document.querySelectorAll("[data-alternar-usuario]").forEach((botao) =>
+                        botao.addEventListener("click", () => {
+                            const id = botao.dataset.alternarUsuario;
+                            const usuario = todos(chaves.usuarios).find((item) => item.id === id);
+                            if (!usuario) return;
+                            if (
+                                !window.confirm(
+                                    `${usuario.ativo ? "Desativar" : "Ativar"} o acesso de ${usuario.nome}?`,
+                                )
+                            )
+                                return;
+                            if (
+                                salvar(
+                                    chaves.usuarios,
+                                    todos(chaves.usuarios).map((item) =>
+                                        item.id === id ? { ...item, ativo: !item.ativo } : item,
+                                    ),
+                                )
+                            )
+                                window.location.reload();
+                        }),
+                    );
+                    document
+                        .getElementById("cancelar-edicao-usuario")
+                        .addEventListener("click", () => window.location.reload());
+                    document.getElementById("form-usuario").addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        const id = document.getElementById("usuario-id").value;
+                        const usuario = {
+                            id: id || `u${Date.now()}`,
+                            nome: document.getElementById("usuario-nome").value.trim(),
+                            email: document.getElementById("usuario-email").value.trim(),
+                            perfil: document.getElementById("usuario-perfil").value,
+                            escola:
+                                document.getElementById("usuario-perfil").value === "escola"
+                                    ? document.getElementById("usuario-escola").value
+                                    : "",
+                            ativo: document.getElementById("usuario-ativo").checked,
+                        };
+                        if (
+                            todos(chaves.usuarios).some(
+                                (item) => item.email.toLowerCase() === usuario.email.toLowerCase() && item.id !== id,
+                            )
+                        )
+                            return notificar("erro", "Já existe um usuário com este e-mail.");
+                        const lista = todos(chaves.usuarios);
+                        const atualizados = id
+                            ? lista.map((item) => (item.id === id ? usuario : item))
+                            : [...lista, usuario];
+                        if (salvar(chaves.usuarios, atualizados)) window.location.reload();
+                    });
+                }
+
+                renderUsuarios();
+            })();
+        </script>
+    </body>
+</html>

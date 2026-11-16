@@ -2,29 +2,38 @@
 
 ## Visão geral
 
-Este projeto é a interface web dos Jogos Escolares de Vespasiano (JEVES). A página inicial é [`index.html`](./index.html); as demais páginas públicas ficam em [`publico/`](./publico/), as páginas de erro em [`erros/`](./erros/) e os recursos compartilhados em [`assets/`](./assets/).
+Este projeto é a plataforma web dos Jogos Escolares de Vespasiano (JEVES). Ele conecta o frontend (HTML, CSS e TypeScript) a uma **API REST em Python (Flask + SQLAlchemy)** e a um **Banco de Dados MySQL** estruturado segundo o modelo lógico oficial.
 
-A interface usa HTML, CSS, JavaScript nos próprios arquivos HTML e módulos TypeScript em `assets/ts`. O framework Bootstrap e os ícones Bootstrap Icons são carregados por CDN nas páginas que precisam deles. O repositório contém pontos de integração com uma API, mas várias interações e dados ainda são de demonstração; a interface não deve ser confundida com um backend ou banco de dados.
+A página inicial é [`index.html`](./index.html); as páginas públicas ficam em [`publico/`](./publico/), as áreas autenticadas em [`escola/`](./escola/), [`organizador/`](./organizador/) e [`admin/`](./admin/), as páginas de erro em [`erros/`](./erros/) e os recursos compartilhados em [`assets/`](./assets/). O backend está localizado em [`api/`](./api/).
 
-## Página inicial: `index.html`
+## Arquitetura de Integração (Frontend + API + Banco de Dados)
 
-Apresenta o JEVES 2026 e organiza o conteúdo em seções de apresentação, modalidades, informações do evento e chamadas para as páginas públicas. Utiliza o design system de `assets/css` e componentes de Bootstrap.
+### 1. Backend em Python (`api/`)
+- **Framework**: Flask com Flask-CORS e Flask-SQLAlchemy (driver PyMySQL).
+- **Autenticação**: Tokens JWT (`PyJWT`) com expiração e perfil de acesso (`escola`, `organizador`, `admin`).
+- **Modelos (`api/models/`)**: Mapeamento de todas as 12 entidades do modelo lógico (Escolas, Usuários, Torneios, Modalidades, Categorias, Torneio_Modalidades, Inscrições, Equipes, Alunos, Equipe_Alunos, Locais, Jogos).
+- **Rotas (`api/routes/`)**: Endpoints REST para autenticação e operações completas em todas as entidades.
+- **Configuração**: Gerenciada via `.env` (credenciais MySQL, secret JWT, portas e CORS).
 
-No `index.html`, reutilizei e adaptei a animação de partículas de um projeto antigo. O JavaScript cria pontos em um canvas, movimenta-os, reposiciona-os ao redimensionar a janela e desenha conexões entre partículas próximas. `requestAnimationFrame` mantém a animação atualizada. A quantidade de partículas é definida em `Array.from`; raio, velocidade e aparência são definidos em `criarParticula`; cores, limites e distância das conexões ficam em `animar`.
+### 2. Frontend em TypeScript (`assets/ts/`)
+- **`tipos/`**: Interfaces tipadas correspondentes a cada tabela e status do banco (`Escola`, `Torneio`, `Aluno`, `Jogo`, etc.).
+- **`servicos/`**: Camada de serviços (`servicoAuth`, `servicoEscolas`, `servicoTorneios`, `servicoJogos`, etc.) que executam chamadas assíncronas tipadas à API.
+- **`utilitarios/`**:
+  - `api.ts`: Cliente HTTP base configurado com a `baseUrl` da API (padrão `http://localhost:5000`), envio automático de token Bearer no cabeçalho `Authorization` e suporte a JSON e FormData.
+  - `autenticacao.ts`: Gerenciamento de sessão, token JWT e permissões por perfil.
+  - `toast.ts`: Sistema de feedback e alertas na tela.
+  - `validadores.ts`: Validações de CNPJ, CEP, e-mail e regras de negócio de formulários.
+- **`componentes/`**: Componentes reutilizáveis (sidebar, stepper, modais, cabeçalhos, etc.).
 
-Outras funções e recursos de interface usados nos scripts inline:
+### 3. Compilação TypeScript
+O `tsconfig.json` está configurado com `rootDir: "./assets/ts"` e `outDir: "./assets/js"`, compilando em padrão ES2020 para consumo pelas páginas HTML.
 
-- `alternarMenu(abrir)`: abre ou fecha o menu móvel, atualiza `aria-expanded`/`aria-hidden` e o ícone; o menu também fecha ao clicar fora, pressionar Escape ou escolher um link.
-- O listener de `scroll` adiciona a classe `rolado` à navegação quando a página desce, para aplicar o estilo de navbar recolhida.
-- `IntersectionObserver` observa elementos com a classe `animado` e adiciona a classe `visivel` quando entram na área visível, acionando as animações de entrada do CSS.
-- `requestAnimationFrame` é usado para a animação contínua das partículas e para acompanhar o ritmo de atualização do navegador.
+## Pastas do Projeto
 
-Algumas dessas interações aparecem novamente, implementadas em scripts locais às páginas. Não são necessariamente chamadas a uma função compartilhada central.
-
-## Pastas
-
-- [`assets/`](./assets/context.md): folhas de estilo, imagem e módulos TypeScript.
-- [`erros/`](./erros/context.md): páginas para erros HTTP e sessão expirada.
-- [`publico/`](./publico/context.md): páginas de navegação, torneios, calendário, acesso e cadastro.
-
-Cada subpasta de `assets` também tem seu próprio `context.md` com a descrição dos recursos e módulos presentes.
+- [`api/`](./api/app.py): Backend Python da aplicação com modelos, rotas e configuração de banco de dados.
+- [`assets/`](./assets/context.md): Folhas de estilo, imagens e código TypeScript (`tipos`, `servicos`, `utilitarios`, `componentes`).
+- [`escola/`](./escola/context.md): Painel, cadastros de alunos, gestão de equipes, torneios abertos e submissão de inscrições.
+- [`organizador/`](./organizador/context.md): Gestão de torneios, análise de inscrições, agendamento de partidas e lançamento de resultados.
+- [`admin/`](./admin/context.md): Gestão administrativa de usuários, instituições de ensino, modalidades e categorias.
+- [`erros/`](./erros/context.md): Telas para códigos HTTP (403, 404, 500) e sessão expirada.
+- [`publico/`](./publico/context.md): Navegação aberta, consulta de torneios, calendário, login e cadastro de escolas.

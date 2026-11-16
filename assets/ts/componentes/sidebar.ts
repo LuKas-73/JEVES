@@ -11,6 +11,7 @@ const itensPorPerfil: Record<PerfilSidebar, ItemMenu[]> = {
   escola: [
     { icone: 'bi-grid-fill', rotulo: 'Painel', href: '/escola/painel.html', id: 'nav-painel' },
     { icone: 'bi-trophy-fill', rotulo: 'Torneios Disponíveis', href: '/escola/torneios-disponiveis.html', id: 'nav-torneios' },
+    { icone: 'bi-plus-circle-fill', rotulo: 'Nova Inscrição', href: '/escola/nova-inscricao.html', id: 'nav-nova-inscricao' },
     { icone: 'bi-clipboard-check-fill', rotulo: 'Minhas Inscrições', href: '/escola/inscricoes.html', id: 'nav-inscricoes' },
     { icone: 'bi-people-fill', rotulo: 'Equipes', href: '/escola/equipes.html', id: 'nav-equipes' },
     { icone: 'bi-person-badge-fill', rotulo: 'Alunos', href: '/escola/alunos.html', id: 'nav-alunos' },
@@ -20,6 +21,7 @@ const itensPorPerfil: Record<PerfilSidebar, ItemMenu[]> = {
   organizador: [
     { icone: 'bi-grid-fill', rotulo: 'Painel', href: '/organizador/painel.html', id: 'nav-painel' },
     { icone: 'bi-trophy-fill', rotulo: 'Meus Torneios', href: '/organizador/torneios.html', id: 'nav-torneios' },
+    { icone: 'bi-plus-circle-fill', rotulo: 'Criar Torneio', href: '/organizador/torneio-form.html', id: 'nav-criar-torneio' },
     { icone: 'bi-clipboard-data-fill', rotulo: 'Inscrições', href: '/organizador/inscricoes.html', id: 'nav-inscricoes' },
     { icone: 'bi-people-fill', rotulo: 'Equipes', href: '/organizador/equipes.html', id: 'nav-equipes' },
     { icone: 'bi-geo-alt-fill', rotulo: 'Locais', href: '/organizador/locais.html', id: 'nav-locais' },

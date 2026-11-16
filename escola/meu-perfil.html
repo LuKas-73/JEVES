@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Gerencie seus dados de contato no JEVES 2026." />
+        <meta name="theme-color" content="#0B1640" />
+        <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+        <title>Meu perfil | JEVES 2026</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        />
+        <link rel="stylesheet" href="../assets/css/variaveis.css" />
+        <link rel="stylesheet" href="../assets/css/global.css" />
+        <link rel="stylesheet" href="../assets/css/componentes.css" />
+        <style>
+            body {
+                min-height: 100vh;
+                background: #0b1640;
+            }
+
+            .app {
+                min-height: 100vh;
+            }
+
+            .conteudo {
+                min-height: 100vh;
+                margin-left: 270px;
+                transition: var(--transicao-padrao);
+            }
+
+            .sidebar-jeves.colapsado + .conteudo {
+                margin-left: 72px;
+            }
+
+            .conteudo-principal {
+                max-width: 1440px;
+                padding: clamp(1.25rem, 3vw, 2.5rem);
+                margin: 0 auto;
+            }
+
+            .cabecalho {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+                gap: 1.25rem;
+                margin-bottom: 1.75rem;
+            }
+
+            .cabecalho h1 {
+                font-family: var(--fonte-titulos);
+                font-weight: 800;
+                font-size: clamp(1.7rem, 3vw, 2.4rem);
+                margin: 0 0 0.35rem;
+            }
+
+            .cabecalho p {
+                color: var(--cor-texto-secundario);
+                margin: 0;
+            }
+
+            .badge-secao-label {
+                color: var(--cor-secundaria);
+                font-size: 0.73rem;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                margin-bottom: 0.45rem;
+            }
+
+            .card-jeves {
+                background: var(--gradiente-card);
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-lg);
+                padding: 1.35rem;
+                box-shadow: var(--sombra-sm);
+            }
+
+            .card-jeves + .card-jeves {
+                margin-top: 1.25rem;
+            }
+
+            .card-jeves h2,
+            .card-jeves h3 {
+                font-family: var(--fonte-titulos);
+                font-weight: 700;
+            }
+
+            .status {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.35rem;
+                border-radius: 100px;
+                padding: 0.28rem 0.65rem;
+                font-size: 0.72rem;
+                font-weight: 700;
+                white-space: nowrap;
+            }
+
+            .status-aprovada,
+            .status-confirmada {
+                color: #77e2a2;
+                background: rgba(46, 204, 113, 0.12);
+            }
+
+            .status-pendente,
+            .status-em-análise {
+                color: #ffd36a;
+                background: rgba(243, 156, 18, 0.13);
+            }
+
+            .status-correção-solicitada {
+                color: #ff9a85;
+                background: rgba(231, 76, 60, 0.13);
+            }
+
+            .status-rascunho {
+                color: #b6c8ed;
+                background: rgba(168, 184, 216, 0.12);
+            }
+
+            .form {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 1rem;
+            }
+
+            .form .campo-grupo {
+                margin: 0;
+            }
+
+            .form .campo-largo {
+                grid-column: 1 / -1;
+            }
+
+            .form .campo-rotulo {
+                color: var(--cor-texto-secundario);
+                font-size: 0.8rem;
+            }
+
+            .form .campo-controle,
+            .form select,
+            .form textarea {
+                width: 100%;
+            }
+
+            .form-acoes {
+                display: flex;
+                justify-content: flex-end;
+                gap: 0.75rem;
+                margin-top: 1.25rem;
+            }
+
+            .aviso-demo-rodape {
+                margin: 2rem 0 0;
+                padding-top: 1rem;
+                border-top: 1px solid var(--cor-borda-suave);
+                color: rgba(168, 184, 216, 0.65);
+                font-size: 0.75rem;
+            }
+
+            .aviso-demo-rodape i {
+                color: var(--cor-secundaria);
+            }
+
+            .usuario-link {
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .status-resumo {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+            }
+
+            .status-resumo-item {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                border: 1px solid var(--cor-borda-suave);
+                border-radius: var(--borda-raio-md);
+                color: var(--cor-texto-secundario);
+                text-decoration: none;
+                font-size: 0.78rem;
+            }
+
+            .status-resumo-item strong {
+                color: var(--cor-texto-principal);
+                font-size: 1.1rem;
+            }
+
+            .cabecalho-formulario {
+                display: flex;
+                align-items: center;
+                gap: 0.85rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .cabecalho-formulario .icone-formulario {
+                flex: 0 0 44px;
+            }
+
+            .cabecalho-formulario h2 {
+                margin: 0 0 0.2rem;
+                font-size: 1.12rem;
+            }
+
+            .cabecalho-formulario p {
+                margin: 0;
+                font-size: 0.8rem;
+            }
+
+            .icone-formulario {
+                width: 44px;
+                height: 44px;
+                display: grid;
+                place-items: center;
+                border-radius: 13px;
+                color: var(--cor-secundaria);
+                background: rgba(245, 184, 0, 0.1);
+                font-size: 1.2rem;
+            }
+
+            .aviso-seguranca {
+                margin: 0.85rem 0 0;
+                color: var(--cor-texto-secundario);
+                font-size: 0.77rem;
+            }
+
+            .aviso-seguranca i {
+                color: var(--cor-secundaria);
+                margin-right: 0.25rem;
+            }
+
+            .grade-perfil {
+                display: grid;
+                grid-template-columns: minmax(0, 1.1fr) minmax(290px, 0.9fr);
+                align-items: start;
+                gap: 1.25rem;
+            }
+
+            .grade-perfil .card-jeves {
+                padding: clamp(1.25rem, 3vw, 2rem);
+            }
+
+            .campo-grupo {
+                margin-bottom: 0.2rem;
+            }
+
+            .form .campo-controle,
+            .campo-controle {
+                min-height: 44px;
+                padding: 0.65rem 0.8rem;
+                color: var(--cor-texto-principal);
+                background: rgba(11, 22, 64, 0.75);
+                border: 1px solid rgba(42, 74, 175, 0.42);
+                border-radius: var(--borda-raio-sm);
+                font: 0.88rem var(--fonte-texto);
+            }
+
+            .form .campo-controle:focus,
+            .campo-controle:focus {
+                color: #fff;
+                background: rgba(11, 22, 64, 0.92);
+                border-color: var(--cor-secundaria);
+                box-shadow: 0 0 0 0.2rem rgba(245, 184, 0, 0.12);
+                outline: 0;
+            }
+
+            .form .campo-controle[readonly] {
+                color: rgba(168, 184, 216, 0.7);
+                cursor: not-allowed;
+            }
+
+            .campo-controle option {
+                color: #fff;
+                background: #162055;
+            }
+
+            .form .campo-rotulo {
+                display: block;
+                margin-bottom: 0.35rem;
+            }
+
+            .form-acoes {
+                align-items: center;
+            }
+
+            .form-acoes .btn-jeves-primario {
+                padding: 0.65rem 1.2rem;
+                font-size: 0.88rem;
+            }
+
+            .aviso-toast {
+                position: fixed;
+                z-index: 9999;
+                right: 1.25rem;
+                bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                max-width: min(400px, calc(100vw - 2.5rem));
+                padding: 0.9rem 1.1rem;
+                color: #fff;
+                background: rgba(11, 22, 64, 0.97);
+                border: 1px solid var(--cor-borda-suave);
+                border-left: 4px solid var(--cor-sucesso);
+                border-radius: var(--borda-raio-md);
+                box-shadow: var(--sombra-lg);
+                font-size: 0.82rem;
+                animation: entrada-etapa 0.2s ease-out;
+            }
+
+            .aviso-toast i {
+                color: var(--cor-sucesso);
+            }
+
+            .aviso-toast.aviso-erro {
+                border-left-color: var(--cor-erro);
+            }
+
+            .aviso-toast.aviso-erro i {
+                color: var(--cor-erro);
+            }
+
+            .d-none {
+                display: none !important;
+            }
+
+            .sidebar-jeves.aberto {
+                transform: translateX(0);
+            }
+
+            @media (max-width: 768px) {
+                .sidebar-jeves {
+                    transform: translateX(-100%);
+                }
+
+                .sidebar-jeves.aberto {
+                    transform: translateX(0);
+                }
+
+                .conteudo,
+                .sidebar-jeves.colapsado + .conteudo {
+                    margin-left: 0;
+                }
+
+                .bar-superior {
+                    padding: 0 1rem;
+                }
+
+                .bar-superior-titulo {
+                    display: none;
+                }
+
+                .conteudo-principal {
+                    padding: 1.15rem;
+                }
+
+                .cabecalho {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .cabecalho > .btn-jeves-primario {
+                    align-self: stretch;
+                    justify-content: center;
+                }
+
+                .grade-perfil {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            @media (max-width: 520px) {
+                .form {
+                    grid-template-columns: 1fr;
+                }
+
+                .form .campo-largo {
+                    grid-column: auto;
+                }
+
+                .usuario-info .nome-usuario,
+                .usuario-info .chevron-usuario {
+                    display: none;
+                }
+
+                .form-acoes {
+                    flex-direction: column-reverse;
+                }
+
+                .form-acoes > * {
+                    width: 100%;
+                    justify-content: center;
+                }
+
+                .status-resumo {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+    <body data-static-content="true" data-page="meu-perfil">
+        <div class="app">
+            <aside class="sidebar-jeves" id="sidebar-principal" aria-label="Navegação do painel">
+                <div class="sidebar-topo">
+                    <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+                        <i class="bi bi-fire" aria-hidden="true"></i>
+                        <span>JEVES</span>
+                    </a>
+                    <span class="sidebar-perfil-label">Área da Escola</span>
+                </div>
+                <nav class="sidebar-nav" aria-label="Menu da escola">
+                    <a href="painel.html" class="item-sidebar">
+                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
+                        <span>Painel</span>
+                    </a>
+                    <a href="torneios-disponiveis.html" class="item-sidebar">
+                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
+                        <span>Torneios disponíveis</span>
+                    </a>
+                    <a href="nova-inscricao.html" class="item-sidebar">
+                        <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
+                        <span>Nova inscrição</span>
+                    </a>
+                    <a href="inscricoes.html" class="item-sidebar">
+                        <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
+                        <span>Minhas inscrições</span>
+                    </a>
+                    <a href="equipes.html" class="item-sidebar">
+                        <i class="bi bi-people-fill" aria-hidden="true"></i>
+                        <span>Equipes</span>
+                    </a>
+                    <a href="alunos.html" class="item-sidebar">
+                        <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
+                        <span>Alunos</span>
+                    </a>
+                    <a href="perfil-escola.html" class="item-sidebar">
+                        <i class="bi bi-building-fill" aria-hidden="true"></i>
+                        <span>Perfil da escola</span>
+                    </a>
+                    <a href="meu-perfil.html" class="item-sidebar ativo" aria-current="page">
+                        <i class="bi bi-person-gear" aria-hidden="true"></i>
+                        <span>Meu perfil</span>
+                    </a>
+                </nav>
+                <div class="sidebar-rodape">
+                    <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
+                        <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
+                        <span>Sair da conta</span>
+                    </button>
+                </div>
+            </aside>
+            <div class="conteudo">
+                <header class="bar-superior" role="banner">
+                    <div class="bar-superior-esquerda">
+                        <button
+                            class="btn-toggle-sidebar"
+                            id="btn-menu-escola"
+                            type="button"
+                            aria-label="Abrir menu"
+                            aria-expanded="false"
+                            aria-controls="sidebar-principal"
+                        >
+                            <i class="bi bi-list" aria-hidden="true"></i>
+                        </button>
+                        <h2 class="bar-superior-titulo" id="titulo-pagina">Meu perfil</h2>
+                    </div>
+                    <div class="bar-superior-direita">
+                        <a class="btn-notificacoes" href="inscricoes.html" aria-label="Ver atualizações de inscrições">
+                            <i class="bi bi-bell" aria-hidden="true"></i>
+                            <span class="ponto-notificacao" aria-hidden="true"></span>
+                        </a>
+                        <a
+                            class="usuario-info usuario-link"
+                            href="meu-perfil.html"
+                            aria-label="Abrir perfil de Colégio Tiradentes Vespasiano"
+                        >
+                            <span class="avatar-usuario" aria-hidden="true">CT</span>
+                            <span class="nome-usuario">Colégio Tiradentes Vespasiano</span>
+                            <i class="bi bi-chevron-down chevron-usuario" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </header>
+                <main class="conteudo-principal" id="app-escola" aria-labelledby="titulo-pagina">
+                    <header class="cabecalho">
+                        <div>
+                            <div class="badge-secao-label">Área da escola · JEVES 2026</div>
+                            <h1>Meu Perfil</h1>
+                            <p>Gerencie seus dados de contato e a senha de acesso.</p>
+                        </div>
+                    </header>
+                    <div class="grade-perfil">
+                        <form class="card-jeves" id="form-meu-perfil">
+                            <div class="cabecalho-formulario">
+                                <span class="icone-formulario"><i class="bi bi-person-vcard"></i></span>
+                                <div>
+                                    <h2>Dados pessoais</h2>
+                                    <p>Informações da pessoa responsável pelo acesso.</p>
+                                </div>
+                            </div>
+                            <div class="form">
+                                <div class="campo-grupo campo-largo">
+                                    <label class="campo-rotulo" for="usuario-nome">Nome completo</label
+                                    ><input
+                                        class="campo-controle"
+                                        id="usuario-nome"
+                                        name="nome"
+                                        required
+                                        value="Colégio Tiradentes Vespasiano"
+                                    />
+                                </div>
+                                <div class="campo-grupo">
+                                    <label class="campo-rotulo" for="usuario-email">E-mail</label
+                                    ><input
+                                        class="campo-controle"
+                                        id="usuario-email"
+                                        name="email"
+                                        type="email"
+                                        required
+                                        value="escola.tiradentes@vespasiano.mg.gov.br"
+                                    />
+                                </div>
+                                <div class="campo-grupo">
+                                    <label class="campo-rotulo" for="usuario-telefone">Telefone</label
+                                    ><input
+                                        class="campo-controle"
+                                        id="usuario-telefone"
+                                        name="telefone"
+                                        type="tel"
+                                        value="(31) 99999-2026"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-acoes">
+                                <button type="submit" class="btn-jeves-primario">
+                                    <i class="bi bi-check2"></i> Salvar perfil
+                                </button>
+                            </div>
+                        </form>
+                        <form class="card-jeves" id="form-senha">
+                            <div class="cabecalho-formulario">
+                                <span class="icone-formulario"><i class="bi bi-shield-lock"></i></span>
+                                <div>
+                                    <h2>Alterar senha</h2>
+                                    <p>Escolha uma senha com pelo menos 8 caracteres.</p>
+                                </div>
+                            </div>
+                            <div class="campo-grupo">
+                                <label class="campo-rotulo" for="senha-atual">Senha atual</label
+                                ><input
+                                    class="campo-controle"
+                                    id="senha-atual"
+                                    name="atual"
+                                    type="password"
+                                    autocomplete="current-password"
+                                    required
+                                />
+                            </div>
+                            <div class="campo-grupo">
+                                <label class="campo-rotulo" for="senha-nova">Nova senha</label
+                                ><input
+                                    class="campo-controle"
+                                    id="senha-nova"
+                                    name="nova"
+                                    type="password"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    required
+                                />
+                            </div>
+                            <div class="campo-grupo">
+                                <label class="campo-rotulo" for="senha-confirmacao">Confirmar nova senha</label
+                                ><input
+                                    class="campo-controle"
+                                    id="senha-confirmacao"
+                                    name="confirmacao"
+                                    type="password"
+                                    autocomplete="new-password"
+                                    minlength="8"
+                                    required
+                                />
+                            </div>
+                            <p class="aviso-seguranca">
+                                <i class="bi bi-info-circle"></i> A troca de senha será habilitada quando a autenticação
+                                estiver conectada à API.
+                            </p>
+                            <div class="form-acoes">
+                                <button type="submit" class="btn-jeves-primario">
+                                    <i class="bi bi-key"></i> Atualizar senha
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <p class="aviso-demo-rodape">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
+                        salvas somente neste navegador.
+                    </p>
+                </main>
+            </div>
+        </div>
+        <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            (function () {
+                "use strict";
+                const chaveSessao = "jeves_sessao";
+                const chaves = {
+                    escola: "jeves_escola_demo",
+                    alunos: "jeves_alunos_demo",
+                    equipes: "jeves_equipes_demo",
+                    inscricoes: "jeves_inscricoes_demo",
+                    usuario: "jeves_usuario_demo",
+                };
+                const pagina = document.body.dataset.page || "painel";
+                const paginas = [
+                    { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
+                    {
+                        id: "torneios-disponiveis",
+                        nome: "Torneios disponíveis",
+                        icone: "bi-trophy-fill",
+                        arquivo: "torneios-disponiveis.html",
+                    },
+                    {
+                        id: "nova-inscricao",
+                        nome: "Nova inscrição",
+                        icone: "bi-plus-circle-fill",
+                        arquivo: "nova-inscricao.html",
+                    },
+                    {
+                        id: "inscricoes",
+                        nome: "Minhas inscrições",
+                        icone: "bi-clipboard-check-fill",
+                        arquivo: "inscricoes.html",
+                    },
+                    { id: "equipes", nome: "Equipes", icone: "bi-people-fill", arquivo: "equipes.html" },
+                    { id: "alunos", nome: "Alunos", icone: "bi-person-badge-fill", arquivo: "alunos.html" },
+                    {
+                        id: "perfil-escola",
+                        nome: "Perfil da escola",
+                        icone: "bi-building-fill",
+                        arquivo: "perfil-escola.html",
+                    },
+                    { id: "meu-perfil", nome: "Meu perfil", icone: "bi-person-gear", arquivo: "meu-perfil.html" },
+                ];
+                const torneios = [
+                    {
+                        id: "jeves-2026",
+                        nome: "Jogos Escolares de Vespasiano 2026",
+                        periodo: "10 a 28 de agosto de 2026",
+                        prazo: "Inscrições até 30 de junho",
+                        modalidades: ["Futsal", "Voleibol", "Handebol", "Basquetebol", "Atletismo"],
+                        situacao: "Inscrições abertas",
+                    },
+                    {
+                        id: "jeves-atletismo-2026",
+                        nome: "Festival Escolar de Atletismo 2026",
+                        periodo: "15 e 16 de setembro de 2026",
+                        prazo: "Inscrições até 20 de agosto",
+                        modalidades: ["Atletismo"],
+                        situacao: "Inscrições abertas",
+                    },
+                ];
+                const catalogoModalidades = {
+                    Futsal: [
+                        "Sub-13 Masculino",
+                        "Sub-15 Masculino",
+                        "Sub-17 Masculino",
+                        "Sub-15 Feminino",
+                        "Sub-17 Feminino",
+                    ],
+                    Voleibol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Handebol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Basquetebol: ["Sub-15 Masculino", "Sub-17 Masculino", "Sub-15 Feminino", "Sub-17 Feminino"],
+                    Atletismo: [
+                        "Sub-13 Masculino",
+                        "Sub-15 Masculino",
+                        "Sub-17 Masculino",
+                        "Sub-13 Feminino",
+                        "Sub-15 Feminino",
+                        "Sub-17 Feminino",
+                    ],
+                };
+                const root = document.getElementById("app-escola");
+                let sessao;
+                let estadoInscricao = {
+                    passo: 0,
+                    torneioId: "",
+                    modalidade: "",
+                    categoria: "",
+                    equipeId: "",
+                    alunosIds: [],
+                };
+
+                function escapar(valor) {
+                    return String(valor ?? "").replace(
+                        /[&<>"']/g,
+                        (caractere) =>
+                            ({
+                                "&": "&amp;",
+                                "<": "&lt;",
+                                ">": "&gt;",
+                                '"': "&quot;",
+                                "'": "&#39;",
+                            })[caractere],
+                    );
+                }
+
+                function carregar(chave, padrao) {
+                    try {
+                        const salvo = localStorage.getItem(chave);
+                        return salvo ? JSON.parse(salvo) : padrao;
+                    } catch (erro) {
+                        console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
+                        return padrao;
+                    }
+                }
+
+                function salvar(chave, valor) {
+                    try {
+                        localStorage.setItem(chave, JSON.stringify(valor));
+                        return true;
+                    } catch (erro) {
+                        console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
+                        toast("erro", "Não foi possível salvar os dados neste navegador.");
+                        return false;
+                    }
+                }
+
+                function obterSessao() {
+                    try {
+                        const valor = JSON.parse(localStorage.getItem(chaveSessao) || "null");
+                        if (!valor || !valor.usuario || !valor.expiracao || Date.now() > valor.expiracao) return null;
+                        return valor;
+                    } catch (erro) {
+                        console.error("Não foi possível validar a sessão local.", erro);
+                        return null;
+                    }
+                }
+
+                sessao = obterSessao();
+                if (sessao && sessao.usuario.perfil !== "escola") {
+                    window.location.replace("../erros/403.html");
+                    return;
+                }
+                const sessaoValida = sessao;
+                sessao ||= {
+                    token: "jeves_escola_demo",
+                    usuario: {
+                        id: 1,
+                        nome: "Colégio Tiradentes Vespasiano",
+                        email: "escola.tiradentes@vespasiano.mg.gov.br",
+                        perfil: "escola",
+                        escolaId: 1,
+                    },
+                    expiracao: Date.now() + 86400000,
+                };
+
+                const escolaPadrao = {
+                    nome: sessao.usuario.nome || "Colégio Tiradentes Vespasiano",
+                    nomeCurto: "Colégio Tiradentes",
+                    cnpj: "12.345.678/0001-90",
+                    ineP: "31234567",
+                    email: sessao.usuario.email || "escola.tiradentes@vespasiano.mg.gov.br",
+                    telefone: "(31) 3621-2026",
+                    diretor: "Maria Aparecida Oliveira",
+                    endereco: "Rua Dona Mariana da Costa, 120",
+                    bairro: "Centro",
+                    cidade: "Vespasiano",
+                    cep: "33200-000",
+                };
+                const alunosPadrao = [
+                    { id: "a1", nome: "Ana Clara Ferreira", nascimento: "2012-04-18", ano: "8º ano", equipeId: "e1" },
+                    { id: "a2", nome: "Beatriz Souza Lima", nascimento: "2011-09-02", ano: "9º ano", equipeId: "e1" },
+                    {
+                        id: "a3",
+                        nome: "Caio Henrique Santos",
+                        nascimento: "2010-01-27",
+                        ano: "1º ano EM",
+                        equipeId: "e2",
+                    },
+                    { id: "a4", nome: "Daniela Alves Rocha", nascimento: "2012-07-14", ano: "8º ano", equipeId: "" },
+                    {
+                        id: "a5",
+                        nome: "Eduardo Martins Costa",
+                        nascimento: "2009-11-05",
+                        ano: "2º ano EM",
+                        equipeId: "e2",
+                    },
+                ];
+                const equipesPadrao = [
+                    {
+                        id: "e1",
+                        nome: "Futsal Feminino Sub-15",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        tecnico: "Prof. Renata Alves",
+                        alunos: [
+                            { id: "a1", numero: "10", posicao: "Ala" },
+                            { id: "a2", numero: "7", posicao: "Fixa" },
+                        ],
+                    },
+                    {
+                        id: "e2",
+                        nome: "Voleibol Masculino Sub-17",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        tecnico: "Prof. Marcos Silva",
+                        alunos: [
+                            { id: "a3", numero: "4", posicao: "Levantador" },
+                            { id: "a5", numero: "12", posicao: "Ponteiro" },
+                        ],
+                    },
+                ];
+                const inscricoesPadrao = [
+                    {
+                        id: "i1",
+                        torneioId: "jeves-2026",
+                        modalidade: "Futsal",
+                        categoria: "Sub-15 Feminino",
+                        equipeId: "e1",
+                        alunosIds: ["a1", "a2"],
+                        status: "Correção solicitada",
+                        observacao: "Confira o número de matrícula de uma atleta e reenvie a lista da equipe.",
+                        data: "2026-06-02",
+                    },
+                    {
+                        id: "i2",
+                        torneioId: "jeves-2026",
+                        modalidade: "Voleibol",
+                        categoria: "Sub-17 Masculino",
+                        equipeId: "e2",
+                        alunosIds: ["a3", "a5"],
+                        status: "Em análise",
+                        observacao: "",
+                        data: "2026-06-04",
+                    },
+                ];
+                const deveRenderizar = Boolean(
+                    sessaoValida ||
+                        location.search ||
+                        Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+                );
+                if (!localStorage.getItem(chaves.escola)) salvar(chaves.escola, escolaPadrao);
+                if (!localStorage.getItem(chaves.alunos)) salvar(chaves.alunos, alunosPadrao);
+                if (!localStorage.getItem(chaves.equipes)) salvar(chaves.equipes, equipesPadrao);
+                if (!localStorage.getItem(chaves.inscricoes)) salvar(chaves.inscricoes, inscricoesPadrao);
+                if (!localStorage.getItem(chaves.usuario))
+                    salvar(chaves.usuario, {
+                        nome: sessao.usuario.nome || "Maria Aparecida Oliveira",
+                        email: sessao.usuario.email || escolaPadrao.email,
+                        telefone: "(31) 99999-2026",
+                    });
+
+                function ler(chave) {
+                    return carregar(chave, []);
+                }
+
+                function getEscola() {
+                    return carregar(chaves.escola, escolaPadrao);
+                }
+
+                function getUsuario() {
+                    return carregar(chaves.usuario, { nome: "Responsável da escola", email: "", telefone: "" });
+                }
+
+                function nomeTorneio(id) {
+                    return torneios.find((torneio) => torneio.id === id)?.nome || "Torneio";
+                }
+
+                function nomeEquipe(id) {
+                    return ler(chaves.equipes).find((equipe) => equipe.id === id)?.nome || "Equipe não informada";
+                }
+
+                function nomeAluno(id) {
+                    return ler(chaves.alunos).find((aluno) => aluno.id === id)?.nome || "Aluno não encontrado";
+                }
+
+                function statusClass(status) {
+                    return `status-${status.toLowerCase().replaceAll(" ", "-")}`;
+                }
+
+                function badge(status) {
+                    return `<span class="status ${statusClass(status)}">${escapar(status)}</span>`;
+                }
+
+                function toast(tipo, mensagem) {
+                    const existente = document.getElementById("aviso-escola");
+                    existente?.remove();
+                    const elemento = document.createElement("div");
+                    elemento.id = "aviso-escola";
+                    elemento.className = `aviso-toast aviso-${tipo}`;
+                    elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
+                    elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
+                    const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
+                    conteiner.appendChild(elemento);
+                    window.setTimeout(() => elemento.remove(), 4000);
+                }
+
+                function cabecalho(titulo, descricao, acao = "") {
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área da escola · JEVES 2026</div><h1>${escapar(titulo)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                }
+
+                function moldura(conteudo, titulo) {
+                    if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
+                        root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
+                    }
+                    document.title = `${titulo} | JEVES 2026`;
+                    document.getElementById("titulo-pagina").textContent = titulo;
+                    const usuario = getUsuario();
+                    const iniciais = (usuario.nome || "Escola")
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((parte) => parte[0] || "")
+                        .join("")
+                        .toUpperCase();
+                    document.querySelector(".avatar-usuario").textContent = iniciais;
+                    document.querySelector(".nome-usuario").textContent = usuario.nome;
+                    document.querySelector('[data-action="sair"]').addEventListener("click", () => {
+                        localStorage.removeItem(chaveSessao);
+                        localStorage.removeItem("jeves_token");
+                        window.location.replace("../publico/login.html");
+                    });
+                    document.getElementById("btn-menu-escola").addEventListener("click", (event) => {
+                        const botao = event.currentTarget;
+                        const aberto = document.getElementById("sidebar-principal").classList.toggle("aberto");
+                        botao.setAttribute("aria-expanded", String(aberto));
+                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                    });
+                }
+
+                function atualizarCategorias(modalidade, select, categoriaSelecionada = "") {
+                    const categorias = catalogoModalidades[modalidade] || [];
+                    select.innerHTML = `<option value="">Selecione a categoria</option>${categorias.map((categoria) => `<option value="${escapar(categoria)}" ${categoria === categoriaSelecionada ? "selected" : ""}>${escapar(categoria)}</option>`).join("")}`;
+                }
+
+                function renderMeuPerfil() {
+                    const usuario = getUsuario();
+                    moldura(
+                        `${cabecalho("Meu Perfil", "Gerencie seus dados de contato e a senha de acesso.")}
+      <div class="grade-perfil">
+        <form class="card-jeves" id="form-meu-perfil"><div class="cabecalho-formulario"><span class="icone-formulario"><i class="bi bi-person-vcard"></i></span><div><h2>Dados pessoais</h2><p>Informações da pessoa responsável pelo acesso.</p></div></div>
+          <div class="form"><div class="campo-grupo campo-largo"><label class="campo-rotulo" for="usuario-nome">Nome completo</label><input class="campo-controle" id="usuario-nome" name="nome" required value="${escapar(usuario.nome)}" /></div>
+          <div class="campo-grupo"><label class="campo-rotulo" for="usuario-email">E-mail</label><input class="campo-controle" id="usuario-email" name="email" type="email" required value="${escapar(usuario.email)}" /></div>
+          <div class="campo-grupo"><label class="campo-rotulo" for="usuario-telefone">Telefone</label><input class="campo-controle" id="usuario-telefone" name="telefone" type="tel" value="${escapar(usuario.telefone)}" /></div></div>
+          <div class="form-acoes"><button type="submit" class="btn-jeves-primario"><i class="bi bi-check2"></i> Salvar perfil</button></div>
+        </form>
+        <form class="card-jeves" id="form-senha"><div class="cabecalho-formulario"><span class="icone-formulario"><i class="bi bi-shield-lock"></i></span><div><h2>Alterar senha</h2><p>Escolha uma senha com pelo menos 8 caracteres.</p></div></div>
+          <div class="campo-grupo"><label class="campo-rotulo" for="senha-atual">Senha atual</label><input class="campo-controle" id="senha-atual" name="atual" type="password" autocomplete="current-password" required /></div>
+          <div class="campo-grupo"><label class="campo-rotulo" for="senha-nova">Nova senha</label><input class="campo-controle" id="senha-nova" name="nova" type="password" autocomplete="new-password" minlength="8" required /></div>
+          <div class="campo-grupo"><label class="campo-rotulo" for="senha-confirmacao">Confirmar nova senha</label><input class="campo-controle" id="senha-confirmacao" name="confirmacao" type="password" autocomplete="new-password" minlength="8" required /></div>
+          <p class="aviso-seguranca"><i class="bi bi-info-circle"></i> A troca de senha será habilitada quando a autenticação estiver conectada à API.</p>
+          <div class="form-acoes"><button type="submit" class="btn-jeves-primario"><i class="bi bi-key"></i> Atualizar senha</button></div>
+        </form>
+      </div>`,
+                        "Meu Perfil",
+                    );
+                    document.getElementById("form-meu-perfil").addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        const dados = Object.fromEntries(new FormData(event.currentTarget).entries());
+                        if (!dados.nome.trim() || !dados.email.trim())
+                            return toast("erro", "Informe seu nome e e-mail.");
+                        if (salvar(chaves.usuario, { ...usuario, ...dados })) {
+                            sessao.usuario.nome = dados.nome;
+                            sessao.usuario.email = dados.email;
+                            salvar(chaveSessao, sessao);
+                            toast("sucesso", "Perfil atualizado.");
+                            window.setTimeout(() => window.location.reload(), 500);
+                        }
+                    });
+                    document.getElementById("form-senha").addEventListener("submit", (event) => {
+                        event.preventDefault();
+                        const dados = Object.fromEntries(new FormData(event.currentTarget).entries());
+                        if (dados.nova.length < 8)
+                            return toast("erro", "A nova senha deve ter pelo menos 8 caracteres.");
+                        if (dados.nova !== dados.confirmacao)
+                            return toast("erro", "A confirmação da senha não confere.");
+                        toast("erro", "A alteração de senha precisa ser realizada pela API de autenticação.");
+                    });
+                }
+
+                renderMeuPerfil();
+            })();
+        </script>
+    </body>
+</html>
