@@ -68,12 +68,7 @@
             }
 
             .badge-secao-label {
-                color: var(--cor-secundaria);
-                font-size: 0.73rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-                margin-bottom: 0.45rem;
+                margin-bottom: var(--espaco-sm);
             }
 
             .card-jeves {
@@ -408,42 +403,34 @@
             <aside class="sidebar-jeves" id="sidebar-principal" aria-label="Navegação do painel">
                 <div class="sidebar-topo">
                     <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
-                        <i class="bi bi-fire" aria-hidden="true"></i>
-                        <span>JEVES</span>
+                        <img src="../assets/Img/logo.png" alt="JEVES" />
+                        <span class="texto-logo-jeves">JEVES</span>
                     </a>
                     <span class="sidebar-perfil-label">Área da Escola</span>
                 </div>
                 <nav class="sidebar-nav" aria-label="Menu da escola">
                     <a href="painel.html" class="item-sidebar">
-                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
                         <span>Painel</span>
                     </a>
                     <a href="torneios-disponiveis.html" class="item-sidebar">
-                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
                         <span>Torneios disponíveis</span>
                     </a>
                     <a href="nova-inscricao.html" class="item-sidebar">
-                        <i class="bi bi-plus-circle-fill" aria-hidden="true"></i>
                         <span>Nova inscrição</span>
                     </a>
                     <a href="inscricoes.html" class="item-sidebar">
-                        <i class="bi bi-clipboard-check-fill" aria-hidden="true"></i>
                         <span>Minhas inscrições</span>
                     </a>
                     <a href="equipes.html" class="item-sidebar">
-                        <i class="bi bi-people-fill" aria-hidden="true"></i>
                         <span>Equipes</span>
                     </a>
                     <a href="alunos.html" class="item-sidebar">
-                        <i class="bi bi-person-badge-fill" aria-hidden="true"></i>
                         <span>Alunos</span>
                     </a>
                     <a href="perfil-escola.html" class="item-sidebar ativo" aria-current="page">
-                        <i class="bi bi-building-fill" aria-hidden="true"></i>
                         <span>Perfil da escola</span>
                     </a>
                     <a href="meu-perfil.html" class="item-sidebar">
-                        <i class="bi bi-person-gear" aria-hidden="true"></i>
                         <span>Meu perfil</span>
                     </a>
                 </nav>
@@ -488,7 +475,7 @@
                 <main class="conteudo-principal" id="app-escola" aria-labelledby="titulo-pagina">
                     <header class="cabecalho">
                         <div>
-                            <div class="badge-secao-label">Área da escola · JEVES 2026</div>
+                            <div class="badge-secao-label">Área da Escola · JEVES 2026</div>
                             <h1>Perfil da Escola</h1>
                             <p>Mantenha os dados cadastrais da instituição atualizados.</p>
                         </div>
@@ -932,7 +919,7 @@
                 }
 
                 function cabecalho(titulo, descricao, acao = "") {
-                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área da escola · JEVES 2026</div><h1>${escapar(titulo)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área da Escola · JEVES 2026</div><h1>${escapar(titulo)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
                 }
 
                 function moldura(conteudo, titulo) {
@@ -955,12 +942,23 @@
                         localStorage.removeItem("jeves_token");
                         window.location.replace("../publico/login.html");
                     });
-                    document.getElementById("btn-menu-escola").addEventListener("click", (event) => {
-                        const botao = event.currentTarget;
-                        const aberto = document.getElementById("sidebar-principal").classList.toggle("aberto");
-                        botao.setAttribute("aria-expanded", String(aberto));
-                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
-                    });
+                    const botaoMenuEscola = document.getElementById("btn-menu-escola");
+                    const sidebarEscola = document.getElementById("sidebar-principal");
+                    if (botaoMenuEscola && sidebarEscola) {
+                        botaoMenuEscola.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            const aberto = sidebarEscola.classList.toggle("aberto");
+                            botaoMenuEscola.setAttribute("aria-expanded", String(aberto));
+                            botaoMenuEscola.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                        });
+                        document.addEventListener("click", (event) => {
+                            if (sidebarEscola.classList.contains("aberto") && !sidebarEscola.contains(event.target)) {
+                                sidebarEscola.classList.remove("aberto");
+                                botaoMenuEscola.setAttribute("aria-expanded", "false");
+                                botaoMenuEscola.setAttribute("aria-label", "Abrir menu");
+                            }
+                        });
+                    }
                 }
 
                 function atualizarCategorias(modalidade, select, categoriaSelecionada = "") {

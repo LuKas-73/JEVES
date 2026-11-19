@@ -1,931 +1,918 @@
 <!doctype html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="description" content="Painel de gestão da plataforma JEVES 2026." />
-        <meta name="theme-color" content="#0B1640" />
-        <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
-        <title>Painel | JEVES 2026</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-        />
-        <link rel="stylesheet" href="../assets/css/variaveis.css" />
-        <link rel="stylesheet" href="../assets/css/global.css" />
-        <link rel="stylesheet" href="../assets/css/componentes.css" />
-        <style>
-            body {
-                min-height: 100vh;
-                background: #0b1640;
-            }
 
-            .app {
-                min-height: 100vh;
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Painel de gestão da plataforma JEVES 2026." />
+    <meta name="theme-color" content="#0B1640" />
+    <link rel="icon" type="image/png" href="../assets/Img/logo.png" />
+    <title>Painel | JEVES 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="../assets/css/variaveis.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/componentes.css" />
+    <style>
+        body {
+            min-height: 100vh;
+            background: #0b1640;
+        }
+
+        .app {
+            min-height: 100vh;
+        }
+
+        .conteudo {
+            min-height: 100vh;
+            margin-left: 270px;
+        }
+
+        .conteudo-principal {
+            max-width: 1480px;
+            padding: clamp(1.25rem, 3vw, 2.5rem);
+            margin: 0 auto;
+        }
+
+        .cabecalho {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1.25rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .cabecalho h1 {
+            margin: 0 0 0.35rem;
+            font: 800 clamp(1.7rem, 3vw, 2.4rem) / 1.2 var(--fonte-titulos);
+        }
+
+        .cabecalho p {
+            margin: 0;
+            color: var(--cor-texto-secundario);
+        }
+
+        .badge-secao-label {
+            margin-bottom: 0.45rem;
+            color: var(--cor-secundaria);
+            font-size: 0.73rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: var(--espaco-sm);
+        }
+
+        .card-jeves {
+            min-width: 0;
+            padding: 1.3rem;
+            background: var(--gradiente-card);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-lg);
+            box-shadow: var(--sombra-sm);
+        }
+
+        .card-jeves+.card-jeves {
+            margin-top: 1.2rem;
+        }
+
+        .cartao-titulo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .cartao-titulo h2 {
+            margin: 0;
+            font: 700 1.1rem var(--fonte-titulos);
+        }
+
+        .grade-indicadores {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .indicador {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .indicador-icone {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            border-radius: 14px;
+            color: var(--cor-secundaria);
+            background: rgba(245, 184, 0, 0.1);
+            font-size: 1.2rem;
+        }
+
+        .indicador strong,
+        .indicador small {
+            display: block;
+        }
+
+        .indicador strong {
+            font: 800 1.5rem/1 var(--fonte-titulos);
+        }
+
+        .indicador small {
+            margin-top: 0.35rem;
+            color: var(--cor-texto-secundario);
+            font-size: 0.76rem;
+        }
+
+        .atalhos {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .atalho {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            padding: 0.85rem;
+            color: var(--cor-texto-principal);
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid var(--cor-borda-suave);
+            border-radius: var(--borda-raio-md);
+            text-decoration: none;
+            transition: var(--transicao-rapida);
+        }
+
+        .atalho:hover {
+            color: var(--cor-secundaria);
+            border-color: var(--cor-borda);
+            transform: translateY(-2px);
+        }
+
+        .atalho>i:first-child {
+            color: var(--cor-secundaria);
+            font-size: 1.15rem;
+        }
+
+        .grade-dashboard {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.27rem 0.58rem;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-ativo {
+            color: #77e2a2;
+            background: rgba(46, 204, 113, 0.12);
+        }
+
+        .status-inativo {
+            color: #ff9a85;
+            background: rgba(231, 76, 60, 0.13);
+        }
+
+        .link-dourado {
+            color: var(--cor-secundaria);
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .link-dourado:hover {
+            color: #fff;
+        }
+
+        .linha-usuario {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.65rem 0;
+            border-bottom: 1px solid var(--cor-borda-suave);
+        }
+
+        .linha-usuario:last-child {
+            border-bottom: 0;
+        }
+
+        .linha-usuario>span:nth-child(2) {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .linha-usuario strong,
+        .linha-usuario small {
+            display: block;
+        }
+
+        .linha-usuario strong {
+            font-size: 0.79rem;
+        }
+
+        .linha-usuario small {
+            margin-top: 0.15rem;
+            color: var(--cor-texto-secundario);
+            font-size: 0.68rem;
+        }
+
+        .avatar-admin-lista {
+            display: grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 34px;
+            color: var(--cor-secundaria);
+            background: rgba(26, 58, 143, 0.45);
+            border-radius: 50%;
+            font-size: 0.64rem;
+            font-weight: 800;
+        }
+
+        .resumo-cadastro {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .resumo-cadastro>div {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            padding: 0.65rem;
+            background: rgba(255, 255, 255, 0.035);
+            border-radius: var(--borda-raio-sm);
+            color: var(--cor-texto-secundario);
+            font-size: 0.77rem;
+        }
+
+        .resumo-cadastro i {
+            color: var(--cor-secundaria);
+        }
+
+        .resumo-cadastro strong {
+            margin-left: auto;
+            color: #fff;
+            font: 700 1rem var(--fonte-titulos);
+        }
+
+        .cartao-alerta {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            border-color: rgba(245, 184, 0, 0.2);
+        }
+
+        .cartao-alerta>i {
+            color: var(--cor-secundaria);
+            font-size: 1.2rem;
+        }
+
+        .cartao-alerta strong {
+            font-size: 0.84rem;
+        }
+
+        .cartao-alerta p {
+            margin: 0.2rem 0 0;
+            font-size: 0.74rem;
+        }
+
+        .aviso-demo-rodape {
+            margin: 2rem 0 0;
+            padding-top: 1rem;
+            color: rgba(168, 184, 216, 0.65);
+            border-top: 1px solid var(--cor-borda-suave);
+            font-size: 0.74rem;
+        }
+
+        .aviso-demo-rodape i {
+            color: var(--cor-secundaria);
+        }
+
+        .selo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: var(--cor-secundaria);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .usuario {
+            cursor: default;
+        }
+
+        .aviso-toast {
+            position: fixed;
+            z-index: 9999;
+            right: 1.25rem;
+            bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            max-width: min(400px, calc(100vw - 2.5rem));
+            padding: 0.9rem 1.1rem;
+            color: #fff;
+            background: rgba(11, 22, 64, 0.97);
+            border: 1px solid var(--cor-borda-suave);
+            border-left: 4px solid var(--cor-sucesso);
+            border-radius: var(--borda-raio-md);
+            box-shadow: var(--sombra-lg);
+            font-size: 0.82rem;
+        }
+
+        .aviso-toast i {
+            color: var(--cor-sucesso);
+        }
+
+        .aviso-toast.aviso-erro {
+            border-left-color: var(--cor-erro);
+        }
+
+        .aviso-toast.aviso-erro i {
+            color: var(--cor-erro);
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .sidebar-jeves.aberto {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 1200px) {
+            .grade-indicadores {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .grade-dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-jeves {
+                transform: translateX(-100%);
             }
 
             .conteudo {
-                min-height: 100vh;
-                margin-left: 270px;
+                margin-left: 0;
+            }
+
+            .bar-superior {
+                padding: 0 1rem;
+            }
+
+            .bar-superior-titulo,
+            .selo,
+            .usuario .nome-usuario {
+                display: none;
             }
 
             .conteudo-principal {
-                max-width: 1480px;
-                padding: clamp(1.25rem, 3vw, 2.5rem);
-                margin: 0 auto;
+                padding: 1.15rem;
             }
 
             .cabecalho {
-                display: flex;
-                align-items: flex-end;
-                justify-content: space-between;
-                gap: 1.25rem;
-                margin-bottom: 1.6rem;
+                align-items: flex-start;
+                flex-direction: column;
             }
+        }
 
-            .cabecalho h1 {
-                margin: 0 0 0.35rem;
-                font: 800 clamp(1.7rem, 3vw, 2.4rem) / 1.2 var(--fonte-titulos);
-            }
+        @media (max-width: 540px) {
 
-            .cabecalho p {
-                margin: 0;
-                color: var(--cor-texto-secundario);
-            }
-
-            .badge-secao-label {
-                margin-bottom: 0.45rem;
-                color: var(--cor-secundaria);
-                font-size: 0.73rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-            }
-
-            .card-jeves {
-                min-width: 0;
-                padding: 1.3rem;
-                background: var(--gradiente-card);
-                border: 1px solid var(--cor-borda-suave);
-                border-radius: var(--borda-raio-lg);
-                box-shadow: var(--sombra-sm);
-            }
-
-            .card-jeves + .card-jeves {
-                margin-top: 1.2rem;
+            .grade-indicadores,
+            .atalhos {
+                grid-template-columns: 1fr;
             }
 
             .cartao-titulo {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .cartao-titulo h2 {
-                margin: 0;
-                font: 700 1.1rem var(--fonte-titulos);
-            }
-
-            .grade-indicadores {
-                display: grid;
-                grid-template-columns: repeat(4, minmax(0, 1fr));
-                gap: 1rem;
-                margin-bottom: 1.2rem;
-            }
-
-            .indicador {
-                display: flex;
-                align-items: center;
-                gap: 0.85rem;
-            }
-
-            .indicador-icone {
-                display: grid;
-                place-items: center;
-                width: 46px;
-                height: 46px;
-                flex: 0 0 46px;
-                border-radius: 14px;
-                color: var(--cor-secundaria);
-                background: rgba(245, 184, 0, 0.1);
-                font-size: 1.2rem;
-            }
-
-            .indicador strong,
-            .indicador small {
-                display: block;
-            }
-
-            .indicador strong {
-                font: 800 1.5rem/1 var(--fonte-titulos);
-            }
-
-            .indicador small {
-                margin-top: 0.35rem;
-                color: var(--cor-texto-secundario);
-                font-size: 0.76rem;
-            }
-
-            .atalhos {
-                display: grid;
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-                gap: 0.8rem;
-                margin-bottom: 1.2rem;
-            }
-
-            .atalho {
-                display: flex;
-                align-items: center;
-                gap: 0.7rem;
-                padding: 0.85rem;
-                color: var(--cor-texto-principal);
-                background: rgba(255, 255, 255, 0.035);
-                border: 1px solid var(--cor-borda-suave);
-                border-radius: var(--borda-raio-md);
-                text-decoration: none;
-                transition: var(--transicao-rapida);
-            }
-
-            .atalho:hover {
-                color: var(--cor-secundaria);
-                border-color: var(--cor-borda);
-                transform: translateY(-2px);
-            }
-
-            .atalho > i:first-child {
-                color: var(--cor-secundaria);
-                font-size: 1.15rem;
-            }
-
-            .grade-dashboard {
-                display: grid;
-                grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-                gap: 1.2rem;
-                margin-bottom: 1.2rem;
-            }
-
-            .status {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.3rem;
-                padding: 0.27rem 0.58rem;
-                border-radius: 100px;
-                font-size: 0.68rem;
-                font-weight: 700;
-                white-space: nowrap;
-            }
-
-            .status-ativo {
-                color: #77e2a2;
-                background: rgba(46, 204, 113, 0.12);
-            }
-
-            .status-inativo {
-                color: #ff9a85;
-                background: rgba(231, 76, 60, 0.13);
-            }
-
-            .link-dourado {
-                color: var(--cor-secundaria);
-                font-size: 0.78rem;
-                font-weight: 600;
-                text-decoration: none;
-            }
-
-            .link-dourado:hover {
-                color: #fff;
-            }
-
-            .linha-usuario {
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                padding: 0.65rem 0;
-                border-bottom: 1px solid var(--cor-borda-suave);
-            }
-
-            .linha-usuario:last-child {
-                border-bottom: 0;
-            }
-
-            .linha-usuario > span:nth-child(2) {
-                flex: 1;
-                min-width: 0;
-            }
-
-            .linha-usuario strong,
-            .linha-usuario small {
-                display: block;
-            }
-
-            .linha-usuario strong {
-                font-size: 0.79rem;
-            }
-
-            .linha-usuario small {
-                margin-top: 0.15rem;
-                color: var(--cor-texto-secundario);
-                font-size: 0.68rem;
-            }
-
-            .avatar-admin-lista {
-                display: grid;
-                place-items: center;
-                width: 34px;
-                height: 34px;
-                flex: 0 0 34px;
-                color: var(--cor-secundaria);
-                background: rgba(26, 58, 143, 0.45);
-                border-radius: 50%;
-                font-size: 0.64rem;
-                font-weight: 800;
-            }
-
-            .resumo-cadastro {
-                display: grid;
-                gap: 0.75rem;
-            }
-
-            .resumo-cadastro > div {
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                padding: 0.65rem;
-                background: rgba(255, 255, 255, 0.035);
-                border-radius: var(--borda-raio-sm);
-                color: var(--cor-texto-secundario);
-                font-size: 0.77rem;
-            }
-
-            .resumo-cadastro i {
-                color: var(--cor-secundaria);
-            }
-
-            .resumo-cadastro strong {
-                margin-left: auto;
-                color: #fff;
-                font: 700 1rem var(--fonte-titulos);
-            }
-
-            .cartao-alerta {
-                display: flex;
                 align-items: flex-start;
-                gap: 0.75rem;
-                border-color: rgba(245, 184, 0, 0.2);
+                flex-direction: column;
             }
+        }
+    </style>
+</head>
 
-            .cartao-alerta > i {
-                color: var(--cor-secundaria);
-                font-size: 1.2rem;
-            }
-
-            .cartao-alerta strong {
-                font-size: 0.84rem;
-            }
-
-            .cartao-alerta p {
-                margin: 0.2rem 0 0;
-                font-size: 0.74rem;
-            }
-
-            .aviso-demo-rodape {
-                margin: 2rem 0 0;
-                padding-top: 1rem;
-                color: rgba(168, 184, 216, 0.65);
-                border-top: 1px solid var(--cor-borda-suave);
-                font-size: 0.74rem;
-            }
-
-            .aviso-demo-rodape i {
-                color: var(--cor-secundaria);
-            }
-
-            .selo {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.35rem;
-                color: var(--cor-secundaria);
-                font-size: 0.7rem;
-                font-weight: 700;
-            }
-
-            .usuario {
-                cursor: default;
-            }
-
-            .aviso-toast {
-                position: fixed;
-                z-index: 9999;
-                right: 1.25rem;
-                bottom: 1.25rem;
-                display: flex;
-                align-items: center;
-                gap: 0.65rem;
-                max-width: min(400px, calc(100vw - 2.5rem));
-                padding: 0.9rem 1.1rem;
-                color: #fff;
-                background: rgba(11, 22, 64, 0.97);
-                border: 1px solid var(--cor-borda-suave);
-                border-left: 4px solid var(--cor-sucesso);
-                border-radius: var(--borda-raio-md);
-                box-shadow: var(--sombra-lg);
-                font-size: 0.82rem;
-            }
-
-            .aviso-toast i {
-                color: var(--cor-sucesso);
-            }
-
-            .aviso-toast.aviso-erro {
-                border-left-color: var(--cor-erro);
-            }
-
-            .aviso-toast.aviso-erro i {
-                color: var(--cor-erro);
-            }
-
-            .d-none {
-                display: none !important;
-            }
-
-            .sidebar-jeves.aberto {
-                transform: translateX(0);
-            }
-
-            @media (max-width: 1200px) {
-                .grade-indicadores {
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
-                }
-            }
-
-            @media (max-width: 900px) {
-                .grade-dashboard {
-                    grid-template-columns: 1fr;
-                }
-            }
-
-            @media (max-width: 768px) {
-                .sidebar-jeves {
-                    transform: translateX(-100%);
-                }
-
-                .conteudo {
-                    margin-left: 0;
-                }
-
-                .bar-superior {
-                    padding: 0 1rem;
-                }
-
-                .bar-superior-titulo,
-                .selo,
-                .usuario .nome-usuario {
-                    display: none;
-                }
-
-                .conteudo-principal {
-                    padding: 1.15rem;
-                }
-
-                .cabecalho {
-                    align-items: flex-start;
-                    flex-direction: column;
-                }
-            }
-
-            @media (max-width: 540px) {
-                .grade-indicadores,
-                .atalhos {
-                    grid-template-columns: 1fr;
-                }
-
-                .cartao-titulo {
-                    align-items: flex-start;
-                    flex-direction: column;
-                }
-            }
-        </style>
-    </head>
-    <body data-static-content="true" data-page="painel">
-        <div class="app">
-            <aside class="sidebar-jeves" id="sidebar-admin" aria-label="Navegação do painel">
-                <div class="sidebar-topo">
-                    <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
-                        <i class="bi bi-fire" aria-hidden="true"></i>
-                        <span>JEVES</span>
-                    </a>
-                    <span class="sidebar-perfil-label">Administração</span>
-                </div>
-                <nav class="sidebar-nav" aria-label="Menu administrativo">
-                    <a href="painel.html" class="item-sidebar ativo" aria-current="page">
-                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
-                        <span>Painel</span>
-                    </a>
-                    <a href="usuarios.html" class="item-sidebar">
-                        <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
-                        <span>Usuários</span>
-                    </a>
-                    <a href="escolas.html" class="item-sidebar">
-                        <i class="bi bi-building-fill" aria-hidden="true"></i>
-                        <span>Escolas</span>
-                    </a>
-                    <a href="modalidades.html" class="item-sidebar">
-                        <i class="bi bi-activity" aria-hidden="true"></i>
-                        <span>Modalidades</span>
-                    </a>
-                    <a href="categorias.html" class="item-sidebar">
-                        <i class="bi bi-tags-fill" aria-hidden="true"></i>
-                        <span>Categorias</span>
-                    </a>
-                </nav>
-                <div class="sidebar-rodape">
-                    <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
-                        <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
-                        <span>Sair da conta</span>
+<body data-static-content="true" data-page="painel">
+    <div class="app">
+        <aside class="sidebar-jeves" id="sidebar-admin" aria-label="Navegação do painel">
+            <div class="sidebar-topo">
+                <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+                    <img src="../assets/Img/logo.png" alt="JEVES" />
+                    <span class="texto-logo-jeves">JEVES</span>
+                </a>
+                <span class="sidebar-perfil-label">Administração</span>
+            </div>
+            <nav class="sidebar-nav" aria-label="Menu administrativo">
+                <a href="painel.html" class="item-sidebar ativo" aria-current="page">
+                    <span>Painel</span>
+                </a>
+                <a href="usuarios.html" class="item-sidebar">
+                    <span>Usuários</span>
+                </a>
+                <a href="escolas.html" class="item-sidebar">
+                    <span>Escolas</span>
+                </a>
+                <a href="modalidades.html" class="item-sidebar">
+                    <span>Modalidades</span>
+                </a>
+                <a href="categorias.html" class="item-sidebar">
+                    <span>Categorias</span>
+                </a>
+            </nav>
+            <div class="sidebar-rodape">
+                <button class="btn-sair-sidebar" type="button" data-action="sair" aria-label="Sair da conta">
+                    <i class="bi bi-box-arrow-left" aria-hidden="true"></i>
+                    <span>Sair da conta</span>
+                </button>
+            </div>
+        </aside>
+        <div class="conteudo">
+            <header class="bar-superior" role="banner">
+                <div class="bar-superior-esquerda">
+                    <button class="btn-toggle-sidebar" id="btn-menu-admin" type="button" aria-label="Abrir menu"
+                        aria-expanded="false" aria-controls="sidebar-admin">
+                        <i class="bi bi-list" aria-hidden="true"></i>
                     </button>
+                    <h2 class="bar-superior-titulo" id="titulo-pagina">Painel</h2>
                 </div>
-            </aside>
-            <div class="conteudo">
-                <header class="bar-superior" role="banner">
-                    <div class="bar-superior-esquerda">
-                        <button
-                            class="btn-toggle-sidebar"
-                            id="btn-menu-admin"
-                            type="button"
-                            aria-label="Abrir menu"
-                            aria-expanded="false"
-                            aria-controls="sidebar-admin"
-                        >
-                            <i class="bi bi-list" aria-hidden="true"></i>
-                        </button>
-                        <h2 class="bar-superior-titulo" id="titulo-pagina">Painel</h2>
-                    </div>
-                    <div class="bar-superior-direita">
-                        <span class="selo"
-                            ><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Administrador</span
-                        >
-                        <span class="usuario-info usuario">
-                            <span class="avatar-usuario" aria-hidden="true">AG</span>
-                            <span class="nome-usuario">Administração Geral SEMESP</span>
-                        </span>
+                <div class="bar-superior-direita">
+                    <span class="selo">Administrador</span>
+                    <span class="usuario-info usuario">
+                        <span class="avatar-usuario" aria-hidden="true">AG</span>
+                        <span class="nome-usuario">Administração Geral SEMESP</span>
+                    </span>
+                </div>
+            </header>
+            <main class="conteudo-principal" id="app-admin" aria-labelledby="titulo-pagina">
+                <header class="cabecalho">
+                    <div>
+                        <div class="badge-secao-label">Administração · JEVES 2026</div>
+                        <h1>Dashboard Administrativo</h1>
+                        <h1>Painel Administrativo</h1>
+                        <p>Visão geral dos cadastros e acessos da plataforma.</p>
                     </div>
                 </header>
-                <main class="conteudo-principal" id="app-admin" aria-labelledby="titulo-pagina">
-                    <header class="cabecalho">
-                        <div>
-                            <div class="badge-secao-label">Administração · JEVES 2026</div>
-                            <h1>Dashboard Administrativo</h1>
-                            <p>Visão geral dos cadastros e acessos da plataforma.</p>
+                <div class="grade-indicadores">
+                    <article class="card-jeves indicador">
+                        <span class="indicador-icone"><i
+                                class="bi bi-people-fill"></i></span><span><strong>3</strong><small>Usuários
+                                cadastrados</small></span>
+                    </article>
+                    <article class="card-jeves indicador">
+                        <span class="indicador-icone"><i
+                                class="bi bi-building-fill"></i></span><span><strong>3</strong><small>Escolas
+                                cadastradas</small></span>
+                    </article>
+                    <article class="card-jeves indicador">
+                        <span class="indicador-icone"><i
+                                class="bi bi-activity"></i></span><span><strong>5</strong><small>Modalidades
+                                ativas</small></span>
+                    </article>
+                    <article class="card-jeves indicador">
+                        <span class="indicador-icone"><i
+                                class="bi bi-tags-fill"></i></span><span><strong>6</strong><small>Categorias
+                                disponíveis</small></span>
+                    </article>
+                </div>
+                <div class="atalhos">
+                    <a class="atalho" href="usuarios.html"><i class="bi bi-person-plus-fill"></i><strong>Gerenciar
+                            usuários</strong><i class="bi bi-arrow-right ms-auto"></i></a><a class="atalho"
+                        href="escolas.html"><i class="bi bi-building-fill"></i><strong>Gerenciar escolas</strong><i
+                            class="bi bi-arrow-right ms-auto"></i></a><a class="atalho" href="modalidades.html"><i
+                            class="bi bi-sliders"></i><strong>Configurar modalidades</strong><i
+                            class="bi bi-arrow-right ms-auto"></i></a>
+                </div>
+                <div class="grade-dashboard">
+                    <section class="card-jeves">
+                        <div class="cartao-titulo">
+                            <h2>Usuários recentes</h2>
+                            <a class="link-dourado" href="usuarios.html">Ver todos <i class="bi bi-arrow-right"></i></a>
                         </div>
-                    </header>
-                    <div class="grade-indicadores">
-                        <article class="card-jeves indicador">
-                            <span class="indicador-icone"><i class="bi bi-people-fill"></i></span
-                            ><span><strong>3</strong><small>Usuários cadastrados</small></span>
-                        </article>
-                        <article class="card-jeves indicador">
-                            <span class="indicador-icone"><i class="bi bi-building-fill"></i></span
-                            ><span><strong>3</strong><small>Escolas cadastradas</small></span>
-                        </article>
-                        <article class="card-jeves indicador">
-                            <span class="indicador-icone"><i class="bi bi-activity"></i></span
-                            ><span><strong>5</strong><small>Modalidades ativas</small></span>
-                        </article>
-                        <article class="card-jeves indicador">
-                            <span class="indicador-icone"><i class="bi bi-tags-fill"></i></span
-                            ><span><strong>6</strong><small>Categorias disponíveis</small></span>
-                        </article>
-                    </div>
-                    <div class="atalhos">
-                        <a class="atalho" href="usuarios.html"
-                            ><i class="bi bi-person-plus-fill"></i><strong>Gerenciar usuários</strong
-                            ><i class="bi bi-arrow-right ms-auto"></i></a
-                        ><a class="atalho" href="escolas.html"
-                            ><i class="bi bi-building-fill"></i><strong>Gerenciar escolas</strong
-                            ><i class="bi bi-arrow-right ms-auto"></i></a
-                        ><a class="atalho" href="modalidades.html"
-                            ><i class="bi bi-sliders"></i><strong>Configurar modalidades</strong
-                            ><i class="bi bi-arrow-right ms-auto"></i
-                        ></a>
-                    </div>
-                    <div class="grade-dashboard">
-                        <section class="card-jeves">
-                            <div class="cartao-titulo">
-                                <h2>Usuários recentes</h2>
-                                <a class="link-dourado" href="usuarios.html"
-                                    >Ver todos <i class="bi bi-arrow-right"></i
-                                ></a>
+                        <div class="lista-usuarios-recentes">
+                            <div class="linha-usuario">
+                                <span class="avatar-admin-lista">JM</span><span><strong>Joana
+                                        Martins</strong><small>joana.martins@machado.edu.br</small></span><span
+                                    class="status status-inativo"><i class="bi bi-pause-circle-fill"></i>Inativo</span>
                             </div>
-                            <div class="lista-usuarios-recentes">
-                                <div class="linha-usuario">
-                                    <span class="avatar-admin-lista">JM</span
-                                    ><span
-                                        ><strong>Joana Martins</strong><small>joana.martins@machado.edu.br</small></span
-                                    ><span class="status status-inativo"
-                                        ><i class="bi bi-pause-circle-fill"></i>Inativo</span
-                                    >
-                                </div>
-                                <div class="linha-usuario">
-                                    <span class="avatar-admin-lista">MA</span
-                                    ><span
-                                        ><strong>Maria Aparecida Oliveira</strong
-                                        ><small>escola.tiradentes@vespasiano.mg.gov.br</small></span
-                                    ><span class="status status-ativo"
-                                        ><i class="bi bi-check-circle-fill"></i>Ativo</span
-                                    >
-                                </div>
-                                <div class="linha-usuario">
-                                    <span class="avatar-admin-lista">PC</span
-                                    ><span
-                                        ><strong>Prof. Carlos Santana</strong
-                                        ><small>comissao.jogos@vespasiano.mg.gov.br</small></span
-                                    ><span class="status status-ativo"
-                                        ><i class="bi bi-check-circle-fill"></i>Ativo</span
-                                    >
-                                </div>
+                            <div class="linha-usuario">
+                                <span class="avatar-admin-lista">MA</span><span><strong>Maria Aparecida
+                                        Oliveira</strong><small>escola.tiradentes@vespasiano.mg.gov.br</small></span><span
+                                    class="status status-ativo"><i class="bi bi-check-circle-fill"></i>Ativo</span>
                             </div>
-                        </section>
-                        <section class="card-jeves">
-                            <div class="cartao-titulo"><h2>Resumo de cadastros</h2></div>
-                            <div class="resumo-cadastro">
-                                <div>
-                                    <i class="bi bi-person-check-fill"></i><span>Usuários ativos</span
-                                    ><strong>2</strong>
-                                </div>
-                                <div>
-                                    <i class="bi bi-building-check"></i><span>Escolas ativas</span><strong>2</strong>
-                                </div>
-                                <div>
-                                    <i class="bi bi-pause-circle"></i><span>Modalidades inativas</span
-                                    ><strong>1</strong>
-                                </div>
+                            <div class="linha-usuario">
+                                <span class="avatar-admin-lista">PC</span><span><strong>Prof. Carlos
+                                        Santana</strong><small>comissao.jogos@vespasiano.mg.gov.br</small></span><span
+                                    class="status status-ativo"><i class="bi bi-check-circle-fill"></i>Ativo</span>
                             </div>
-                        </section>
-                    </div>
-                    <section class="card-jeves cartao-alerta">
-                        <i class="bi bi-shield-check"></i>
-                        <div>
-                            <strong>Área administrativa</strong>
-                            <p>
-                                As alterações nos cadastros afetam os dados demonstrativos deste navegador. Em produção,
-                                valide permissões no servidor.
-                            </p>
                         </div>
                     </section>
-                    <p class="aviso-demo-rodape">
-                        <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
-                        salvas somente neste navegador.
-                    </p>
-                </main>
-            </div>
+                    <section class="card-jeves">
+                        <div class="cartao-titulo">
+                            <h2>Resumo de cadastros</h2>
+                        </div>
+                        <div class="resumo-cadastro">
+                            <div>
+                                <i class="bi bi-person-check-fill"></i><span>Usuários ativos</span><strong>2</strong>
+                            </div>
+                            <div>
+                                <i class="bi bi-building-check"></i><span>Escolas ativas</span><strong>2</strong>
+                            </div>
+                            <div>
+                                <i class="bi bi-pause-circle"></i><span>Modalidades inativas</span><strong>1</strong>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <section class="card-jeves cartao-alerta">
+                    <i class="bi bi-shield-check"></i>
+                    <div>
+                        <strong>Área administrativa</strong>
+                        <p>
+                            As alterações nos cadastros afetam os dados demonstrativos deste navegador. Em produção,
+                            valide permissões no servidor.
+                        </p>
+                    </div>
+                </section>
+                <p class="aviso-demo-rodape">
+                    <i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam
+                    salvas somente neste navegador.
+                </p>
+            </main>
         </div>
-        <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            (function () {
-                "use strict";
-                const pagina = document.body.dataset.page || "painel";
-                const root = document.getElementById("app-admin");
-                const chaves = {
-                    sessao: "jeves_sessao",
-                    usuarios: "jeves_admin_usuarios_demo",
-                    escolas: "jeves_admin_escolas_demo",
-                    modalidades: "jeves_admin_modalidades_demo",
-                    categorias: "jeves_admin_categorias_demo",
-                    usuario: "jeves_admin_usuario_demo",
-                };
-                const paginas = [
-                    { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
-                    { id: "usuarios", nome: "Usuários", icone: "bi-person-lines-fill", arquivo: "usuarios.html" },
-                    { id: "escolas", nome: "Escolas", icone: "bi-building-fill", arquivo: "escolas.html" },
-                    { id: "modalidades", nome: "Modalidades", icone: "bi-activity", arquivo: "modalidades.html" },
-                    { id: "categorias", nome: "Categorias", icone: "bi-tags-fill", arquivo: "categorias.html" },
-                ];
-                let sessao;
+    </div>
+    <div id="jeves-conteiner-toasts" aria-live="polite" aria-atomic="true"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            "use strict";
+            const pagina = document.body.dataset.page || "painel";
+            const root = document.getElementById("app-admin");
+            const chaves = {
+                sessao: "jeves_sessao",
+                usuarios: "jeves_admin_usuarios_demo",
+                escolas: "jeves_admin_escolas_demo",
+                modalidades: "jeves_admin_modalidades_demo",
+                categorias: "jeves_admin_categorias_demo",
+                usuario: "jeves_admin_usuario_demo",
+            };
+            const paginas = [
+                { id: "painel", nome: "Painel", icone: "bi-grid-fill", arquivo: "painel.html" },
+                { id: "usuarios", nome: "Usuários", icone: "bi-person-lines-fill", arquivo: "usuarios.html" },
+                { id: "escolas", nome: "Escolas", icone: "bi-building-fill", arquivo: "escolas.html" },
+                { id: "modalidades", nome: "Modalidades", icone: "bi-activity", arquivo: "modalidades.html" },
+                { id: "categorias", nome: "Categorias", icone: "bi-tags-fill", arquivo: "categorias.html" },
+            ];
+            let sessao;
 
-                function escapar(valor) {
-                    return String(valor ?? "").replace(
-                        /[&<>"']/g,
-                        (caractere) =>
-                            ({
-                                "&": "&amp;",
-                                "<": "&lt;",
-                                ">": "&gt;",
-                                '"': "&quot;",
-                                "'": "&#39;",
-                            })[caractere],
-                    );
-                }
-
-                function ler(chave, padrao = []) {
-                    try {
-                        const valor = localStorage.getItem(chave);
-                        return valor ? JSON.parse(valor) : padrao;
-                    } catch (erro) {
-                        console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
-                        return padrao;
-                    }
-                }
-
-                function salvar(chave, valor) {
-                    try {
-                        localStorage.setItem(chave, JSON.stringify(valor));
-                        return true;
-                    } catch (erro) {
-                        console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
-                        notificar("erro", "Não foi possível salvar os dados neste navegador.");
-                        return false;
-                    }
-                }
-
-                function obterSessao() {
-                    try {
-                        const valor = JSON.parse(localStorage.getItem(chaves.sessao) || "null");
-                        return valor && valor.usuario && valor.expiracao > Date.now() ? valor : null;
-                    } catch (erro) {
-                        console.error("Não foi possível validar a sessão local.", erro);
-                        return null;
-                    }
-                }
-
-                sessao = obterSessao();
-                if (sessao && sessao.usuario.perfil !== "admin") {
-                    window.location.replace("../erros/403.html");
-                    return;
-                }
-                const sessaoValida = sessao;
-                sessao ||= {
-                    token: "jeves_admin_demo",
-                    usuario: {
-                        id: 501,
-                        nome: "Administração Geral SEMESP",
-                        email: "secretaria.esportes@vespasiano.mg.gov.br",
-                        perfil: "admin",
-                        escolaId: null,
-                    },
-                    expiracao: Date.now() + 86400000,
-                };
-
-                const usuariosPadrao = [
-                    {
-                        id: "u1",
-                        nome: "Prof. Carlos Santana",
-                        email: "comissao.jogos@vespasiano.mg.gov.br",
-                        perfil: "organizador",
-                        escola: "",
-                        ativo: true,
-                    },
-                    {
-                        id: "u2",
-                        nome: "Maria Aparecida Oliveira",
-                        email: "escola.tiradentes@vespasiano.mg.gov.br",
-                        perfil: "escola",
-                        escola: "Colégio Tiradentes Vespasiano",
-                        ativo: true,
-                    },
-                    {
-                        id: "u3",
-                        nome: "Joana Martins",
-                        email: "joana.martins@machado.edu.br",
-                        perfil: "escola",
-                        escola: "E. E. Machado de Assis",
-                        ativo: false,
-                    },
-                ];
-                const escolasPadrao = [
-                    {
-                        id: "e1",
-                        nome: "Colégio Tiradentes Vespasiano",
-                        cnpj: "12.345.678/0001-90",
-                        ineP: "31234567",
-                        cidade: "Vespasiano",
-                        email: "escola.tiradentes@vespasiano.mg.gov.br",
-                        ativo: true,
-                    },
-                    {
-                        id: "e2",
-                        nome: "E. E. Machado de Assis",
-                        cnpj: "23.456.789/0001-01",
-                        ineP: "31234568",
-                        cidade: "Vespasiano",
-                        email: "joana.martins@machado.edu.br",
-                        ativo: true,
-                    },
-                    {
-                        id: "e3",
-                        nome: "E. E. Maria de Lourdes",
-                        cnpj: "34.567.890/0001-12",
-                        ineP: "31234569",
-                        cidade: "Vespasiano",
-                        email: "contato@mariadelourdes.edu.br",
-                        ativo: false,
-                    },
-                ];
-                const modalidadesPadrao = [
-                    { id: "m1", nome: "Futsal", descricao: "Futebol de salão", ativo: true },
-                    { id: "m2", nome: "Voleibol", descricao: "Voleibol de quadra", ativo: true },
-                    { id: "m3", nome: "Handebol", descricao: "Handebol de quadra", ativo: true },
-                    { id: "m4", nome: "Basquetebol", descricao: "Basquetebol de quadra", ativo: true },
-                    { id: "m5", nome: "Atletismo", descricao: "Provas de pista e campo", ativo: true },
-                    { id: "m6", nome: "Xadrez", descricao: "Xadrez escolar", ativo: false },
-                ];
-                const categoriasPadrao = [
-                    {
-                        id: "c1",
-                        nome: "Sub-13 Masculino",
-                        idadeMinima: 11,
-                        idadeMaxima: 13,
-                        genero: "Masculino",
-                        ativo: true,
-                    },
-                    {
-                        id: "c2",
-                        nome: "Sub-15 Masculino",
-                        idadeMinima: 13,
-                        idadeMaxima: 15,
-                        genero: "Masculino",
-                        ativo: true,
-                    },
-                    {
-                        id: "c3",
-                        nome: "Sub-17 Masculino",
-                        idadeMinima: 15,
-                        idadeMaxima: 17,
-                        genero: "Masculino",
-                        ativo: true,
-                    },
-                    {
-                        id: "c4",
-                        nome: "Sub-13 Feminino",
-                        idadeMinima: 11,
-                        idadeMaxima: 13,
-                        genero: "Feminino",
-                        ativo: true,
-                    },
-                    {
-                        id: "c5",
-                        nome: "Sub-15 Feminino",
-                        idadeMinima: 13,
-                        idadeMaxima: 15,
-                        genero: "Feminino",
-                        ativo: true,
-                    },
-                    {
-                        id: "c6",
-                        nome: "Sub-17 Feminino",
-                        idadeMinima: 15,
-                        idadeMaxima: 17,
-                        genero: "Feminino",
-                        ativo: true,
-                    },
-                ];
-                const usuarioPadrao = {
-                    nome: sessao.usuario.nome || "Administração Geral SEMESP",
-                    email: sessao.usuario.email || "secretaria.esportes@vespasiano.mg.gov.br",
-                };
-                const deveRenderizar = Boolean(
-                    sessaoValida ||
-                        location.search ||
-                        Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+            function escapar(valor) {
+                return String(valor ?? "").replace(
+                    /[&<>"']/g,
+                    (caractere) =>
+                        ({
+                            "&": "&amp;",
+                            "<": "&lt;",
+                            ">": "&gt;",
+                            '"': "&quot;",
+                            "'": "&#39;",
+                        })[caractere],
                 );
+            }
 
-                Object.entries({
-                    [chaves.usuarios]: usuariosPadrao,
-                    [chaves.escolas]: escolasPadrao,
-                    [chaves.modalidades]: modalidadesPadrao,
-                    [chaves.categorias]: categoriasPadrao,
-                    [chaves.usuario]: usuarioPadrao,
-                }).forEach(([chave, padrao]) => {
-                    if (!localStorage.getItem(chave)) salvar(chave, padrao);
+            function ler(chave, padrao = []) {
+                try {
+                    const valor = localStorage.getItem(chave);
+                    return valor ? JSON.parse(valor) : padrao;
+                } catch (erro) {
+                    console.error(`Não foi possível ler os dados locais (${chave}).`, erro);
+                    return padrao;
+                }
+            }
+
+            function salvar(chave, valor) {
+                try {
+                    localStorage.setItem(chave, JSON.stringify(valor));
+                    return true;
+                } catch (erro) {
+                    console.error(`Não foi possível salvar os dados locais (${chave}).`, erro);
+                    notificar("erro", "Não foi possível salvar os dados neste navegador.");
+                    return false;
+                }
+            }
+
+            function obterSessao() {
+                try {
+                    const valor = JSON.parse(localStorage.getItem(chaves.sessao) || "null");
+                    return valor && valor.usuario && valor.expiracao > Date.now() ? valor : null;
+                } catch (erro) {
+                    console.error("Não foi possível validar a sessão local.", erro);
+                    return null;
+                }
+            }
+
+            sessao = obterSessao();
+            if (sessao && sessao.usuario.perfil !== "admin") {
+                window.location.replace("../erros/403.html");
+                return;
+            }
+            const sessaoValida = sessao;
+            sessao ||= {
+                token: "jeves_admin_demo",
+                usuario: {
+                    id: 501,
+                    nome: "Administração Geral SEMESP",
+                    email: "secretaria.esportes@vespasiano.mg.gov.br",
+                    perfil: "admin",
+                    escolaId: null,
+                },
+                expiracao: Date.now() + 86400000,
+            };
+
+            const usuariosPadrao = [
+                {
+                    id: "u1",
+                    nome: "Prof. Carlos Santana",
+                    email: "comissao.jogos@vespasiano.mg.gov.br",
+                    perfil: "organizador",
+                    escola: "",
+                    ativo: true,
+                },
+                {
+                    id: "u2",
+                    nome: "Maria Aparecida Oliveira",
+                    email: "escola.tiradentes@vespasiano.mg.gov.br",
+                    perfil: "escola",
+                    escola: "Colégio Tiradentes Vespasiano",
+                    ativo: true,
+                },
+                {
+                    id: "u3",
+                    nome: "Joana Martins",
+                    email: "joana.martins@machado.edu.br",
+                    perfil: "escola",
+                    escola: "E. E. Machado de Assis",
+                    ativo: false,
+                },
+            ];
+            const escolasPadrao = [
+                {
+                    id: "e1",
+                    nome: "Colégio Tiradentes Vespasiano",
+                    cnpj: "12.345.678/0001-90",
+                    ineP: "31234567",
+                    cidade: "Vespasiano",
+                    email: "escola.tiradentes@vespasiano.mg.gov.br",
+                    ativo: true,
+                },
+                {
+                    id: "e2",
+                    nome: "E. E. Machado de Assis",
+                    cnpj: "23.456.789/0001-01",
+                    ineP: "31234568",
+                    cidade: "Vespasiano",
+                    email: "joana.martins@machado.edu.br",
+                    ativo: true,
+                },
+                {
+                    id: "e3",
+                    nome: "E. E. Maria de Lourdes",
+                    cnpj: "34.567.890/0001-12",
+                    ineP: "31234569",
+                    cidade: "Vespasiano",
+                    email: "contato@mariadelourdes.edu.br",
+                    ativo: false,
+                },
+            ];
+            const modalidadesPadrao = [
+                { id: "m1", nome: "Futsal", descricao: "Futebol de salão", ativo: true },
+                { id: "m2", nome: "Voleibol", descricao: "Voleibol de quadra", ativo: true },
+                { id: "m3", nome: "Handebol", descricao: "Handebol de quadra", ativo: true },
+                { id: "m4", nome: "Basquetebol", descricao: "Basquetebol de quadra", ativo: true },
+                { id: "m5", nome: "Atletismo", descricao: "Provas de pista e campo", ativo: true },
+                { id: "m6", nome: "Xadrez", descricao: "Xadrez escolar", ativo: false },
+            ];
+            const categoriasPadrao = [
+                {
+                    id: "c1",
+                    nome: "Sub-13 Masculino",
+                    idadeMinima: 11,
+                    idadeMaxima: 13,
+                    genero: "Masculino",
+                    ativo: true,
+                },
+                {
+                    id: "c2",
+                    nome: "Sub-15 Masculino",
+                    idadeMinima: 13,
+                    idadeMaxima: 15,
+                    genero: "Masculino",
+                    ativo: true,
+                },
+                {
+                    id: "c3",
+                    nome: "Sub-17 Masculino",
+                    idadeMinima: 15,
+                    idadeMaxima: 17,
+                    genero: "Masculino",
+                    ativo: true,
+                },
+                {
+                    id: "c4",
+                    nome: "Sub-13 Feminino",
+                    idadeMinima: 11,
+                    idadeMaxima: 13,
+                    genero: "Feminino",
+                    ativo: true,
+                },
+                {
+                    id: "c5",
+                    nome: "Sub-15 Feminino",
+                    idadeMinima: 13,
+                    idadeMaxima: 15,
+                    genero: "Feminino",
+                    ativo: true,
+                },
+                {
+                    id: "c6",
+                    nome: "Sub-17 Feminino",
+                    idadeMinima: 15,
+                    idadeMaxima: 17,
+                    genero: "Feminino",
+                    ativo: true,
+                },
+            ];
+            const usuarioPadrao = {
+                nome: sessao.usuario.nome || "Administração Geral SEMESP",
+                email: sessao.usuario.email || "secretaria.esportes@vespasiano.mg.gov.br",
+            };
+            const deveRenderizar = Boolean(
+                sessaoValida ||
+                location.search ||
+                Object.values(chaves).some((chave) => localStorage.getItem(chave) !== null),
+            );
+
+            Object.entries({
+                [chaves.usuarios]: usuariosPadrao,
+                [chaves.escolas]: escolasPadrao,
+                [chaves.modalidades]: modalidadesPadrao,
+                [chaves.categorias]: categoriasPadrao,
+                [chaves.usuario]: usuarioPadrao,
+            }).forEach(([chave, padrao]) => {
+                if (!localStorage.getItem(chave)) salvar(chave, padrao);
+            });
+
+            function todos(chave) {
+                return ler(chave, []);
+            }
+
+            function notificar(tipo, mensagem) {
+                document.getElementById("aviso-admin")?.remove();
+                const elemento = document.createElement("div");
+                elemento.id = "aviso-admin";
+                elemento.className = `aviso-toast ${tipo === "erro" ? "aviso-erro" : ""}`;
+                elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
+                elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
+                const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
+                conteiner.appendChild(elemento);
+                window.setTimeout(() => elemento.remove(), 4000);
+            }
+
+            function badgeAtivo(ativo) {
+                const classe = ativo ? "status-ativo-admin" : "status-inativo-admin";
+                const rotulo = ativo ? "Ativo" : "Inativo";
+                return `<span class="status ${classe}"><i class="bi ${ativo ? "bi-check-circle-fill" : "bi-pause-circle-fill"}"></i>${rotulo}</span>`;
+            }
+
+            function titulo(tituloPagina, descricao, acao = "") {
+                return `<header class="cabecalho"><div><div class="badge-secao-label">Administração · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+            }
+
+            function moldura(conteudo, tituloPagina) {
+                if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
+                    root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
+                }
+                document.title = `${tituloPagina} | JEVES 2026`;
+                document.getElementById("titulo-pagina").textContent = tituloPagina;
+                const usuario = ler(chaves.usuario, usuarioPadrao);
+                const iniciais = (usuario.nome || "Admin")
+                    .split(/\s+/)
+                    .slice(0, 2)
+                    .map((parte) => parte[0] || "")
+                    .join("")
+                    .toUpperCase();
+                document.querySelector(".avatar-usuario").textContent = iniciais;
+                document.querySelector(".nome-usuario").textContent = usuario.nome;
+                document.querySelector('[data-action="sair"]').addEventListener("click", () => {
+                    localStorage.removeItem(chaves.sessao);
+                    localStorage.removeItem("jeves_token");
+                    window.location.replace("../publico/login.html");
                 });
-
-                function todos(chave) {
-                    return ler(chave, []);
-                }
-
-                function notificar(tipo, mensagem) {
-                    document.getElementById("aviso-admin")?.remove();
-                    const elemento = document.createElement("div");
-                    elemento.id = "aviso-admin";
-                    elemento.className = `aviso-toast ${tipo === "erro" ? "aviso-erro" : ""}`;
-                    elemento.setAttribute("role", tipo === "erro" ? "alert" : "status");
-                    elemento.innerHTML = `<i class="bi ${tipo === "erro" ? "bi-exclamation-circle-fill" : "bi-check-circle-fill"}"></i><span>${escapar(mensagem)}</span>`;
-                    const conteiner = document.getElementById("jeves-conteiner-toasts") || document.body;
-                    conteiner.appendChild(elemento);
-                    window.setTimeout(() => elemento.remove(), 4000);
-                }
-
-                function badgeAtivo(ativo) {
-                    const classe = ativo ? "status-ativo-admin" : "status-inativo-admin";
-                    const rotulo = ativo ? "Ativo" : "Inativo";
-                    return `<span class="status ${classe}"><i class="bi ${ativo ? "bi-check-circle-fill" : "bi-pause-circle-fill"}"></i>${rotulo}</span>`;
-                }
-
-                function titulo(tituloPagina, descricao, acao = "") {
-                    return `<header class="cabecalho"><div><div class="badge-secao-label">Administração · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
-                }
-
-                function moldura(conteudo, tituloPagina) {
-                    if (document.body.dataset.staticContent !== "true" || deveRenderizar) {
-                        root.innerHTML = `${conteudo}<p class="aviso-demo-rodape"><i class="bi bi-info-circle" aria-hidden="true"></i> Ambiente demonstrativo: alterações ficam salvas somente neste navegador.</p>`;
-                    }
-                    document.title = `${tituloPagina} | JEVES 2026`;
-                    document.getElementById("titulo-pagina").textContent = tituloPagina;
-                    const usuario = ler(chaves.usuario, usuarioPadrao);
-                    const iniciais = (usuario.nome || "Admin")
-                        .split(/\s+/)
-                        .slice(0, 2)
-                        .map((parte) => parte[0] || "")
-                        .join("")
-                        .toUpperCase();
-                    document.querySelector(".avatar-usuario").textContent = iniciais;
-                    document.querySelector(".nome-usuario").textContent = usuario.nome;
-                    document.querySelector('[data-action="sair"]').addEventListener("click", () => {
-                        localStorage.removeItem(chaves.sessao);
-                        localStorage.removeItem("jeves_token");
-                        window.location.replace("../publico/login.html");
+                const botaoMenu = document.getElementById("btn-menu-admin");
+                const sidebarAdmin = document.getElementById("sidebar-admin");
+                if (botaoMenu && sidebarAdmin) {
+                    botaoMenu.addEventListener("click", (event) => {
+                        event.stopPropagation();
+                        const aberto = sidebarAdmin.classList.toggle("aberto");
+                        botaoMenu.setAttribute("aria-expanded", String(aberto));
+                        botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
                     });
-                    document.getElementById("btn-menu-admin").addEventListener("click", (event) => {
-                        const botao = event.currentTarget;
-                        const aberto = document.getElementById("sidebar-admin").classList.toggle("aberto");
-                        botao.setAttribute("aria-expanded", String(aberto));
-                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                    document.addEventListener("click", (event) => {
+                        if (sidebarAdmin.classList.contains("aberto") && !sidebarAdmin.contains(event.target)) {
+                            sidebarAdmin.classList.remove("aberto");
+                            botaoMenu.setAttribute("aria-expanded", "false");
+                            botaoMenu.setAttribute("aria-label", "Abrir menu");
+                        }
                     });
                 }
+            }
 
-                function tabelaUsuarios(usuarios) {
-                    return `<div class="tabela-responsiva"><table class="tabela-jeves"><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Escola vinculada</th><th>Status</th><th>Ações</th></tr></thead><tbody>${usuarios.map((usuario) => `<tr data-busca="${escapar(`${usuario.nome} ${usuario.email} ${usuario.perfil} ${usuario.escola}`.toLowerCase())}"><td><strong>${escapar(usuario.nome)}</strong></td><td>${escapar(usuario.email)}</td><td><span class="perfil-chip">${escapar(usuario.perfil)}</span></td><td>${escapar(usuario.escola || "—")}</td><td>${badgeAtivo(usuario.ativo)}</td><td><div class="acoes-tabela"><button type="button" class="botao-icone" data-editar-usuario="${escapar(usuario.id)}"><i class="bi bi-pencil"></i><span class="sr-only">Editar</span></button><button type="button" class="botao-icone ${usuario.ativo ? "acao-desativar" : ""}" data-alternar-usuario="${escapar(usuario.id)}" aria-label="${usuario.ativo ? "Desativar" : "Ativar"} ${escapar(usuario.nome)}"><i class="bi ${usuario.ativo ? "bi-person-slash" : "bi-person-check"}"></i></button></div></td></tr>`).join("")}</tbody></table></div>`;
-                }
+            function tabelaUsuarios(usuarios) {
+                return `<div class="tabela-responsiva"><table class="tabela-jeves"><thead><tr><th>Nome</th><th>E-mail</th><th>Perfil</th><th>Escola vinculada</th><th>Status</th><th>Ações</th></tr></thead><tbody>${usuarios.map((usuario) => `<tr data-busca="${escapar(`${usuario.nome} ${usuario.email} ${usuario.perfil} ${usuario.escola}`.toLowerCase())}"><td><strong>${escapar(usuario.nome)}</strong></td><td>${escapar(usuario.email)}</td><td><span class="perfil-chip">${escapar(usuario.perfil)}</span></td><td>${escapar(usuario.escola || "—")}</td><td>${badgeAtivo(usuario.ativo)}</td><td><div class="acoes-tabela"><button type="button" class="botao-icone" data-editar-usuario="${escapar(usuario.id)}"><i class="bi bi-pencil"></i><span class="sr-only">Editar</span></button><button type="button" class="botao-icone ${usuario.ativo ? "acao-desativar" : ""}" data-alternar-usuario="${escapar(usuario.id)}" aria-label="${usuario.ativo ? "Desativar" : "Ativar"} ${escapar(usuario.nome)}"><i class="bi ${usuario.ativo ? "bi-person-slash" : "bi-person-check"}"></i></button></div></td></tr>`).join("")}</tbody></table></div>`;
+            }
 
-                function renderPainel() {
-                    const usuarios = todos(chaves.usuarios);
-                    const escolas = todos(chaves.escolas);
-                    const modalidades = todos(chaves.modalidades);
-                    const categorias = todos(chaves.categorias);
-                    const recentes = usuarios.slice(-4).reverse();
-                    moldura(
-                        `${titulo("Dashboard Administrativo", "Visão geral dos cadastros e acessos da plataforma.")}
+            function renderPainel() {
+                const usuarios = todos(chaves.usuarios);
+                const escolas = todos(chaves.escolas);
+                const modalidades = todos(chaves.modalidades);
+                const categorias = todos(chaves.categorias);
+                const recentes = usuarios.slice(-4).reverse();
+                moldura(
+                    `${titulo("Dashboard Administrativo", "Visão geral dos cadastros e acessos da plataforma.")}
       <div class="grade-indicadores">${[
-          ["bi-people-fill", usuarios.length, "Usuários cadastrados"],
-          ["bi-building-fill", escolas.length, "Escolas cadastradas"],
-          ["bi-activity", modalidades.filter((item) => item.ativo).length, "Modalidades ativas"],
-          ["bi-tags-fill", categorias.filter((item) => item.ativo).length, "Categorias disponíveis"],
-      ]
-          .map(
-              ([icone, valor, rotulo]) =>
-                  `<article class="card-jeves indicador"><span class="indicador-icone"><i class="bi ${icone}"></i></span><span><strong>${valor}</strong><small>${rotulo}</small></span></article>`,
-          )
-          .join("")}</div>
+                        ["bi-people-fill", usuarios.length, "Usuários cadastrados"],
+                        ["bi-building-fill", escolas.length, "Escolas cadastradas"],
+                        ["bi-activity", modalidades.filter((item) => item.ativo).length, "Modalidades ativas"],
+                        ["bi-tags-fill", categorias.filter((item) => item.ativo).length, "Categorias disponíveis"],
+                    ]
+                        .map(
+                            ([icone, valor, rotulo]) =>
+                                `<article class="card-jeves indicador"><span class="indicador-icone"><i class="bi ${icone}"></i></span><span><strong>${valor}</strong><small>${rotulo}</small></span></article>`,
+                        )
+                        .join("")}</div>
       <div class="atalhos">${[
-          ["bi-person-plus-fill", "Gerenciar usuários", "usuarios.html"],
-          ["bi-building-fill", "Gerenciar escolas", "escolas.html"],
-          ["bi-sliders", "Configurar modalidades", "modalidades.html"],
-      ]
-          .map(
-              ([icone, rotulo, href]) =>
-                  `<a class="atalho" href="${href}"><i class="bi ${icone}"></i><strong>${rotulo}</strong><i class="bi bi-arrow-right ms-auto"></i></a>`,
-          )
-          .join("")}</div>
+                        ["bi-person-plus-fill", "Gerenciar usuários", "usuarios.html"],
+                        ["bi-building-fill", "Gerenciar escolas", "escolas.html"],
+                        ["bi-sliders", "Configurar modalidades", "modalidades.html"],
+                    ]
+                        .map(
+                            ([icone, rotulo, href]) =>
+                                `<a class="atalho" href="${href}"><i class="bi ${icone}"></i><strong>${rotulo}</strong><i class="bi bi-arrow-right ms-auto"></i></a>`,
+                        )
+                        .join("")}</div>
       <div class="grade-dashboard"><section class="card-jeves"><div class="cartao-titulo"><h2>Usuários recentes</h2><a class="link-dourado" href="usuarios.html">Ver todos <i class="bi bi-arrow-right"></i></a></div>
         <div class="lista-usuarios-recentes">${recentes
-            .map(
-                (usuario) =>
-                    `<div class="linha-usuario"><span class="avatar-admin-lista">${escapar(
-                        usuario.nome
-                            .split(/\s+/)
-                            .slice(0, 2)
-                            .map((parte) => parte[0])
-                            .join("")
-                            .toUpperCase(),
-                    )}</span><span><strong>${escapar(usuario.nome)}</strong><small>${escapar(usuario.email)}</small></span>${badgeAtivo(usuario.ativo)}</div>`,
-            )
-            .join("")}</div>
+                        .map(
+                            (usuario) =>
+                                `<div class="linha-usuario"><span class="avatar-admin-lista">${escapar(
+                                    usuario.nome
+                                        .split(/\s+/)
+                                        .slice(0, 2)
+                                        .map((parte) => parte[0])
+                                        .join("")
+                                        .toUpperCase(),
+                                )}</span><span><strong>${escapar(usuario.nome)}</strong><small>${escapar(usuario.email)}</small></span>${badgeAtivo(usuario.ativo)}</div>`,
+                        )
+                        .join("")}</div>
       </section><section class="card-jeves"><div class="cartao-titulo"><h2>Resumo de cadastros</h2></div><div class="resumo-cadastro">${[
-          ["Usuários ativos", usuarios.filter((item) => item.ativo).length, "bi-person-check-fill"],
-          ["Escolas ativas", escolas.filter((item) => item.ativo).length, "bi-building-check"],
-          ["Modalidades inativas", modalidades.filter((item) => !item.ativo).length, "bi-pause-circle"],
-      ]
-          .map(
-              ([rotulo, valor, icone]) =>
-                  `<div><i class="bi ${icone}"></i><span>${rotulo}</span><strong>${valor}</strong></div>`,
-          )
-          .join("")}</div></section></div>
+                        ["Usuários ativos", usuarios.filter((item) => item.ativo).length, "bi-person-check-fill"],
+                        ["Escolas ativas", escolas.filter((item) => item.ativo).length, "bi-building-check"],
+                        ["Modalidades inativas", modalidades.filter((item) => !item.ativo).length, "bi-pause-circle"],
+                    ]
+                        .map(
+                            ([rotulo, valor, icone]) =>
+                                `<div><i class="bi ${icone}"></i><span>${rotulo}</span><strong>${valor}</strong></div>`,
+                        )
+                        .join("")}</div></section></div>
       <section class="card-jeves cartao-alerta"><i class="bi bi-shield-check"></i><div><strong>Área administrativa</strong><p>As alterações nos cadastros afetam os dados demonstrativos deste navegador. Em produção, valide permissões no servidor.</p></div></section>`,
-                        "Dashboard Administrativo",
-                    );
-                }
+                    "Dashboard Administrativo",
+                );
+            }
 
-                renderPainel();
-            })();
-        </script>
-    </body>
+            renderPainel();
+        })();
+    </script>
+</body>
+
 </html>

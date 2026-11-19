@@ -300,20 +300,27 @@
   font-family: var(--fonte-titulos);
   font-weight: 900;
   font-size: 2rem;
+  letter-spacing: -0.02em;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  text-decoration: none;
+  margin-bottom: var(--espaco-md);
+}
+
+.rodape-logo img {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.rodape-logo .texto-logo-jeves,
+.rodape-logo span {
   background: var(--gradiente-dourado);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: var(--espaco-md);
-  text-decoration: none;
-}
-
-.rodape-logo .bi-fire {
-  -webkit-text-fill-color: var(--cor-acento);
-  filter: drop-shadow(0 0 6px rgba(232, 102, 10, 0.5));
 }
 
 .rodape-tagline {
@@ -423,19 +430,28 @@
   font-family: var(--fonte-titulos);
   font-weight: 900;
   font-size: 1.6rem;
+  letter-spacing: -0.02em;
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: var(--gradiente-dourado);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  gap: 0.55rem;
   text-decoration: none;
   margin-bottom: 0.35rem;
 }
 
-.sidebar-logo .bi-fire {
-  -webkit-text-fill-color: var(--cor-acento);
+.sidebar-logo img {
+  display: block;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sidebar-logo .texto-logo-jeves,
+.sidebar-logo span {
+  background: var(--gradiente-dourado);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .sidebar-perfil-label {
@@ -539,6 +555,7 @@
 }
 
 .btn-toggle-sidebar {
+  display: none;
   background: none;
   border: 1px solid var(--cor-borda-suave);
   border-radius: var(--borda-raio-sm);
@@ -548,6 +565,19 @@
   cursor: pointer;
   line-height: 1;
   transition: var(--transicao-rapida);
+}
+
+@media (max-width: 768px) {
+  .btn-toggle-sidebar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sidebar-jeves.aberto {
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.55);
+    z-index: 1050;
+  }
 }
 
 .btn-toggle-sidebar:hover {
@@ -1470,4 +1500,22 @@ select.campo-controle option {
   background: rgba(231, 76, 60, 0.12);
   border: 1px solid rgba(231, 76, 60, 0.35);
   color: #e74c3c;
+}
+
+/* Badge de Seção Padrão (Público, Admin, Organizador, Escola) */
+.badge-secao-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(245, 184, 0, 0.1);
+  border: 1px solid rgba(245, 184, 0, 0.25);
+  color: var(--cor-secundaria);
+  font-family: var(--fonte-titulos);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  margin-bottom: var(--espaco-sm);
 }

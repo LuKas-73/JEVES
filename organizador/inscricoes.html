@@ -62,12 +62,7 @@
             }
 
             .badge-secao-label {
-                margin-bottom: 0.45rem;
-                color: var(--cor-secundaria);
-                font-size: 0.73rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
+                margin-bottom: var(--espaco-sm);
             }
 
             .card-jeves {
@@ -406,38 +401,31 @@
             <aside class="sidebar-jeves" id="sidebar-org" aria-label="Navegação do painel">
                 <div class="sidebar-topo">
                     <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
-                        <i class="bi bi-fire" aria-hidden="true"></i>
-                        <span>JEVES</span>
+                        <img src="../assets/Img/logo.png" alt="JEVES" />
+                        <span class="texto-logo-jeves">JEVES</span>
                     </a>
                     <span class="sidebar-perfil-label">Área do Organizador</span>
                 </div>
                 <nav class="sidebar-nav" aria-label="Menu do organizador">
                     <a href="painel.html" class="item-sidebar">
-                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
                         <span>Painel</span>
                     </a>
                     <a href="torneios.html" class="item-sidebar">
-                        <i class="bi bi-trophy-fill" aria-hidden="true"></i>
-                        <span>Meus torneios</span>
+                        <span>Meus Torneios</span>
                     </a>
                     <a href="inscricoes.html" class="item-sidebar ativo" aria-current="page">
-                        <i class="bi bi-clipboard-data-fill" aria-hidden="true"></i>
                         <span>Inscrições</span>
                     </a>
                     <a href="equipes.html" class="item-sidebar">
-                        <i class="bi bi-people-fill" aria-hidden="true"></i>
                         <span>Equipes</span>
                     </a>
                     <a href="locais.html" class="item-sidebar">
-                        <i class="bi bi-geo-alt-fill" aria-hidden="true"></i>
                         <span>Locais</span>
                     </a>
                     <a href="jogos.html" class="item-sidebar">
-                        <i class="bi bi-calendar-event-fill" aria-hidden="true"></i>
                         <span>Jogos</span>
                     </a>
                     <a href="resultados.html" class="item-sidebar">
-                        <i class="bi bi-bar-chart-fill" aria-hidden="true"></i>
                         <span>Resultados</span>
                     </a>
                 </nav>
@@ -482,7 +470,7 @@
                 <main class="conteudo-principal" id="app-organizador" aria-labelledby="titulo-pagina">
                     <header class="cabecalho">
                         <div>
-                            <div class="badge-secao-label">Área do organizador · JEVES 2026</div>
+                            <div class="badge-secao-label">Área do Organizador · JEVES 2026</div>
                             <h1>Inscrições</h1>
                             <p>Filtre os pedidos recebidos e analise os dados das equipes escolares.</p>
                         </div>
@@ -953,7 +941,7 @@
                 }
 
                 function titulo(tituloPagina, descricao, acao = "") {
-                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área do organizador · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
+                    return `<header class="cabecalho"><div><div class="badge-secao-label">Área do Organizador · JEVES 2026</div><h1>${escapar(tituloPagina)}</h1><p>${escapar(descricao)}</p></div>${acao}</header>`;
                 }
 
                 function moldura(conteudo, tituloPagina) {
@@ -976,12 +964,23 @@
                         localStorage.removeItem("jeves_token");
                         window.location.replace("../publico/login.html");
                     });
-                    document.getElementById("btn-menu-org").addEventListener("click", (event) => {
-                        const botao = event.currentTarget;
-                        const aberto = document.getElementById("sidebar-org").classList.toggle("aberto");
-                        botao.setAttribute("aria-expanded", String(aberto));
-                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
-                    });
+                    const botaoMenuOrg = document.getElementById("btn-menu-org");
+                    const sidebarOrg = document.getElementById("sidebar-org");
+                    if (botaoMenuOrg && sidebarOrg) {
+                        botaoMenuOrg.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            const aberto = sidebarOrg.classList.toggle("aberto");
+                            botaoMenuOrg.setAttribute("aria-expanded", String(aberto));
+                            botaoMenuOrg.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                        });
+                        document.addEventListener("click", (event) => {
+                            if (sidebarOrg.classList.contains("aberto") && !sidebarOrg.contains(event.target)) {
+                                sidebarOrg.classList.remove("aberto");
+                                botaoMenuOrg.setAttribute("aria-expanded", "false");
+                                botaoMenuOrg.setAttribute("aria-label", "Abrir menu");
+                            }
+                        });
+                    }
                 }
 
                 function tabelaInscricoes(inscricoes) {
