@@ -50,7 +50,6 @@ function gerarSidebar(conteiner: HTMLElement, perfil: PerfilSidebar, paginaAtual
     const ariaCurrent = ativo ? 'aria-current="page"' : '';
     return `
       <a href="${item.href}" class="item-sidebar ${ativo}" id="${item.id}" ${ariaCurrent}>
-        <i class="bi ${item.icone}" aria-hidden="true"></i>
         <span>${item.rotulo}</span>
       </a>
     `;
@@ -59,9 +58,9 @@ function gerarSidebar(conteiner: HTMLElement, perfil: PerfilSidebar, paginaAtual
   conteiner.innerHTML = `
     <aside class="sidebar-jeves" id="sidebar-principal" aria-label="Menu ${nomesPerfil[perfil]}">
       <div class="sidebar-topo">
-        <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026">
-          <i class="bi bi-fire" aria-hidden="true"></i>
-          <span>JEVES</span>
+        <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
+          <img src="../assets/Img/logo.png" alt="JEVES" />
+          <span class="texto-logo-jeves">JEVES</span>
         </a>
         <span class="sidebar-perfil-label">${nomesPerfil[perfil]}</span>
       </div>

@@ -61,12 +61,7 @@
             }
 
             .badge-secao-label {
-                margin-bottom: 0.45rem;
-                color: var(--cor-secundaria);
-                font-size: 0.73rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
+                margin-bottom: var(--espaco-sm);
             }
 
             .card-jeves {
@@ -484,30 +479,25 @@
             <aside class="sidebar-jeves" id="sidebar-admin" aria-label="Navegação do painel">
                 <div class="sidebar-topo">
                     <a href="../index.html" class="sidebar-logo" aria-label="JEVES 2026 — Início">
-                        <i class="bi bi-fire" aria-hidden="true"></i>
-                        <span>JEVES</span>
+                        <img src="../assets/Img/logo.png" alt="JEVES" />
+                        <span class="texto-logo-jeves">JEVES</span>
                     </a>
                     <span class="sidebar-perfil-label">Administração</span>
                 </div>
                 <nav class="sidebar-nav" aria-label="Menu administrativo">
                     <a href="painel.html" class="item-sidebar">
-                        <i class="bi bi-grid-fill" aria-hidden="true"></i>
                         <span>Painel</span>
                     </a>
                     <a href="usuarios.html" class="item-sidebar">
-                        <i class="bi bi-person-lines-fill" aria-hidden="true"></i>
                         <span>Usuários</span>
                     </a>
                     <a href="escolas.html" class="item-sidebar ativo" aria-current="page">
-                        <i class="bi bi-building-fill" aria-hidden="true"></i>
                         <span>Escolas</span>
                     </a>
                     <a href="modalidades.html" class="item-sidebar">
-                        <i class="bi bi-activity" aria-hidden="true"></i>
                         <span>Modalidades</span>
                     </a>
                     <a href="categorias.html" class="item-sidebar">
-                        <i class="bi bi-tags-fill" aria-hidden="true"></i>
                         <span>Categorias</span>
                     </a>
                 </nav>
@@ -534,9 +524,7 @@
                         <h2 class="bar-superior-titulo" id="titulo-pagina">Escolas</h2>
                     </div>
                     <div class="bar-superior-direita">
-                        <span class="selo"
-                            ><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Administrador</span
-                        >
+                        <span class="selo">Administrador</span>
                         <span class="usuario-info usuario">
                             <span class="avatar-usuario" aria-hidden="true">AG</span>
                             <span class="nome-usuario">Administração Geral SEMESP</span>
@@ -987,12 +975,23 @@
                         localStorage.removeItem("jeves_token");
                         window.location.replace("../publico/login.html");
                     });
-                    document.getElementById("btn-menu-admin").addEventListener("click", (event) => {
-                        const botao = event.currentTarget;
-                        const aberto = document.getElementById("sidebar-admin").classList.toggle("aberto");
-                        botao.setAttribute("aria-expanded", String(aberto));
-                        botao.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
-                    });
+                    const botaoMenu = document.getElementById("btn-menu-admin");
+                    const sidebarAdmin = document.getElementById("sidebar-admin");
+                    if (botaoMenu && sidebarAdmin) {
+                        botaoMenu.addEventListener("click", (event) => {
+                            event.stopPropagation();
+                            const aberto = sidebarAdmin.classList.toggle("aberto");
+                            botaoMenu.setAttribute("aria-expanded", String(aberto));
+                            botaoMenu.setAttribute("aria-label", aberto ? "Fechar menu" : "Abrir menu");
+                        });
+                        document.addEventListener("click", (event) => {
+                            if (sidebarAdmin.classList.contains("aberto") && !sidebarAdmin.contains(event.target)) {
+                                sidebarAdmin.classList.remove("aberto");
+                                botaoMenu.setAttribute("aria-expanded", "false");
+                                botaoMenu.setAttribute("aria-label", "Abrir menu");
+                            }
+                        });
+                    }
                 }
 
                 function tabelaUsuarios(usuarios) {

@@ -11,7 +11,8 @@ function gerarRodape(conteiner: HTMLElement, opcao: OpcaoRodape = {}): void {
         <div class="row g-5 rodape-corpo">
           <div class="col-lg-4">
             <a href="../index.html" class="rodape-logo" aria-label="JEVES — Página inicial">
-              <i class="bi bi-fire" aria-hidden="true"></i> JEVES
+              <img src="../assets/Img/logo.png" alt="JEVES" />
+              <span class="texto-logo-jeves">JEVES</span>
             </a>
             <p class="rodape-tagline">Jogos Escolares de Vespasiano — Unindo esporte, juventude e educação.</p>
             <div class="rodape-redes" aria-label="Redes sociais">
